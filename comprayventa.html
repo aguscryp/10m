@@ -15,7 +15,7 @@
             --text-gradient: linear-gradient(to right, #ffffff, #ff007a);
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; cursor: default; }
         body {
             margin: 0; padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -25,61 +25,94 @@
             scroll-behavior: smooth;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-
-        /* Estilo Pink Pro: Neon Flow - Fondos */
-        .neon-glow {
-            position: fixed; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(255, 0, 122, 0.15) 0%, transparent 70%);
-            top: -100px; right: -100px; z-index: -1;
+        /* Animaciones */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
         }
 
-        /* Hero & Video (Se mantienen del anterior) */
+        @keyframes pulse-neon {
+            0% { box-shadow: 0 0 20px rgba(255, 0, 122, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 122, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(255, 0, 122, 0.2); }
+        }
+
+        .floating-emoji {
+            display: inline-block;
+            font-size: 2.5rem;
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .floating-emoji:hover {
+            transform: scale(1.5) rotate(15deg);
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; }
+
+        /* Fondo Pink Pro */
+        .neon-glow {
+            position: fixed; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(255, 0, 122, 0.1) 0%, transparent 70%);
+            top: -150px; right: -150px; z-index: -1;
+        }
+
         header { padding: 100px 0 60px; text-align: center; }
+        
         .highlight-tag {
             background: rgba(255, 0, 122, 0.1); border: 1px solid var(--neon-pink);
             color: var(--neon-pink); padding: 8px 20px; border-radius: 50px;
             font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-bottom: 25px; display: inline-block;
         }
-        h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 30px; }
-        
-        .video-container { width: 100%; max-width: 900px; margin: 0 auto 80px; border-radius: 24px; padding: 10px; background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple)); box-shadow: 0 0 50px rgba(255, 0, 122, 0.3); }
+
+        h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 30px; line-height: 1.2; }
+
+        /* Video Section */
+        .video-container { 
+            width: 100%; max-width: 900px; margin: 0 auto 80px; 
+            border-radius: 24px; padding: 10px; 
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+            animation: pulse-neon 3s infinite;
+        }
         .video-inner { aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* SECCIÓN TESTIMONIOS */
+        /* Testimonios & Cards */
         .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; }
         .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 100px; }
         .testimonial-card {
-            background: var(--glass); border: 1px solid var(--glass-border); padding: 30px; border-radius: 20px;
-            position: relative; transition: 0.3s;
+            background: var(--glass); border: 1px solid var(--glass-border); padding: 30px; border-radius: 24px;
+            backdrop-filter: blur(15px); transition: 0.4s;
         }
-        .testimonial-card:hover { border-color: var(--neon-pink); transform: translateY(-5px); }
-        .testimonial-card p { font-style: italic; color: #ccc; font-size: 1rem; }
-        .testimonial-card .author { margin-top: 20px; display: block; font-weight: 800; color: var(--neon-pink); }
-        .testimonial-card .stars { color: #ffd700; margin-bottom: 10px; display: block; }
+        .testimonial-card:hover { border-color: var(--neon-pink); background: rgba(255, 255, 255, 0.05); }
 
-        /* SECCIÓN PREGUNTAS FRECUENTES (FAQ) */
-        .faq-container { max-width: 800px; margin: 0 auto 120px; }
-        details {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            margin-bottom: 15px; border-radius: 12px; overflow: hidden; transition: 0.3s;
+        /* FAQ */
+        .faq-container { max-width: 800px; margin: 0 auto 100px; }
+        details { background: var(--glass); border: 1px solid var(--glass-border); margin-bottom: 15px; border-radius: 15px; }
+        summary { padding: 20px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+        summary::after { content: "💸"; font-size: 1.2rem; }
+        .faq-content { padding: 0 20px 20px; color: #aaa; }
+
+        /* Form / CTA */
+        .form-section { 
+            background: linear-gradient(180deg, var(--glass), transparent); 
+            border: 1px solid var(--glass-border); border-radius: 40px; 
+            padding: 60px 40px; text-align: center; max-width: 850px; margin: 0 auto 100px; 
         }
-        details[open] { border-color: var(--neon-pink); }
-        summary {
-            padding: 20px; font-weight: 600; cursor: pointer; list-style: none;
-            display: flex; justify-content: space-between; align-items: center;
+        .cta-btn { 
+            background: var(--neon-pink); color: white; padding: 25px 60px; 
+            border-radius: 20px; font-size: 1.5rem; font-weight: 800; 
+            text-decoration: none; display: inline-block; transition: 0.3s;
+            box-shadow: 0 15px 35px rgba(255, 0, 122, 0.4); border: none;
         }
-        summary::after { content: "+"; color: var(--neon-pink); font-size: 1.5rem; }
-        details[open] summary::after { content: "-"; }
-        .faq-content { padding: 0 20px 20px; color: #aaa; font-size: 0.95rem; }
+        .cta-btn:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 50px rgba(255, 0, 122, 0.6); }
 
-        /* Form & CTA */
-        .form-section { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 32px; padding: 60px 40px; text-align: center; max-width: 800px; margin: 0 auto 100px; backdrop-filter: blur(10px); }
-        .cta-btn { background: var(--neon-pink); color: white; padding: 22px 50px; border-radius: 15px; font-size: 1.3rem; font-weight: 800; text-decoration: none; display: inline-block; transition: 0.3s; box-shadow: 0 10px 30px rgba(255, 0, 122, 0.4); border: none; cursor: pointer; }
-        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(255, 0, 122, 0.6); }
+        /* Floating Money Icons */
+        .money-bg { position: absolute; font-size: 3rem; opacity: 0.2; z-index: -1; animation: float 6s infinite; }
 
-        footer { text-align: center; padding: 60px; color: #444; border-top: 1px solid var(--glass-border); }
+        footer { text-align: center; padding: 60px; color: #444; border-top: 1px solid var(--glass-border); font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -88,8 +121,12 @@
 
     <div class="container">
         <header>
-            <div class="highlight-tag">Método Escalamiento 2026</div>
-            <h1>Te ayudo a iniciar en la compra y venta para que hagas tus primeros $2,000 sin invertir un solo peso demás.</h1>
+            <div class="highlight-tag">Sistema de Ganancias Reales 💸</div>
+            <h1>
+                <span class="floating-emoji">🚀</span><br>
+                Te ayudo a iniciar en la compra y venta para que hagas tus primeros $2,000 sin invertir un solo peso demás.
+            </h1>
+            <p style="color: #888; font-size: 1.3rem;">Únete a los 411 alumnos que ya están facturando en dólares. <span class="floating-emoji" style="font-size: 1.5rem; animation-delay: 1s;">💰</span></p>
         </header>
 
         <div class="video-container">
@@ -98,65 +135,68 @@
             </div>
         </div>
 
-        <h2 class="section-title">Resultados de mis Alumnos</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <span class="stars">★★★★★</span>
-                <p>"No sabía nada de negocios y en mi segundo mes logré mis primeros $800 dólares netos. El soporte es increíble."</p>
-                <span class="author">Mateo R. - Alumno</span>
+        <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 80px; text-align: center;">
+            <div>
+                <div class="floating-emoji">🤝</div>
+                <h3 style="margin: 10px 0;">4,700+</h3>
+                <p style="color: #666;">Clientes Satisfechos</p>
             </div>
-            <div class="testimonial-card">
-                <span class="stars">★★★★★</span>
-                <p>"La inversión de 50k se paga sola. Solo con el primer trato que cerré recuperé el triple. Es un antes y un después."</p>
-                <span class="author">Julieta G. - Alumna</span>
+            <div>
+                <div class="floating-emoji" style="animation-delay: 0.5s;">📈</div>
+                <h3 style="margin: 10px 0;">411</h3>
+                <p style="color: #666;">Alumnos Escalando</p>
             </div>
-            <div class="testimonial-card">
-                <span class="stars">★★★★★</span>
-                <p>"Ya vendía por mi cuenta, pero los 411 alumnos de la comunidad me ayudaron a entender cómo escalar a los 2k verdes."</p>
-                <span class="author">Lucas M. - Emprendedor</span>
+            <div>
+                <div class="floating-emoji" style="animation-delay: 1s;">💎</div>
+                <h3 style="margin: 10px 0;">$50,000</h3>
+                <p style="color: #666;">Inversión Única</p>
             </div>
         </div>
 
-        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <h2 class="section-title">Lo que dicen en la comunidad <span class="floating-emoji" style="font-size: 2rem;">🔥</span></h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p>"Pasé de no tener un peso a cerrar mi primera venta de $300 USD en solo 10 días. El método de compra y venta no falla."</p>
+                <span style="color: var(--neon-pink); font-weight: 800; display: block; margin-top: 15px;">— Julian B. 💵</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"La mejor decisión que tomé en el 2026. Los 50k se recuperan volando si sigues los pasos al pie de la letra."</p>
+                <span style="color: var(--neon-pink); font-weight: 800; display: block; margin-top: 15px;">— Sofia V. ✨</span>
+            </div>
+        </div>
+
         <div class="faq-container">
+            <h2 class="section-title">Despeja tus dudas <span class="floating-emoji" style="font-size: 2rem;">🧐</span></h2>
             <details>
-                <summary>¿Necesito experiencia previa?</summary>
-                <div class="faq-content">No. El programa está diseñado para llevarte de 0 a 100, explicando desde lo más básico hasta las técnicas avanzadas de escalamiento.</div>
+                <summary>¿Realmente puedo llegar a $2,000 USD?</summary>
+                <div class="faq-content">Totalmente. El mercado de compra y venta permite escalar rápido porque trabajas con productos de alta demanda. Mis 411 alumnos son la prueba.</div>
             </details>
             <details>
-                <summary>¿Cuánto tiempo tardaré en ver resultados?</summary>
-                <div class="faq-content">Depende de tu ejecución, pero tenemos alumnos que recuperan su inversión en la primera semana aplicando el método de compra inmediata.</div>
-            </details>
-            <details>
-                <summary>¿Por qué el precio es de $50,000 ARS?</summary>
-                <div class="faq-content">Es un precio de lanzamiento para Argentina. El objetivo es que sea accesible para que cualquier persona con ganas pueda capitalizarse y llegar a los $2,000 USD mensuales.</div>
-            </details>
-            <details>
-                <summary>¿Cómo accedo al material?</summary>
-                <div class="faq-content">Una vez completado el formulario y realizado el pago, recibirás acceso inmediato a nuestra plataforma exclusiva y a la comunidad de alumnos.</div>
+                <summary>¿Qué recibo por los $50.000 ARS?</summary>
+                <div class="faq-content">Acceso de por vida a la metodología, lista de proveedores, técnicas de cierre de ventas y acceso al grupo privado de alumnos.</div>
             </details>
         </div>
 
         <section class="form-section" id="registro">
-            <div class="highlight-tag" style="margin-bottom: 10px;">Únete a los 4,700+ Clientes</div>
-            <h2>Reserva tu Cupo Hoy</h2>
-            <p>Completa el formulario para validar tu ingreso al programa y empezar a escalar.</p>
+            <div class="floating-emoji" style="font-size: 4rem; margin-bottom: 20px;">🤑</div>
+            <h2>¿Estás listo para el siguiente nivel?</h2>
+            <p>Completa el formulario oficial para reservar tu acceso.</p>
             
-            <div style="background: rgba(0,0,0,0.4); padding: 40px; border-radius: 20px; border: 1px dashed #444; margin: 30px 0;">
-                <p style="color: var(--neon-pink); font-weight: bold;">[ AQUÍ PEGARÁS EL IFRAME DE TU GOOGLE FORM ]</p>
-                <p style="font-size: 0.8rem; color: #666;">El formulario se adaptará automáticamente a este contenedor oscuro.</p>
+            <div style="background: rgba(255,0,122,0.05); padding: 50px; border-radius: 30px; border: 2px dashed var(--neon-pink); margin: 30px 0;">
+                <p style="font-weight: bold; letter-spacing: 1px;">[ PEGA AQUÍ TU GOOGLE FORM ]</p>
+                <p style="font-size: 0.8rem; opacity: 0.5;">Tu link de registro aparecerá en este bloque</p>
             </div>
             
-            <a href="#" class="cta-btn">¡INICIAR POR $50,000!</a>
+            <a href="#" class="cta-btn">ACCEDER AHORA ➔</a>
+            <p style="margin-top: 25px; color: #555;">⚠️ Cupos limitados para asegurar la calidad del soporte.</p>
         </section>
 
         <footer>
-            <p>© 2026 Mastery Compra y Venta | Pink Pro Edition</p>
-            <p style="font-size: 0.7rem; margin-top: 10px;">Esta página utiliza tecnología de flujo neón para una experiencia inmersiva.</p>
+            <p>© 2026 Compra y Venta Mastery | Pink Pro: Neon Flow Edition</p>
+            <p>Hecho para ganadores. 💸🚀🔥</p>
         </footer>
     </div>
 
 </body>
 </html>
-
 
