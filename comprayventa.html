@@ -16,10 +16,8 @@
         }
 
         * { box-sizing: border-box; }
-
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--dark-bg);
             color: #fff;
@@ -27,187 +25,61 @@
             scroll-behavior: smooth;
         }
 
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
         /* Estilo Pink Pro: Neon Flow - Fondos */
         .neon-glow {
-            position: fixed;
-            width: 400px;
-            height: 400px;
+            position: fixed; width: 400px; height: 400px;
             background: radial-gradient(circle, rgba(255, 0, 122, 0.15) 0%, transparent 70%);
-            top: -100px;
-            right: -100px;
-            z-index: -1;
+            top: -100px; right: -100px; z-index: -1;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Hero Section */
-        header {
-            padding: 100px 0 60px;
-            text-align: center;
-        }
-
+        /* Hero & Video (Se mantienen del anterior) */
+        header { padding: 100px 0 60px; text-align: center; }
         .highlight-tag {
-            background: rgba(255, 0, 122, 0.1);
-            border: 1px solid var(--neon-pink);
-            color: var(--neon-pink);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: inline-block;
-            margin-bottom: 25px;
+            background: rgba(255, 0, 122, 0.1); border: 1px solid var(--neon-pink);
+            color: var(--neon-pink); padding: 8px 20px; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-bottom: 25px; display: inline-block;
         }
-
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            line-height: 1.1;
-            background: var(--text-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
-        }
-
-        .sub-headline {
-            font-size: 1.2rem;
-            color: #a0a0a0;
-            max-width: 800px;
-            margin: 0 auto 50px;
-        }
-
-        /* Video Section */
-        .video-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto 80px;
-            border-radius: 24px;
-            padding: 10px;
-            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
-            box-shadow: 0 0 50px rgba(255, 0, 122, 0.3);
-        }
-
-        .video-inner {
-            aspect-ratio: 16/9;
-            background: #000;
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
+        h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 30px; }
+        
+        .video-container { width: 100%; max-width: 900px; margin: 0 auto 80px; border-radius: 24px; padding: 10px; background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple)); box-shadow: 0 0 50px rgba(255, 0, 122, 0.3); }
+        .video-inner { aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* Stats Section */
-        .stats-wrapper {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 100px;
+        /* SECCIÓN TESTIMONIOS */
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 100px; }
+        .testimonial-card {
+            background: var(--glass); border: 1px solid var(--glass-border); padding: 30px; border-radius: 20px;
+            position: relative; transition: 0.3s;
         }
+        .testimonial-card:hover { border-color: var(--neon-pink); transform: translateY(-5px); }
+        .testimonial-card p { font-style: italic; color: #ccc; font-size: 1rem; }
+        .testimonial-card .author { margin-top: 20px; display: block; font-weight: 800; color: var(--neon-pink); }
+        .testimonial-card .stars { color: #ffd700; margin-bottom: 10px; display: block; }
 
-        .stat-box {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 40px;
-            border-radius: 24px;
-            text-align: center;
-            backdrop-filter: blur(10px);
+        /* SECCIÓN PREGUNTAS FRECUENTES (FAQ) */
+        .faq-container { max-width: 800px; margin: 0 auto 120px; }
+        details {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            margin-bottom: 15px; border-radius: 12px; overflow: hidden; transition: 0.3s;
         }
-
-        .stat-box h3 {
-            font-size: 2.5rem;
-            margin: 0;
-            color: var(--neon-pink);
+        details[open] { border-color: var(--neon-pink); }
+        summary {
+            padding: 20px; font-weight: 600; cursor: pointer; list-style: none;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        summary::after { content: "+"; color: var(--neon-pink); font-size: 1.5rem; }
+        details[open] summary::after { content: "-"; }
+        .faq-content { padding: 0 20px 20px; color: #aaa; font-size: 0.95rem; }
 
-        .stat-box p { color: #888; margin-top: 10px; }
+        /* Form & CTA */
+        .form-section { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 32px; padding: 60px 40px; text-align: center; max-width: 800px; margin: 0 auto 100px; backdrop-filter: blur(10px); }
+        .cta-btn { background: var(--neon-pink); color: white; padding: 22px 50px; border-radius: 15px; font-size: 1.3rem; font-weight: 800; text-decoration: none; display: inline-block; transition: 0.3s; box-shadow: 0 10px 30px rgba(255, 0, 122, 0.4); border: none; cursor: pointer; }
+        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(255, 0, 122, 0.6); }
 
-        /* Content Section - El Relleno */
-        .features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            margin-bottom: 120px;
-        }
-
-        @media (max-width: 768px) { .features { grid-template-columns: 1fr; } }
-
-        .feature-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .feature-text p {
-            color: #b0b0b0;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .check-list { list-style: none; padding: 0; }
-        .check-list li {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .check-list li::before {
-            content: "✓";
-            color: var(--neon-pink);
-            font-weight: bold;
-        }
-
-        /* Form Section */
-        .form-section {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 60px 40px;
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 100px;
-        }
-
-        .form-placeholder {
-            background: #111;
-            border: 2px dashed #333;
-            border-radius: 15px;
-            padding: 40px;
-            margin-top: 30px;
-            color: #666;
-        }
-
-        .cta-btn {
-            background: var(--neon-pink);
-            color: white;
-            padding: 22px 50px;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: 800;
-            text-decoration: none;
-            display: inline-block;
-            transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(255, 0, 122, 0.4);
-            border: none;
-            cursor: pointer;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(255, 0, 122, 0.6);
-        }
-
-        footer {
-            text-align: center;
-            padding: 50px;
-            border-top: 1px solid var(--glass-border);
-            color: #444;
-        }
+        footer { text-align: center; padding: 60px; color: #444; border-top: 1px solid var(--glass-border); }
     </style>
 </head>
 <body>
@@ -216,74 +88,75 @@
 
     <div class="container">
         <header>
-            <div class="highlight-tag">Método 100% Comprobado</div>
+            <div class="highlight-tag">Método Escalamiento 2026</div>
             <h1>Te ayudo a iniciar en la compra y venta para que hagas tus primeros $2,000 sin invertir un solo peso demás.</h1>
-            <p class="sub-headline">
-                Deja de adivinar y empieza a facturar. Únete a la comunidad de compra y venta más grande de Argentina y domina el mercado con una estrategia clara, escalable y sin riesgos innecesarios.
-            </p>
         </header>
 
         <div class="video-container">
             <div class="video-inner">
-                <iframe 
-                    src="https://drive.google.com/file/d/1uELKON_4tcVDWjF3y_J4_68VfhJJTvjX/preview" 
-                    allow="autoplay; encrypted-media" 
-                    allowfullscreen>
-                </iframe>
+                <iframe src="https://drive.google.com/file/d/1uELKON_4tcVDWjF3y_J4_68VfhJJTvjX/preview" allowfullscreen></iframe>
             </div>
         </div>
 
-        <div class="stats-wrapper">
-            <div class="stat-box">
-                <h3>4,700+</h3>
-                <p>Clientes satisfechos operando bajo nuestra guía.</p>
+        <h2 class="section-title">Resultados de mis Alumnos</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <span class="stars">★★★★★</span>
+                <p>"No sabía nada de negocios y en mi segundo mes logré mis primeros $800 dólares netos. El soporte es increíble."</p>
+                <span class="author">Mateo R. - Alumno</span>
             </div>
-            <div class="stat-box">
-                <h3>411</h3>
-                <p>Alumnos activos escalando de 0 a $2,000 USD.</p>
+            <div class="testimonial-card">
+                <span class="stars">★★★★★</span>
+                <p>"La inversión de 50k se paga sola. Solo con el primer trato que cerré recuperé el triple. Es un antes y un después."</p>
+                <span class="author">Julieta G. - Alumna</span>
             </div>
-            <div class="stat-box">
-                <h3>$50k</h3>
-                <p>Inversión única para transformar tu realidad financiera.</p>
+            <div class="testimonial-card">
+                <span class="stars">★★★★★</span>
+                <p>"Ya vendía por mi cuenta, pero los 411 alumnos de la comunidad me ayudaron a entender cómo escalar a los 2k verdes."</p>
+                <span class="author">Lucas M. - Emprendedor</span>
             </div>
         </div>
 
-        <section class="features">
-            <div class="feature-text">
-                <h2>¿Por qué este es el camino más rápido?</h2>
-                <p>El mercado de compra y venta en Argentina es una mina de oro si sabes qué comprar, dónde buscar y cómo vender con márgenes altos.</p>
-                <ul class="check-list">
-                    <li>Acceso a proveedores y nichos de alta demanda.</li>
-                    <li>Estrategia de negociación psicológica.</li>
-                    <li>Cómo escalar de tus primeros 100k a 2 mil dólares mes.</li>
-                    <li>Mentoría basada en resultados reales, no en teoría.</li>
-                </ul>
-            </div>
-            <div class="stat-box" style="background: linear-gradient(135deg, #111, #000);">
-                <p style="font-style: italic; color: #eee;">"Entré con miedo y hoy estoy manejando un flujo de caja que nunca imaginé. La clave fue el acompañamiento."</p>
-                <strong style="color: var(--neon-pink);">- Alumno Destacado</strong>
-            </div>
-        </section>
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <div class="faq-container">
+            <details>
+                <summary>¿Necesito experiencia previa?</summary>
+                <div class="faq-content">No. El programa está diseñado para llevarte de 0 a 100, explicando desde lo más básico hasta las técnicas avanzadas de escalamiento.</div>
+            </details>
+            <details>
+                <summary>¿Cuánto tiempo tardaré en ver resultados?</summary>
+                <div class="faq-content">Depende de tu ejecución, pero tenemos alumnos que recuperan su inversión en la primera semana aplicando el método de compra inmediata.</div>
+            </details>
+            <details>
+                <summary>¿Por qué el precio es de $50,000 ARS?</summary>
+                <div class="faq-content">Es un precio de lanzamiento para Argentina. El objetivo es que sea accesible para que cualquier persona con ganas pueda capitalizarse y llegar a los $2,000 USD mensuales.</div>
+            </details>
+            <details>
+                <summary>¿Cómo accedo al material?</summary>
+                <div class="faq-content">Una vez completado el formulario y realizado el pago, recibirás acceso inmediato a nuestra plataforma exclusiva y a la comunidad de alumnos.</div>
+            </details>
+        </div>
 
         <section class="form-section" id="registro">
-            <h2>Da el primer paso ahora</h2>
-            <p>Completa el formulario de pre-inscripción para reservar tu lugar. Los cupos son limitados por la atención personalizada que brindo.</p>
+            <div class="highlight-tag" style="margin-bottom: 10px;">Únete a los 4,700+ Clientes</div>
+            <h2>Reserva tu Cupo Hoy</h2>
+            <p>Completa el formulario para validar tu ingreso al programa y empezar a escalar.</p>
             
-            <div class="form-placeholder">
-                <p>⚠️ Aquí aparecerá tu Formulario de Google</p>
-                <p style="font-size: 0.8rem;">(Para agregar tu formulario: Ve a Google Forms > Enviar > Botón "< >" > Copiar HTML y pégalo aquí)</p>
+            <div style="background: rgba(0,0,0,0.4); padding: 40px; border-radius: 20px; border: 1px dashed #444; margin: 30px 0;">
+                <p style="color: var(--neon-pink); font-weight: bold;">[ AQUÍ PEGARÁS EL IFRAME DE TU GOOGLE FORM ]</p>
+                <p style="font-size: 0.8rem; color: #666;">El formulario se adaptará automáticamente a este contenedor oscuro.</p>
             </div>
             
-            <br><br>
-            <a href="#registro" class="cta-btn">REGISTRARME POR $50.000 ARS</a>
-            <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">Pagos seguros vía transferencia o Mercado Pago.</p>
+            <a href="#" class="cta-btn">¡INICIAR POR $50,000!</a>
         </section>
 
         <footer>
-            <p>Este sitio no forma parte de Meta, Facebook o Google. Una vez que accedes al entrenamiento, los resultados dependen de tu ejecución.</p>
-            <p>&copy; 2026 Pink Pro: Neon Flow Edition - Compra y Venta Academy</p>
+            <p>© 2026 Mastery Compra y Venta | Pink Pro Edition</p>
+            <p style="font-size: 0.7rem; margin-top: 10px;">Esta página utiliza tecnología de flujo neón para una experiencia inmersiva.</p>
         </footer>
     </div>
 
 </body>
 </html>
+
+
