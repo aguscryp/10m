@@ -3,131 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club Privado - Compra y Venta</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Mastery Compra y Venta - Escala a $2,000 USD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-pink: #ff007f;
-            --deep-purple: #1a0b2e;
-            --dark-bg: #050505;
+            --bg-dark: #0a0a0b;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
         }
+
         body {
-            background-color: var(--dark-bg);
-            color: #ffffff;
+            margin: 0;
+            padding: 0;
             font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        .neon-glow {
-            text-shadow: 0 0 15px rgba(255, 0, 127, 0.7);
+
+        /* Fondo con gradiente sutil */
+        .main-container {
+            background: radial-gradient(circle at top center, #1e1b4b 0%, #0a0a0b 100%);
+            padding: 80px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .pink-gradient-bg {
-            background: linear-gradient(135deg, #ff007f 0%, #7b2ff7 100%);
+
+        header {
+            max-width: 900px;
+            text-align: center;
+            margin-bottom: 50px;
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 0, 127, 0.2);
-            border-radius: 24px;
-        }
-        .step-badge {
-            background: var(--neon-pink);
-            color: white;
-            padding: 4px 16px;
+
+        .badge {
+            background: var(--accent-gradient);
+            padding: 8px 20px;
             border-radius: 50px;
+            font-size: 0.9rem;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            letter-spacing: 1px;
             display: inline-block;
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
         }
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+        }
+
+        /* Contenedor del Video */
+        .video-wrapper {
+            width: 100%;
+            max-width: 850px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 20px;
             overflow: hidden;
-            border-radius: 18px;
-            box-shadow: 0 0 40px rgba(255, 0, 127, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 60px;
+            position: relative;
         }
-        .video-container iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
-        input, textarea {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: white !important;
+
+        /* Sección de Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #6366f1;
+            margin-bottom: 10px;
+        }
+
+        .stat-text {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+
+        /* Botón de Acción */
+        .cta-button {
+            background: var(--accent-gradient);
+            color: white;
+            text-decoration: none;
+            padding: 20px 45px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        .price-tag {
+            margin-top: 15px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-bottom: 40px;
+            color: #4b5563;
+            font-size: 0.8rem;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-pink-500">
+<body>
 
-    <header class="pt-20 pb-10 px-4 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-4xl md:text-6xl font-black leading-tight mb-6">
-                Te ayudo a comenzar con la <span class="neon-glow text-[#ff007f]">compra y venta</span> para hacer tus primeros <span class="text-white underline decoration-pink-500">2,000 USD</span> en el mercado.
-            </h1>
-            <div class="flex justify-center gap-8 mt-8 text-gray-400 font-medium uppercase tracking-tighter text-sm">
-                <span>⚡ 4,700 Clientes</span>
-                <span>🔥 411 Alumnos</span>
-                <span>🇦🇷 50k ARS Acceso</span>
+    <div class="main-container">
+        <header>
+            <div class="badge">Cupos Limitados</div>
+            <h1>Te ayudo a iniciar en la compra y venta para que hagas tus primeros $2,000 sin invertir un solo peso demás.</h1>
+            <p style="color: var(--text-dim); font-size: 1.2rem; max-width: 700px; margin: 0 auto;">
+                Accede al sistema probado para escalar tu negocio desde cero hasta ingresos en dólares.
+            </p>
+        </header>
+
+        <div class="video-wrapper">
+            <iframe 
+                src="https://drive.google.com/file/d/1uELKON_4tcVDWjF3y_J4_68VfhJJTvjX/preview" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">4,700+</span>
+                <span class="stat-text">Clientes satisfechos en compra y venta activa.</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">411</span>
+                <span class="stat-text">Alumnos escalando sus ingresos actualmente.</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$2,000 USD</span>
+                <span class="stat-text">Objetivo mensual de facturación para nuestros estudiantes.</span>
             </div>
         </div>
-    </header>
 
-    <main class="max-w-4xl mx-auto px-4 pb-20 space-y-20">
-        
-        <section class="text-center">
-            <span class="step-badge">Paso 1</span>
-            <h2 class="text-3xl font-bold mb-8 italic">Mira este video completo</h2>
-            
-            <div class="glass-panel p-2">
-                <div class="video-container">
-                    <iframe 
-                        src="https://drive.google.com/file/d/1uELKON_4tcVDWjF3y_J4_68VfhJJTvjX/preview" 
-                        allow="autoplay">
-                    </iframe>
-                </div>
-            </div>
-        </section>
+        <div style="text-align: center;">
+            <a href="#" class="cta-button">¡QUIERO EMPEZAR MI CAMBIO HOY!</a>
+            <p class="price-tag">Inversión única: $50,000 ARS</p>
+        </div>
 
-        <section class="text-center">
-            <span class="step-badge">Paso 2</span>
-            <h2 class="text-3xl font-bold mb-4 italic">Postulación al Club Privado</h2>
-            <p class="text-gray-400 mb-10 max-w-xl mx-auto">
-                Completa este formulario donde te voy a hacer ciertas preguntas y corroborar que sos apto o apta para unirte.
-            </p>
-
-            <div class="glass-panel p-8 md:p-12 text-left max-w-2xl mx-auto">
-                <form action="#" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-semibold mb-2 text-pink-400">Nombre Completo</label>
-                        <input type="text" class="w-full p-4 rounded-xl focus:outline-none focus:border-pink-500 transition-all" placeholder="Escribe tu nombre...">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-semibold mb-2 text-pink-400">¿Por qué quieres unirte al club?</label>
-                        <textarea rows="3" class="w-full p-4 rounded-xl focus:outline-none focus:border-pink-500 transition-all" placeholder="Contame tu objetivo..."></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold mb-2 text-pink-400">¿Dispones de los 50.000 ARS para iniciar?</label>
-                        <select class="w-full p-4 rounded-xl bg-[#1a1a1a] border border-white/10 text-white">
-                            <option>Sí, estoy listo/a</option>
-                            <option>Lo tendré pronto</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="w-full pink-gradient-bg py-5 rounded-2xl font-black text-xl hover:scale-[1.02] transition-transform shadow-lg shadow-pink-500/20">
-                        ENVIAR POSTULACIÓN 🚀
-                    </button>
-                </form>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="py-10 text-center border-t border-white/5">
-        <p class="text-gray-600 text-sm">Propiedad de Club Privado Compra y Venta &copy; 2026</p>
-    </footer>
+        <footer>
+            © 2026 Compra y Venta Academy. Todos los derechos reservados.
+        </footer>
+    </div>
 
 </body>
 </html>
