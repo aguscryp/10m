@@ -3,184 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mastery Elite | Compra y Venta 💸</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>CLUB MGA | El Arte de la Compra y Venta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-pink: #ff007a;
             --neon-purple: #8a2be2;
-            --dark-bg: #030303;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-gradient: linear-gradient(to right, #ffffff, #ff007a);
+            --dark-bg: #020203;
+            --glass: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-gradient: linear-gradient(135deg, #ffffff 0%, #ff007a 100%);
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--dark-bg);
-            color: #fff;
-            overflow-x: hidden;
-            line-height: 1.6;
+        body { background-color: var(--dark-bg); color: #fff; line-height: 1.7; overflow-x: hidden; }
+
+        /* Background Glows */
+        .blob {
+            position: fixed; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255, 0, 122, 0.12) 0%, transparent 70%);
+            z-index: -1; filter: blur(80px);
         }
 
-        /* --- NAVBAR & MENU HAMBURGUESA --- */
+        /* Navbar */
         nav {
-            position: fixed; top: 0; width: 100%; height: 80px;
-            background: rgba(3, 3, 3, 0.8); backdrop-filter: blur(15px);
+            position: fixed; top: 0; width: 100%; height: 90px;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; z-index: 1000; border-bottom: 1px solid var(--glass-border);
+            padding: 0 8%; z-index: 1000; background: rgba(2, 2, 3, 0.7);
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
         }
 
-        .logo { font-weight: 800; font-size: 1.5rem; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -1px; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { text-decoration: none; color: #fff; font-size: 0.9rem; font-weight: 600; opacity: 0.8; }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a { text-decoration: none; color: #fff; font-size: 0.85rem; font-weight: 600; opacity: 0.6; transition: 0.3s; }
         .nav-links a:hover { opacity: 1; color: var(--neon-pink); }
+        
+        .btn-access { background: #fff; color: #000 !important; padding: 12px 28px; border-radius: 14px; opacity: 1 !important; font-weight: 700 !important; }
 
-        .btn-login {
-            background: var(--neon-pink); color: #fff !important;
-            padding: 10px 25px; border-radius: 12px; font-weight: 800 !important;
-            box-shadow: 0 5px 15px rgba(255, 0, 122, 0.3);
+        /* Hero Section */
+        header { padding: 180px 5% 100px; text-align: center; max-width: 1100px; margin: 0 auto; }
+        
+        .badge-premium {
+            background: rgba(255, 0, 122, 0.1); border: 1px solid var(--neon-pink);
+            color: var(--neon-pink); padding: 6px 18px; border-radius: 100px;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 30px; display: inline-block;
         }
 
-        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
-        .hamburger span { width: 25px; height: 3px; background: #fff; border-radius: 5px; }
+        h1 { font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 35px; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Video Box */
+        .video-container {
+            width: 100%; max-width: 950px; margin: 40px auto; padding: 1px;
+            background: linear-gradient(135deg, rgba(255,0,122,0.5), rgba(138,43,226,0.5));
+            border-radius: 35px; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        }
+        .video-inner { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 34px; background: #000; }
+        .video-inner iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* Cards Section */
+        .section { padding: 100px 8%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        .card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 50px; border-radius: 35px; backdrop-filter: blur(30px);
+            transition: 0.5s; position: relative;
+        }
+        .card:hover { transform: translateY(-15px); border-color: var(--neon-pink); background: rgba(255,255,255,0.04); }
+        .card h3 { font-size: 1.5rem; margin: 20px 0; font-weight: 700; }
+        .card p { color: #888; font-size: 0.95rem; line-height: 1.8; }
+
+        /* Story Section */
+        .story-content { max-width: 800px; margin: 0 auto; text-align: center; }
+        .story-content p { font-size: 1.2rem; color: #ccc; margin-bottom: 30px; }
+
+        /* Form Card - Limpia */
+        .form-card {
+            max-width: 800px; margin: 100px auto; background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            border: 1px solid var(--glass-border); border-radius: 45px; padding: 80px 40px; text-align: center;
+        }
+        .form-embed { background: rgba(0,0,0,0.4); border-radius: 25px; border: 1px dashed #333; min-height: 450px; margin-top: 50px; width: 100%; display: flex; align-items: center; justify-content: center; }
+
+        footer { padding: 80px; text-align: center; border-top: 1px solid var(--glass-border); opacity: 0.3; font-size: 0.8rem; }
 
         @media (max-width: 768px) {
-            .nav-links {
-                position: absolute; top: 80px; left: -100%; width: 100%; height: 100vh;
-                flex-direction: column; background: var(--dark-bg); padding-top: 50px; transition: 0.5s;
-            }
-            .nav-links.active { left: 0; }
-            .hamburger { display: flex; }
+            nav { padding: 0 5%; }
+            .nav-links { display: none; } /* Simplificado para el ejemplo */
+            h1 { font-size: 2.8rem; }
+            .card { padding: 30px; }
         }
-
-        /* --- LAYOUT --- */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        .hero { padding: 150px 0 60px; text-align: center; }
-
-        /* --- VIDEO FIX --- */
-        .video-box {
-            width: 100%; max-width: 900px; margin: 50px auto;
-            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
-            padding: 1px; border-radius: 30px; position: relative;
-            box-shadow: 0 0 50px rgba(255, 0, 122, 0.2);
-        }
-        .video-wrapper {
-            position: relative; padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0; overflow: hidden; border-radius: 29px; background: #000;
-        }
-        .video-wrapper iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
-        }
-
-        /* --- GLASS CARDS --- */
-        .section-title { text-align: center; font-size: 2.5rem; margin: 80px 0 40px; }
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        
-        .glass-card {
-            background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 25px; padding: 40px;
-            text-align: left; position: relative; overflow: hidden;
-        }
-        .glass-card:hover { border-color: var(--neon-pink); transform: translateY(-10px); background: rgba(255, 255, 255, 0.05); }
-
-        .icon-box { font-size: 2rem; margin-bottom: 20px; display: block; }
-
-        /* --- FORM SECTION --- */
-        .form-container {
-            margin: 100px 0; background: var(--glass); border: 1px solid var(--neon-pink);
-            border-radius: 40px; padding: 60px 20px; text-align: center;
-        }
-
-        .cta-btn {
-            background: var(--neon-pink); color: white; padding: 20px 50px;
-            border-radius: 15px; font-size: 1.2rem; font-weight: 800;
-            text-decoration: none; display: inline-block; cursor: pointer;
-            border: none; margin-top: 30px; box-shadow: 0 10px 30px rgba(255, 0, 122, 0.4);
-        }
-
-        footer { text-align: center; padding: 50px; opacity: 0.4; font-size: 0.8rem; border-top: 1px solid var(--glass-border); }
     </style>
 </head>
 <body>
 
+    <div class="blob" style="top: -100px; right: -100px;"></div>
+    <div class="blob" style="bottom: 100px; left: -100px; background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);"></div>
+
     <nav>
-        <div class="logo">MASTERY ELITE</div>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-        <div class="nav-links" id="navMenu">
-            <a href="comprayventa.html">🏠 Inicio</a>
-            <a href="testimonios.html">⭐ Testimonios</a>
-            <a href="login.html" class="btn-login">🔑 Acceder</a>
+        <div class="logo">CLUB MGA</div>
+        <div class="nav-links">
+            <a href="comprayventa.html">INICIO</a>
+            <a href="testimonios.html">TESTIMONIOS</a>
+            <a href="login.html" class="btn-access">ACCEDER</a>
         </div>
     </nav>
 
-    <div class="container">
-        <section class="hero">
-            <h1 class="reveal">Te ayudo a iniciar en la compra y venta para que hagas tus primeros $2,000 sin invertir un solo peso demás.</h1>
-            
-            <div class="video-box">
-                <div class="video-wrapper">
-                    <iframe src="https://drive.google.com/file/d/1uELKON_4tcVDWjF3y_J4_68VfhJJTvjX/preview"></iframe>
-                </div>
-            </div>
-        </section>
-
-        <h2 class="section-title">Beneficios Exclusivos 💎</h2>
-        <div class="grid-cards">
-            <div class="glass-card">
-                <span class="icon-box">📊</span>
-                <h3>Excel de Gestión Pro</h3>
-                <p>Controla tus ingresos y escala tu capital de forma automática. Sin errores de cálculo.</p>
-            </div>
-            <div class="glass-card">
-                <span class="icon-box">💬</span>
-                <h3>Scripts de Cierre</h3>
-                <p>Exactamente qué decir para que los clientes te compren a vos y no a la competencia.</p>
-            </div>
-            <div class="glass-card">
-                <span class="icon-box">🚀</span>
-                <h3>Acceso de por Vida</h3>
-                <p>Sumate a los 411 alumnos que ya están rompiendo el mercado. Actualizaciones incluidas.</p>
+    <header>
+        <div class="badge-premium">Método de Escalamiento Vertical</div>
+        <h1>Te ayudo a iniciar en la compra y venta para que hagas tus primeros $2,000 sin invertir un solo peso demás.</h1>
+        
+        <div class="video-container">
+            <div class="video-inner">
+                <iframe src="https://drive.google.com/file/d/1uELKON_4tcVDWjF3y_J4_68VfhJJTvjX/preview"></iframe>
             </div>
         </div>
+    </header>
 
-        <section class="form-container" id="registro">
-            <span style="font-size: 3rem;">🤑</span>
-            <h2>¿Estás listo para el siguiente nivel?</h2>
-            <p style="opacity: 0.7; margin-bottom: 30px;">Completá tu aplicación. Evaluamos perfiles para mantener la exclusividad de la comunidad.</p>
-            
-            <div style="background: rgba(0,0,0,0.5); border: 1px dashed #444; border-radius: 20px; padding: 40px; min-height: 300px; display: flex; align-items: center; justify-content: center;">
-                <p style="color: var(--neon-pink); font-weight: bold;">[ AQUÍ PEGARÁS EL IFRAME DE TU GOOGLE FORM ]</p>
+    <section class="section">
+        <div class="story-content">
+            <div style="font-size: 3rem; margin-bottom: 20px;">🧠</div>
+            <h2 style="font-size: 2.5rem; margin-bottom: 30px;">De los 13 años hackeando el sistema</h2>
+            <p>
+                Empecé en el mundo del emprendimiento a los 13 años, cuando la mayoría solo pensaba en jugar. Durante 6 años, probé cada negocio digital y físico que existía: dropshipping, agencias, trading y más. Hoy, con 19 años, he consolidado un sistema de <strong>compra y venta</strong> que me genera más de <strong>$7,400 USD netos por mes</strong>.
+            </p>
+            <p>
+                No importa el rubro. He desarrollado las herramientas necesarias para detectar oportunidades donde otros ven basura. CLUB MGA nace para entregarte las llaves de este motor financiero y que dejes de depender de la suerte o de la situación económica de tu país.
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="grid">
+            <div class="card">
+                <div style="font-size: 2.5rem;">💎</div>
+                <h3>Mentalidad de Elite</h3>
+                <p>No es solo vender, es saber cuándo comprar. Te enseño la psicología de mercado que me permitió escalar de cero a $7.4k mensuales sin morir en el intento.</p>
             </div>
+            <div class="card">
+                <div style="font-size: 2.5rem;">🔥</div>
+                <h3>Escalamiento Inmediato</h3>
+                <p>Olvidate de los márgenes pequeños. Nuestra metodología busca retornos rápidos para que tu flujo de caja nunca se detenga. Dinero que no circula, dinero que muere.</p>
+            </div>
+            <div class="card">
+                <div style="font-size: 2.5rem;">🚀</div>
+                <h3>Infraestructura Digital</h3>
+                <p>Te doy las herramientas que uso a diario para automatizar la captación de clientes y que tu única preocupación sea cerrar tratos de alto valor.</p>
+            </div>
+        </div>
+    </section>
 
-            <button class="cta-btn">ENVIAR MI APLICACIÓN</button>
-        </section>
+    <section class="section">
+        <div class="form-card">
+            <h2 style="font-size: 2.2rem; margin-bottom: 15px;">Aplica al CLUB MGA</h2>
+            <p style="color: #666;">Buscamos personas con hambre. Si sos seleccionado, tendrás acceso directo al sistema que cambió mi vida y la de 411 alumnos.</p>
+            
+            <div class="form-embed">
+                <div style="text-align: center;">
+                    <p style="color: var(--neon-pink); font-weight: 800; font-size: 1.2rem;">[ TU GOOGLE FORM APARECERÁ AQUÍ ]</p>
+                    <p style="font-size: 0.8rem; opacity: 0.4; margin-top: 10px;">Carga el código de inserción (iframe) de Google Forms dentro de este bloque.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <footer>
-            © 2026 Pink Pro: Neon Flow Edition. <br>
-            Solo para personas comprometidas con su libertad financiera.
-        </footer>
-    </div>
+    <footer>
+        <p>© 2026 CLUB MGA. Todos los derechos reservados.</p>
+        <p style="margin-top: 10px; letter-spacing: 2px;">DISCIPLINA SOBRE MOTIVACIÓN</p>
+    </footer>
 
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('navMenu');
-            menu.classList.toggle('active');
-        }
-
-        // Cerrar menú al hacer click en un link (para móviles)
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('navMenu').classList.remove('active');
-            });
-        });
-    </script>
 </body>
 </html>
-
-
