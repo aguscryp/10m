@@ -26,84 +26,109 @@
             z-index: -1; filter: blur(80px);
         }
 
-        /* Navbar */
+        /* --- NAVBAR CORREGIDA --- */
         nav {
-            position: fixed; top: 0; width: 100%; height: 90px;
+            position: fixed; top: 0; width: 100%; height: 80px;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 8%; z-index: 1000; background: rgba(2, 2, 3, 0.7);
+            padding: 0 8%; z-index: 2000; background: rgba(2, 2, 3, 0.8);
             backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
         }
 
-        .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -1px; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo { font-size: 1.4rem; font-weight: 800; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .nav-links { display: flex; gap: 40px; align-items: center; }
         .nav-links a { text-decoration: none; color: #fff; font-size: 0.85rem; font-weight: 600; opacity: 0.6; transition: 0.3s; }
         .nav-links a:hover { opacity: 1; color: var(--neon-pink); }
         
-        .btn-access { background: #fff; color: #000 !important; padding: 12px 28px; border-radius: 14px; opacity: 1 !important; font-weight: 700 !important; }
+        .btn-access { background: #fff; color: #000 !important; padding: 10px 24px; border-radius: 12px; opacity: 1 !important; font-weight: 700 !important; }
 
-        /* Hero Section */
-        header { padding: 180px 5% 100px; text-align: center; max-width: 1100px; margin: 0 auto; }
-        
-        .badge-premium {
-            background: rgba(255, 0, 122, 0.1); border: 1px solid var(--neon-pink);
-            color: var(--neon-pink); padding: 6px 18px; border-radius: 100px;
-            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 30px; display: inline-block;
+        /* HAMBURGUESA VISIBLE */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 2100;
+            padding: 10px;
         }
 
-        h1 { font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 35px; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        /* Video Box Corregido con nuevo enlace */
-        .video-container {
-            width: 100%; max-width: 950px; margin: 40px auto; padding: 1px;
-            background: linear-gradient(135deg, rgba(255,0,122,0.5), rgba(138,43,226,0.5));
-            border-radius: 35px; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        .hamburger span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background: #fff; /* Color de las 3 líneas */
+            border-radius: 10px;
+            transition: 0.3s;
         }
-        .video-inner { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 34px; background: #000; }
-        .video-inner iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-
-        /* Cards Section */
-        .section { padding: 100px 8%; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-
-        .card {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            padding: 50px; border-radius: 35px; backdrop-filter: blur(30px);
-            transition: 0.5s; position: relative;
-        }
-        .card:hover { transform: translateY(-15px); border-color: var(--neon-pink); background: rgba(255,255,255,0.04); }
-        .card h3 { font-size: 1.5rem; margin: 20px 0; font-weight: 700; }
-        .card p { color: #888; font-size: 0.95rem; line-height: 1.8; }
-
-        /* Story Section */
-        .story-content { max-width: 800px; margin: 0 auto; text-align: center; }
-        .story-content p { font-size: 1.2rem; color: #ccc; margin-bottom: 30px; }
-
-        /* Form Card */
-        .form-card {
-            max-width: 800px; margin: 100px auto; background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
-            border: 1px solid var(--glass-border); border-radius: 45px; padding: 80px 40px; text-align: center;
-        }
-        .form-embed { background: rgba(0,0,0,0.4); border-radius: 25px; border: 1px dashed #333; min-height: 450px; margin-top: 50px; width: 100%; display: flex; align-items: center; justify-content: center; }
-
-        footer { padding: 80px; text-align: center; border-top: 1px solid var(--glass-border); opacity: 0.3; font-size: 0.8rem; }
 
         @media (max-width: 768px) {
-            nav { padding: 0 5%; }
-            .nav-links { display: none; } 
-            h1 { font-size: 2.8rem; }
-            .card { padding: 30px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Escondido */
+                width: 80%;
+                height: 100vh;
+                background: rgba(2, 2, 3, 0.98);
+                flex-direction: column;
+                justify-content: center;
+                gap: 30px;
+                transition: 0.4s cubic-bezier(0.77,0.2,0.05,1.0);
+                border-left: 1px solid var(--glass-border);
+            }
+            .nav-links.active { right: 0; } /* Mostrar menú */
+            .nav-links a { font-size: 1.2rem; }
         }
+
+        /* Contenido General */
+        header { padding: 150px 5% 60px; text-align: center; max-width: 1100px; margin: 0 auto; }
+        h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800; line-height: 1.2; margin-bottom: 35px; background: var(--text-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Video Box */
+        .video-container {
+            width: 100%; max-width: 900px; margin: 40px auto; padding: 1px;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+            border-radius: 30px; box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+        }
+        .video-inner { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 29px; background: #000; }
+        .video-inner iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* Cards */
+        .section { padding: 80px 8%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 40px; border-radius: 30px; backdrop-filter: blur(20px);
+            transition: 0.4s;
+        }
+        .card:hover { transform: translateY(-10px); border-color: var(--neon-pink); }
+        .card h3 { margin-bottom: 15px; font-weight: 700; }
+        .card p { color: #888; font-size: 0.9rem; }
+
+        /* Formulario Especial */
+        .form-card {
+            max-width: 800px; margin: 50px auto; background: var(--glass);
+            border: 1px solid var(--glass-border); border-radius: 40px; padding: 60px 20px; text-align: center;
+        }
+        .form-embed { background: rgba(0,0,0,0.3); border-radius: 25px; border: 1px dashed #444; min-height: 400px; margin-top: 40px; display: flex; align-items: center; justify-content: center; }
+
+        footer { padding: 60px; text-align: center; opacity: 0.3; font-size: 0.8rem; border-top: 1px solid var(--glass-border); }
     </style>
 </head>
 <body>
 
-    <div class="blob" style="top: -100px; right: -100px;"></div>
-    <div class="blob" style="bottom: 100px; left: -100px; background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);"></div>
+    <div class="blob" style="top: -50px; right: -50px;"></div>
 
     <nav>
         <div class="logo">CLUB MGA</div>
-        <div class="nav-links">
+        
+        <div class="hamburger" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="nav-links" id="navLinks">
             <a href="comprayventa.html">INICIO</a>
             <a href="testimonios.html">TESTIMONIOS</a>
             <a href="login.html" class="btn-access">ACCEDER</a>
@@ -111,7 +136,9 @@
     </nav>
 
     <header>
-        <div class="badge-premium">Método de Escalamiento Vertical</div>
+        <div style="background: rgba(255, 0, 122, 0.1); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 5px 15px; border-radius: 50px; display: inline-block; font-size: 0.7rem; font-weight: 700; margin-bottom: 20px;">
+            MÉTODO PROBADO 💸
+        </div>
         <h1>Te ayudo a iniciar en la compra y venta para que hagas tus primeros $2,000 sin invertir un solo peso demás.</h1>
         
         <div class="video-container">
@@ -121,57 +148,60 @@
         </div>
     </header>
 
-    <section class="section">
-        <div class="story-content">
-            <div style="font-size: 3rem; margin-bottom: 20px;">🧠</div>
-            <h2 style="font-size: 2.5rem; margin-bottom: 30px;">De los 13 años hackeando el sistema</h2>
-            <p>
-                Empecé en el mundo del emprendimiento a los 13 años, cuando la mayoría solo pensaba en jugar. Durante 6 años, probé cada negocio digital y físico que existía. Hoy, con 19 años, he consolidado un sistema de <strong>compra y venta</strong> que me genera más de <strong>$7,400 USD netos por mes</strong>.
-            </p>
-            <p>
-                CLUB MGA nace para entregarte las llaves de este motor financiero y que dejes de depender de la suerte. No importa el rubro; si aplicás el método, los resultados aparecen.
-            </p>
-        </div>
+    <section class="section" style="text-align: center;">
+        <h2 style="font-size: 2rem; margin-bottom: 20px;">Sobre el Mentor 🧠</h2>
+        <p style="max-width: 700px; margin: 0 auto; color: #aaa;">
+            Emprendiendo desde los 13 años, hoy con 19 facturo más de $7,400 USD mensuales. CLUB MGA es el resultado de 6 años de pruebas y errores, condensados en un sistema para que tú lo logres sin perder tiempo.
+        </p>
     </section>
 
     <section class="section">
         <div class="grid">
             <div class="card">
-                <div style="font-size: 2.5rem;">💎</div>
-                <h3>Mentalidad de Elite</h3>
-                <p>Te enseño la psicología de mercado que me permitió escalar de cero a $7.4k mensuales. Aprenderás a comprar barato y vender caro con precisión quirúrgica.</p>
+                <div style="font-size: 2rem; margin-bottom: 15px;">💎</div>
+                <h3>Mentalidad 7.4k</h3>
+                <p>Aprende a pensar como el 1% que realmente hace dinero en el mercado de compra y venta.</p>
             </div>
             <div class="card">
-                <div style="font-size: 2.5rem;">🔥</div>
-                <h3>Escalamiento Vertical</h3>
-                <p>Nuestra metodología busca retornos rápidos para que tu flujo de caja nunca se detenga. Dinero que no circula, dinero que muere. Aquí venimos a multiplicar.</p>
-            </div>
-            <div class="card">
-                <div style="font-size: 2.5rem;">🚀</div>
-                <h3>Herramientas Pro</h3>
-                <p>Acceso a las herramientas digitales que uso a diario para captar clientes en piloto automático y cerrar tratos de alto valor sin estrés.</p>
+                <div style="font-size: 2rem; margin-bottom: 15px;">🔥</div>
+                <h3>Cero Inversión Extra</h3>
+                <p>Te enseñamos a capitalizarte con lo que tienes a mano y escalar verticalmente.</p>
             </div>
         </div>
     </section>
 
     <section class="section">
         <div class="form-card">
-            <h2 style="font-size: 2.2rem; margin-bottom: 15px;">Aplica al CLUB MGA</h2>
-            <p style="color: #666;">Solo para mentes hambrientas de éxito. Completá los datos para que nuestro equipo evalúe tu perfil.</p>
-            
+            <h2>Aplica al CLUB MGA</h2>
+            <p style="color: #666; margin-top: 10px;">Completa el formulario y espera nuestro contacto.</p>
             <div class="form-embed">
-                <div style="text-align: center;">
-                    <p style="color: var(--neon-pink); font-weight: 800; font-size: 1.2rem;">[ PEGA TU FORMULARIO AQUÍ ]</p>
-                    <p style="font-size: 0.8rem; opacity: 0.4;">Reemplaza este bloque con el Iframe de tu Google Form.</p>
-                </div>
+                <p style="color: var(--neon-pink); font-weight: 800;">[ PEGA TU GOOGLE FORM AQUÍ ]</p>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>© 2026 CLUB MGA. Todos los derechos reservados.</p>
-        <p style="margin-top: 10px; letter-spacing: 2px;">DISCIPLINA SOBRE MOTIVACIÓN</p>
+        © 2026 CLUB MGA. Todos los derechos reservados.
     </footer>
 
+    <script>
+        const hamburger = document.getElementById('hamburgerBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            
+            // Animación simple de las líneas (opcional)
+            const spans = hamburger.querySelectorAll('span');
+            spans.forEach(span => span.style.backgroundColor = navLinks.classList.contains('active') ? '#ff007a' : '#fff');
+        });
+
+        // Cerrar menú si se toca un enlace
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>
