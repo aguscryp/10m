@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Élite | CLUB MGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff007a;
+            --neon-purple: #8a2be2;
+            --dark-bg: #020203;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { background-color: var(--dark-bg); color: #fff; line-height: 1.6; overflow-x: hidden; }
+
+        /* Fondo Animado */
+        .bg-glow {
+            position: fixed; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 122, 0.05) 0%, transparent 80%);
+            z-index: -1;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 80px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 8%; z-index: 1000; background: rgba(2, 2, 3, 0.8);
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: -1px; }
+        .logo span { color: var(--neon-pink); }
+        .back-link { text-decoration: none; color: var(--neon-pink); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Header */
+        header { padding: 140px 5% 60px; text-align: center; }
+        .badge { background: rgba(255, 0, 122, 0.1); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 6px 15px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; display: inline-block; margin-bottom: 20px; }
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 20px; letter-spacing: -2px; }
+        .subtitle { color: #888; max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+
+        /* Grid de Testimonios */
+        .gallery-section { padding: 40px 8% 100px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
+
+        .testimony-card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 35px; padding: 20px; backdrop-filter: blur(20px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden;
+        }
+        .testimony-card:hover { transform: translateY(-15px); border-color: var(--neon-pink); box-shadow: 0 30px 60px rgba(255, 0, 122, 0.15); }
+
+        .img-container { width: 100%; border-radius: 25px; overflow: hidden; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
+        .img-container img { width: 100%; display: block; transition: 0.5s; }
+        .testimony-card:hover img { transform: scale(1.05); }
+
+        .content { padding: 10px 15px; }
+        .content h3 { font-size: 1.3rem; margin-bottom: 10px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .content p { color: #aaa; font-size: 0.9rem; line-height: 1.6; }
+
+        /* CTA Final */
+        .cta-box { text-align: center; padding: 100px 5%; background: radial-gradient(circle at center, rgba(138, 43, 226, 0.05), transparent); }
+        .btn-main { background: var(--neon-pink); color: #fff; text-decoration: none; padding: 22px 50px; border-radius: 20px; font-weight: 800; font-size: 1.2rem; display: inline-block; box-shadow: 0 15px 40px rgba(255, 0, 122, 0.4); transition: 0.3s; }
+        .btn-main:hover { transform: scale(1.05); box-shadow: 0 20px 50px rgba(255, 0, 122, 0.6); }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .grid { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <nav>
+        <a href="comprayventa.html" class="logo">CLUB <span>MGA</span></a>
+        <a href="comprayventa.html" class="back-link">← Volver al inicio</a>
+    </nav>
+
+    <header>
+        <div class="badge">PRUEBAS SOCIALES 2026</div>
+        <h1>Resultados que Hablan por Sí Solos</h1>
+        <p class="subtitle">No somos un curso más. Somos una comunidad de gente real facturando dólares reales con el método de MGA.</p>
+    </header>
+
+    <section class="gallery-section">
+        <div class="grid">
+            
+            <div class="testimony-card">
+                <div class="img-container">
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1aIozwkYiy6-3sEeTNnGsH7cFu3fsb_ZX" alt="Prueba de Ingresos">
+                </div>
+                <div class="content">
+                    <h3><span>🚀</span> Escalamiento Real</h3>
+                    <p>Captura enviada por uno de nuestros alumnos tras aplicar el sistema de compra vertical. En menos de 15 días, el flujo de caja se multiplicó.</p>
+                </div>
+            </div>
+
+            <div class="testimony-card">
+                <div class="img-container">
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1ELp7xdzp9_NBYHGVX-2N8mnI9Axcpvlf" alt="Ventas Cerradas">
+                </div>
+                <div class="content">
+                    <h3><span>💰</span> Profit Neto</h3>
+                    <p>La importancia de comprar barato. Aquí se ve el resultado de aplicar los filtros de búsqueda que enseñamos dentro del Club MGA.</p>
+                </div>
+            </div>
+
+            <div class="testimony-card">
+                <div class="img-container">
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1z3SyCJQ4PoF1G4HjSSo0vAdcPh2azdYj" alt="Cierre de Tratos">
+                </div>
+                <div class="content">
+                    <h3><span>🤝</span> Scripts de Cierre</h3>
+                    <p>Conversaciones que se convierten en dinero. Nuestros alumnos usan los guiones exactos para que el cliente no tenga dudas al pagar.</p>
+                </div>
+            </div>
+
+            <div class="testimony-card">
+                <div class="img-container">
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1o3xzc3XjvO9yVsslVqX4PYICIJwA5Zi5" alt="Libertad Financiera">
+                </div>
+                <div class="content">
+                    <h3><span>🔥</span> Consistencia</h3>
+                    <p>No es suerte, es método. Mantener estas cifras mes a mes es lo que diferencia a un amateur de un miembro del Club MGA.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="cta-box">
+        <h2 style="margin-bottom: 30px; font-size: 2rem;">¿Querés ser nuestra próxima captura de éxito?</h2>
+        <a href="comprayventa.html#registro" class="btn-main">APLICAR AHORA ➔</a>
+    </section>
+
+    <footer style="padding: 60px; text-align: center; opacity: 0.3; font-size: 0.8rem; border-top: 1px solid var(--glass-border);">
+        © 2026 CLUB MGA - Todos los resultados son reales y enviados por alumnos.
+    </footer>
+
+</body>
+</html>
