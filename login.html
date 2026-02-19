@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Exclusivo | CLUB MGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff007a;
+            --neon-purple: #8a2be2;
+            --dark-bg: #020203;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background-color: var(--dark-bg); 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* Fondo Animado de Luces */
+        .bg-gradient {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 0, 122, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.15) 0%, transparent 40%);
+            z-index: -1;
+            animation: pulseBg 10s infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Card de Login */
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            padding: 50px 40px;
+            background: var(--glass);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+            position: relative;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-login {
+            font-size: 1.8rem; font-weight: 800; margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--neon-pink));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        p.welcome-text { color: #666; font-size: 0.9rem; margin-bottom: 40px; font-weight: 400; }
+
+        /* Inputs Estilizados */
+        .input-group { position: relative; margin-bottom: 25px; text-align: left; }
+        
+        .input-group label {
+            display: block; font-size: 0.75rem; font-weight: 700;
+            color: var(--neon-pink); text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 8px; margin-left: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 18px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 122, 0.05);
+            box-shadow: 0 0 20px rgba(255, 0, 122, 0.2);
+        }
+
+        /* Botón de Entrada */
+        .login-btn {
+            width: 100%;
+            padding: 20px;
+            margin-top: 15px;
+            background: var(--neon-pink);
+            border: none;
+            border-radius: 18px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(255, 0, 122, 0.4);
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(255, 0, 122, 0.6);
+            background: #ff1a8a;
+        }
+
+        .back-to-site {
+            display: block; margin-top: 30px; color: #444;
+            text-decoration: none; font-size: 0.8rem; font-weight: 600;
+            transition: 0.3s;
+        }
+        .back-to-site:hover { color: #888; }
+
+        /* Glow Decorativo Detrás */
+        .login-card::after {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-pink), transparent, var(--neon-purple));
+            z-index: -1; border-radius: 42px; opacity: 0.3;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient"></div>
+
+    <div class="login-card">
+        <div class="logo-login">CLUB MGA</div>
+        <p class="welcome-text">Área de Miembros de Élite</p>
+
+        <form>
+            <div class="input-group">
+                <label>Usuario</label>
+                <input type="text" placeholder="Tu nombre de usuario" required>
+            </div>
+
+            <div class="input-group">
+                <label>Clave</label>
+                <input type="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="login-btn">INGRESAR AL CLUB</button>
+        </form>
+
+        <a href="comprayventa.html" class="back-to-site">← Volver a la web principal</a>
+    </div>
+
+</body>
+</html>
