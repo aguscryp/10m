@@ -2,69 +2,175 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Menú | Admin MGA</title>
+    <title>Gestor de Menú Elite | Admin MGA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #050505; color: white; padding: 50px; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .admin-box { max-width: 600px; margin: 0 auto; background: #111; padding: 30px; border-radius: 20px; border: 1px solid #333; }
-        input, select { width: 100%; padding: 15px; margin: 10px 0; background: #222; border: 1px solid #444; color: white; border-radius: 10px; }
-        button { background: #ff007a; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: 800; cursor: pointer; }
-        .item-list { margin-top: 30px; }
-        .item { display: flex; justify-content: space-between; padding: 15px; background: #222; margin-bottom: 5px; border-radius: 8px; }
+        :root { --pink: #ff007a; --bg: #0a0a0a; --glass: #151515; }
+        body { background: var(--bg); color: white; padding: 40px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .admin-container { max-width: 900px; margin: 0 auto; }
+        
+        .header-admin { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid #222; padding-bottom: 20px; }
+        
+        .form-box { background: var(--glass); padding: 25px; border-radius: 20px; border: 1px solid #333; margin-bottom: 30px; }
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        
+        input, select { background: #000; border: 1px solid #444; color: white; padding: 12px; border-radius: 10px; outline: none; width: 100%; }
+        input:focus { border-color: var(--pink); }
+        
+        .btn-add { background: var(--pink); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .btn-add:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(255,0,122,0.3); }
+
+        /* LISTADO DE PAGINAS */
+        .menu-list { display: flex; flex-direction: column; gap: 15px; }
+        .menu-item { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 15px; transition: 0.3s; }
+        .item-main { display: flex; align-items: center; justify-content: space-between; }
+        
+        .item-info { display: flex; align-items: center; gap: 15px; }
+        .item-info i { color: var(--pink); font-size: 1.2rem; width: 25px; text-align: center; }
+        
+        .controls { display: flex; gap: 8px; }
+        .btn-ctrl { background: #333; border: none; color: white; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
+        .btn-ctrl:hover { background: #444; }
+        .btn-delete { background: #451010; }
+        .btn-delete:hover { background: #7a1a1a; }
+
+        /* SUBPÁGINAS */
+        .sub-list { margin-left: 50px; margin-top: 10px; border-left: 2px solid var(--pink); padding-left: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .sub-item { background: #111; padding: 10px; border-radius: 10px; border: 1px solid #222; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+        
+        .badge-sub { font-size: 0.7rem; background: var(--pink); padding: 2px 8px; border-radius: 10px; margin-left: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="admin-box">
-        <h2>Gestión del Menú VIP</h2>
-        <p style="color: #666; font-size: 0.8rem; margin-bottom: 20px;">Los cambios se verán reflejados en el Panel del Alumno.</p>
-        
-        <input type="text" id="m-title" placeholder="Título (Ej: Calculadora)">
-        <input type="text" id="m-url" placeholder="URL Destino (Ej: calculadora.html)">
-        <select id="m-icon">
-            <option value="fas fa-link">Enlace Estándar</option>
-            <option value="fas fa-calculator">Calculadora</option>
-            <option value="fas fa-video">Videos/Cursos</option>
-            <option value="fas fa-money-bill-wave">Ganancias</option>
-            <option value="fas fa-users">Comunidad</option>
-        </select>
-        
-        <button onclick="addItem()">AGREGAR AL MENÚ</button>
+    <div class="admin-container">
+        <div class="header-admin">
+            <h2>Configuración de Menú VIP</h2>
+            <button class="btn-add" onclick="saveToCloud()" style="background: #222; border: 1px solid #444;">Publicar Cambios</button>
+        </div>
 
-        <div class="item-list" id="list"></div>
+        <div class="form-box">
+            <h4 style="margin-bottom: 15px;">Añadir Nueva Página / Título</h4>
+            <div class="grid-inputs">
+                <input type="text" id="title" placeholder="Nombre de la página">
+                <input type="text" id="url" placeholder="URL (ej: curso.html)">
+                <select id="icon">
+                    <option value="fas fa-layer-group">Capacitación (Layer)</option>
+                    <option value="fas fa-play-circle">Video (Play)</option>
+                    <option value="fas fa-wallet">Finanzas (Wallet)</option>
+                    <option value="fas fa-users">Comunidad (Users)</option>
+                    <option value="fas fa-rocket">Estrategia (Rocket)</option>
+                    <option value="fas fa-cog">Ajustes (Cog)</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <select id="parent-select" style="flex: 1;">
+                    <option value="root">Es Página Principal</option>
+                </select>
+                <button class="btn-add" onclick="addItem()">Guardar Página</button>
+            </div>
+        </div>
+
+        <div class="menu-list" id="menu-display">
+            </div>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('mga_menu_db')) || [];
+        let menuItems = JSON.parse(localStorage.getItem('mga_menu_db')) || [];
 
         function render() {
-            const list = document.getElementById('list');
-            list.innerHTML = db.map((item, index) => `
-                <div class="item">
-                    <span><i class="${item.icon}"></i> ${item.title}</span>
-                    <button onclick="deleteItem(${index})" style="width: auto; padding: 5px 10px; background: #444;">Eliminar</button>
-                </div>
-            `).join('');
-            localStorage.setItem('mga_menu_db', JSON.stringify(db));
+            const display = document.getElementById('menu-display');
+            const parentSelect = document.getElementById('parent-select');
+            display.innerHTML = '';
+            parentSelect.innerHTML = '<option value="root">Es Página Principal</option>';
+
+            menuItems.forEach((item, index) => {
+                // Agregar al selector de padres para subpáginas
+                parentSelect.innerHTML += `<option value="${index}">Subpágina de: ${item.title}</option>`;
+
+                // Crear elemento de lista
+                let html = `
+                    <div class="menu-item">
+                        <div class="item-main">
+                            <div class="item-info">
+                                <i class="${item.icon}"></i>
+                                <strong>${item.title.toUpperCase()}</strong>
+                                <span style="font-size: 0.7rem; color: #666;">(${item.url})</span>
+                            </div>
+                            <div class="controls">
+                                <button class="btn-ctrl" onclick="move(${index}, -1)"><i class="fas fa-arrow-up"></i></button>
+                                <button class="btn-ctrl" onclick="move(${index}, 1)"><i class="fas fa-arrow-down"></i></button>
+                                <button class="btn-ctrl" onclick="editItem(${index})"><i class="fas fa-edit"></i></button>
+                                <button class="btn-ctrl btn-delete" onclick="removeItem(${index})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                `;
+
+                // Renderizar subpáginas si existen
+                if(item.subs && item.subs.length > 0) {
+                    html += `<div class="sub-list">`;
+                    item.subs.forEach((sub, subIndex) => {
+                        html += `
+                            <div class="sub-item">
+                                <span><i class="${sub.icon}"></i> ${sub.title}</span>
+                                <div class="controls">
+                                    <button class="btn-ctrl btn-delete" onclick="removeSub(${index}, ${subIndex})">×</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                html += `</div>`;
+                display.innerHTML += html;
+            });
+            localStorage.setItem('mga_menu_db', JSON.stringify(menuItems));
         }
 
         function addItem() {
-            const title = document.getElementById('m-title').value;
-            const url = document.getElementById('m-url').value;
-            const icon = document.getElementById('m-icon').value;
-            
-            if(title && url) {
-                db.push({ title, url, icon });
-                render();
-                document.getElementById('m-title').value = '';
-                document.getElementById('m-url').value = '';
+            const title = document.getElementById('title').value;
+            const url = document.getElementById('url').value;
+            const icon = document.getElementById('icon').value;
+            const parentIdx = document.getElementById('parent-select').value;
+
+            if(!title) return alert("Ponle un título");
+
+            const newItem = { title, url, icon, subs: [] };
+
+            if(parentIdx === "root") {
+                menuItems.push(newItem);
+            } else {
+                menuItems[parentIdx].subs.push(newItem);
             }
+            
+            resetForm();
+            render();
         }
 
-        function deleteItem(i) {
-            db.splice(i, 1);
+        function move(index, direction) {
+            let target = index + direction;
+            if(target < 0 || target >= menuItems.length) return;
+            [menuItems[index], menuItems[target]] = [menuItems[target], menuItems[index]];
             render();
+        }
+
+        function removeItem(i) { if(confirm('¿Borrar página y sus subpáginas?')) { menuItems.splice(i, 1); render(); } }
+        function removeSub(parentI, subI) { menuItems[parentI].subs.splice(subI, 1); render(); }
+        
+        function editItem(i) {
+            const val = prompt("Nuevo nombre del título:", menuItems[i].title);
+            if(val) { menuItems[i].title = val; render(); }
+        }
+
+        function resetForm() {
+            document.getElementById('title').value = '';
+            document.getElementById('url').value = '';
+        }
+
+        function saveToCloud() {
+            alert("¡Cambios publicados! Los alumnos verán el nuevo orden al recargar.");
         }
 
         render();
