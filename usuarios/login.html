@@ -20,7 +20,7 @@
         body { 
             background-color: var(--bg-dark); 
             color: #fff; 
-            overflow: hidden; /* Evita scroll en login */
+            overflow: hidden; 
             height: 100vh;
             background: radial-gradient(circle at bottom left, #1a010c, #000);
         }
@@ -31,7 +31,7 @@
             z-index: -1; opacity: 0.15; pointer-events: none;
         }
 
-        /* HEADER UNIFICADO */
+        /* HEADER */
         nav {
             height: 80px; display: flex; justify-content: space-between; align-items: center;
             padding: 0 6%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(25px);
@@ -43,11 +43,12 @@
         /* BURGER MENU */
         .nav-links { display: flex; gap: 35px; }
         .nav-links a { color: #aaa; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--neon-pink); }
         
         .burger { display: none; cursor: pointer; flex-direction: column; gap: 7px; z-index: 1100; }
         .burger span { width: 28px; height: 2px; background: #fff; border-radius: 5px; transition: 0.4s; }
 
-        /* LOGIN CARD CRISTALIZADA */
+        /* LOGIN CARD */
         .login-container {
             height: 100vh; display: flex; align-items: center; justify-content: center;
             padding: 20px;
@@ -55,14 +56,17 @@
         .login-card {
             background: var(--glass); padding: 50px 40px; border-radius: 40px;
             border: 1px solid var(--glass-border); backdrop-filter: blur(30px);
-            width: 100%; max-width: 400px; text-align: center;
+            width: 100%; max-width: 420px; text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 0.8s ease-out;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
         .login-card i { font-size: 3rem; color: var(--neon-pink); margin-bottom: 20px; filter: drop-shadow(0 0 10px var(--pink-glow)); }
         h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -1px; }
 
-        /* INPUTS ELITE */
-        .input-group { margin-bottom: 20px; text-align: left; }
+        /* INPUTS */
+        .input-group { margin-bottom: 20px; position: relative; }
         input {
             width: 100%; padding: 18px 25px; border-radius: 20px;
             background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
@@ -70,15 +74,16 @@
         }
         input:focus { border-color: var(--neon-pink); background: rgba(255,255,255,0.08); box-shadow: 0 0 20px rgba(255, 0, 122, 0.1); }
 
-        /* BOTÓN ACCESO */
+        /* BOTÓN */
         .login-btn {
             width: 100%; padding: 20px; border-radius: 20px; border: none;
             background: #fff; color: #000; font-weight: 800; font-size: 1rem;
             cursor: pointer; transition: 0.4s; margin-top: 10px;
+            text-transform: uppercase; letter-spacing: 1px;
         }
         .login-btn:hover { background: var(--neon-pink); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 30px var(--pink-glow); }
 
-        /* RESPONSIVE */
+        /* MÓVIL */
         @media (max-width: 768px) {
             .burger { display: flex; }
             .nav-links {
@@ -113,16 +118,18 @@
 
     <div class="login-container">
         <div class="login-card">
-            <i class="fas fa-user-shield"></i>
-            <h2>Acceso Miembros</h2>
+            <i class="fas fa-id-card-alt"></i>
+            <h2>Panel de Control</h2>
             <div class="input-group">
                 <input type="text" id="user" placeholder="Usuario">
             </div>
             <div class="input-group">
                 <input type="password" id="pass" placeholder="Contraseña">
             </div>
-            <button class="login-btn" onclick="handleLogin()">INGRESAR AL PANEL</button>
-            <p style="margin-top: 25px; font-size: 0.7rem; color: #444; letter-spacing: 2px; font-weight: 800;">SISTEMA ENCRIPTADO 256-BIT</p>
+            <button class="login-btn" onclick="handleLogin()">Acceder al Sistema</button>
+            <p style="margin-top: 25px; font-size: 0.65rem; color: #444; letter-spacing: 2px; font-weight: 800; text-transform: uppercase;">
+                Acceso restringido a miembros VIP
+            </p>
         </div>
     </div>
 
@@ -152,7 +159,7 @@
         }
         window.onresize = init; init(); draw();
 
-        // --- MENU LOGIC ---
+        // --- MENU HAMBURGUESA ---
         const burger = document.getElementById('burger');
         const menu = document.getElementById('menu');
         burger.onclick = () => {
@@ -160,37 +167,42 @@
             burger.classList.toggle('active');
         };
 
-        // --- AUTH LOGIC (CONECTADA A TU API) ---
-        async function handleLogin() {
-            const user = document.getElementById('user').value;
-            const pass = document.getElementById('pass').value;
+        // --- VALIDACIÓN DE ACCESO (admin / mgapanel) ---
+        function handleLogin() {
+            const userField = document.getElementById('user').value;
+            const passField = document.getElementById('pass').value;
             const btn = document.querySelector('.login-btn');
 
-            if(!user || !pass) return alert("Completa todos los campos");
+            // Credenciales solicitadas
+            const VALID_USER = "admin";
+            const VALID_PASS = "mgapanel";
 
             btn.innerText = "VERIFICANDO...";
-            btn.style.opacity = "0.7";
-
-            try {
-                const res = await fetch('/api/auth', {
-                    method: 'POST',
-                    body: JSON.stringify({ user, pass })
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    localStorage.setItem('mga_auth', 'true');
-                    window.location.href = 'index.html'; // O a tu dashboard
+            
+            setTimeout(() => {
+                if (userField === VALID_USER && passField === VALID_PASS) {
+                    // Crear sesión para privado/vip.html
+                    const sessionData = {
+                        name: "Admin MGA",
+                        role: "VIP",
+                        logged: true,
+                        timestamp: new Date().getTime()
+                    };
+                    localStorage.setItem('mga_session', JSON.stringify(sessionData));
+                    
+                    // Redirigir
+                    window.location.href = 'privado/vip.html';
                 } else {
-                    alert("Acceso Denegado: Credenciales Incorrectas");
-                    btn.innerText = "INGRESAR AL PANEL";
-                    btn.style.opacity = "1";
+                    alert("❌ Credenciales inválidas. Acceso denegado.");
+                    btn.innerText = "Acceder al Sistema";
                 }
-            } catch (err) {
-                alert("Error de conexión con el servidor");
-                btn.innerText = "INGRESAR AL PANEL";
-            }
+            }, 800);
         }
+
+        // Permitir login con la tecla Enter
+        document.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') handleLogin();
+        });
     </script>
 </body>
 </html>
