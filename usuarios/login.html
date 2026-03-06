@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Elite | CLUB MGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-pink: #ff007a;
+            --pink-glow: rgba(255, 0, 122, 0.4);
+            --bg-dark: #000000;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.07);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: #fff; 
+            overflow: hidden; /* Evita scroll en login */
+            height: 100vh;
+            background: radial-gradient(circle at bottom left, #1a010c, #000);
+        }
+
+        /* FONDO DINERO ANIMADO */
+        #money-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.15; pointer-events: none;
+        }
+
+        /* HEADER UNIFICADO */
+        nav {
+            height: 80px; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 6%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border); position: fixed; top: 0; width: 100%; z-index: 1000;
+        }
+        .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; }
+        .logo span { color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
+
+        /* BURGER MENU */
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { color: #aaa; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+        
+        .burger { display: none; cursor: pointer; flex-direction: column; gap: 7px; z-index: 1100; }
+        .burger span { width: 28px; height: 2px; background: #fff; border-radius: 5px; transition: 0.4s; }
+
+        /* LOGIN CARD CRISTALIZADA */
+        .login-container {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .login-card {
+            background: var(--glass); padding: 50px 40px; border-radius: 40px;
+            border: 1px solid var(--glass-border); backdrop-filter: blur(30px);
+            width: 100%; max-width: 400px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .login-card i { font-size: 3rem; color: var(--neon-pink); margin-bottom: 20px; filter: drop-shadow(0 0 10px var(--pink-glow)); }
+        h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -1px; }
+
+        /* INPUTS ELITE */
+        .input-group { margin-bottom: 20px; text-align: left; }
+        input {
+            width: 100%; padding: 18px 25px; border-radius: 20px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: #fff; font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: var(--neon-pink); background: rgba(255,255,255,0.08); box-shadow: 0 0 20px rgba(255, 0, 122, 0.1); }
+
+        /* BOTÓN ACCESO */
+        .login-btn {
+            width: 100%; padding: 20px; border-radius: 20px; border: none;
+            background: #fff; color: #000; font-weight: 800; font-size: 1rem;
+            cursor: pointer; transition: 0.4s; margin-top: 10px;
+        }
+        .login-btn:hover { background: var(--neon-pink); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 30px var(--pink-glow); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .burger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+                background: rgba(5, 5, 5, 0.98); backdrop-filter: blur(25px);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1050;
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 1.3rem; font-weight: 800; }
+            .burger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .burger.active span:nth-child(2) { opacity: 0; }
+            .burger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="money-canvas"></canvas>
+
+    <nav>
+        <a href="index.html" class="logo">CLUB <span>MGA</span></a>
+        <div class="nav-links" id="menu">
+            <a href="index.html">INICIO</a>
+            <a href="testimonios.html">RESULTADOS</a>
+            <a href="comprayventa.html">MASTERCLASS</a>
+        </div>
+        <div class="burger" id="burger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-card">
+            <i class="fas fa-user-shield"></i>
+            <h2>Acceso Miembros</h2>
+            <div class="input-group">
+                <input type="text" id="user" placeholder="Usuario">
+            </div>
+            <div class="input-group">
+                <input type="password" id="pass" placeholder="Contraseña">
+            </div>
+            <button class="login-btn" onclick="handleLogin()">INGRESAR AL PANEL</button>
+            <p style="margin-top: 25px; font-size: 0.7rem; color: #444; letter-spacing: 2px; font-weight: 800;">SISTEMA ENCRIPTADO 256-BIT</p>
+        </div>
+    </div>
+
+    <script>
+        // --- DINERO CAYENDO ---
+        const canvas = document.getElementById('money-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 40; i++) {
+                particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, s: Math.random() * 2 + 1, o: Math.random() * 0.4 + 0.1 });
+            }
+        }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+            ctx.font = "20px serif";
+            particles.forEach(p => {
+                ctx.globalAlpha = p.o;
+                ctx.fillText('$', p.x, p.y);
+                p.y += p.s;
+                if (p.y > canvas.height) p.y = -20;
+            });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = init; init(); draw();
+
+        // --- MENU LOGIC ---
+        const burger = document.getElementById('burger');
+        const menu = document.getElementById('menu');
+        burger.onclick = () => {
+            menu.classList.toggle('active');
+            burger.classList.toggle('active');
+        };
+
+        // --- AUTH LOGIC (CONECTADA A TU API) ---
+        async function handleLogin() {
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
+            const btn = document.querySelector('.login-btn');
+
+            if(!user || !pass) return alert("Completa todos los campos");
+
+            btn.innerText = "VERIFICANDO...";
+            btn.style.opacity = "0.7";
+
+            try {
+                const res = await fetch('/api/auth', {
+                    method: 'POST',
+                    body: JSON.stringify({ user, pass })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    localStorage.setItem('mga_auth', 'true');
+                    window.location.href = 'index.html'; // O a tu dashboard
+                } else {
+                    alert("Acceso Denegado: Credenciales Incorrectas");
+                    btn.innerText = "INGRESAR AL PANEL";
+                    btn.style.opacity = "1";
+                }
+            } catch (err) {
+                alert("Error de conexión con el servidor");
+                btn.innerText = "INGRESAR AL PANEL";
+            }
+        }
+    </script>
+</body>
+</html>
