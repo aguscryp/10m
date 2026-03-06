@@ -3,96 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP Dashboard | CLUB MGA</title>
+    <title>VIP Access | MGA CLUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --pink: #ff007a; --bg: #010101; --glass: rgba(255,255,255,0.05); }
+        :root { --pink: #ff007a; --bg: #010101; --glass: rgba(255,255,255,0.03); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: #fff; overflow-x: hidden; }
+        body { background: var(--bg); color: #fff; }
 
-        /* HEADER */
-        nav {
-            height: 80px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 6%; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 1000;
-        }
-        .logo { font-weight: 800; font-size: 1.4rem; text-decoration: none; color: #fff; }
+        /* NAV */
+        nav { height: 75px; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 5%; position: fixed; width: 100%; top: 0; z-index: 1000; }
+        .logo { font-weight: 800; font-size: 1.2rem; color: #fff; text-decoration: none; }
         .logo span { color: var(--pink); }
 
-        /* MENU HAMBURGUESA DINÁMICO */
-        .burger { cursor: pointer; display: flex; flex-direction: column; gap: 6px; z-index: 1100; }
-        .burger span { width: 30px; height: 2px; background: #fff; transition: 0.4s; }
+        /* MENU LATERAL */
+        .burger { cursor: pointer; z-index: 1100; transition: 0.3s; }
+        .burger span { display: block; width: 25px; height: 2px; background: #fff; margin: 6px 0; transition: 0.4s; }
         
-        .nav-links {
-            position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
-            background: rgba(5,5,5,0.98); backdrop-filter: blur(30px);
-            display: flex; flex-direction: column; padding: 100px 40px;
-            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid rgba(255,255,255,0.1);
-        }
-        .nav-links.active { right: 0; }
-        .nav-link-item { 
-            display: flex; align-items: center; gap: 15px;
-            color: #fff; text-decoration: none; font-size: 1.1rem; 
-            margin-bottom: 30px; font-weight: 600; transition: 0.3s;
-        }
-        .nav-link-item:hover { color: var(--pink); transform: translateX(10px); }
+        .side-menu { position: fixed; top: 0; right: -320px; width: 320px; height: 100vh; background: #080808; border-left: 1px solid rgba(255,255,255,0.1); padding: 100px 30px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1050; }
+        .side-menu.active { right: 0; }
 
-        /* CONTENIDO VIP */
-        .welcome-section { max-width: 800px; margin: 80px auto; text-align: center; padding: 0 20px; }
-        .welcome-section h1 { font-size: 3rem; margin-bottom: 20px; letter-spacing: -2px; }
-        .welcome-section span { color: var(--pink); text-shadow: 0 0 20px var(--pink); }
-        .card-main { 
-            background: var(--glass); padding: 60px; border-radius: 40px; 
-            border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
-        }
+        .menu-item-link { display: flex; align-items: center; gap: 15px; color: #fff; text-decoration: none; padding: 15px 0; font-weight: 800; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .menu-item-link i { color: var(--pink); width: 20px; text-align: center; }
+        .menu-item-link:hover { padding-left: 10px; color: var(--pink); }
+
+        .sub-link { padding: 10px 0 10px 35px; font-size: 0.8rem; font-weight: 400; color: #888; border-bottom: none; }
+        
+        /* CONTENT */
+        .welcome { padding: 120px 20px; max-width: 800px; margin: 0 auto; text-align: center; }
+        .welcome h1 { font-size: 2.5rem; margin-bottom: 15px; }
+        .user-highlight { background: linear-gradient(to right, #fff, var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        
+        /* HAMBURGER ANIMATION */
+        .burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .burger.active span:nth-child(2) { opacity: 0; }
+        .burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="#" class="logo">MGA <span>VIP</span></a>
+        <a href="#" class="logo">MGA<span>VIP</span></a>
         <div class="burger" id="burger">
             <span></span><span></span><span></span>
         </div>
-        <div class="nav-links" id="menu-container">
-            </div>
     </nav>
 
-    <div class="welcome-section">
-        <div class="card-main">
-            <h1>Bienvenido, <span id="user-name">Alumno</span></h1>
-            <p style="color: #888; font-size: 1.1rem;">Hora de empezar a crear tu negocio en internet. Todo lo que necesitas está en el menú lateral.</p>
-        </div>
+    <div class="side-menu" id="side-menu">
+        <div id="dynamic-links"></div>
+        <a href="#" onclick="logout()" class="menu-item-link" style="color:#ff4444; margin-top:30px;"><i class="fas fa-power-off"></i> CERRAR SESIÓN</a>
+    </div>
+
+    <div class="welcome">
+        <h1>Bienvenido, <span class="user-highlight" id="user-display">Cargando...</span></h1>
+        <p style="color:#666">Selecciona un módulo en el menú para continuar tu formación.</p>
     </div>
 
     <script>
-        // 1. Verificación de Seguridad y Nombre
-        const auth = JSON.parse(localStorage.getItem('mga_session'));
-        if(!auth) window.location.href = "../login.html";
-        document.getElementById('user-name').innerText = auth.name || "Emprendedor";
+        // Protección de Sesión
+        const session = JSON.parse(localStorage.getItem('mga_session'));
+        if(!session) window.location.href = "../login.html";
+        document.getElementById('user-display').innerText = session.name;
 
-        // 2. Cargar Menú dinámico
-        function loadMenu() {
-            const menuData = JSON.parse(localStorage.getItem('mga_menu_db')) || [
-                { title: "Inicio", url: "vip.html", icon: "fas fa-home" },
-                { title: "Mis Cursos", url: "#", icon: "fas fa-play-circle" }
-            ];
-            
-            const container = document.getElementById('menu-container');
-            container.innerHTML = menuData.map(item => `
-                <a href="${item.url}" class="nav-link-item">
-                    <i class="${item.icon}"></i> ${item.title}
-                </a>
-            `).join('') + `<a href="#" onclick="logout()" class="nav-link-item" style="color: #ff4444; margin-top: auto;"><i class="fas fa-sign-out-alt"></i> Salir</a>`;
+        // Carga de Menú dinámico con Subpáginas
+        function renderMenu() {
+            const data = JSON.parse(localStorage.getItem('mga_menu_db')) || [];
+            const container = document.getElementById('dynamic-links');
+            let html = '';
+
+            data.forEach(item => {
+                html += `<a href="${item.url}" class="menu-item-link"><i class="${item.icon}"></i> ${item.title.toUpperCase()}</a>`;
+                if(item.subs && item.subs.length > 0) {
+                    item.subs.forEach(sub => {
+                        html += `<a href="${sub.url}" class="menu-item-link sub-link"><i class="${sub.icon}"></i> ${sub.title}</a>`;
+                    });
+                }
+            });
+            container.innerHTML = html;
         }
 
-        // 3. Lógica Hamburguesa
+        // Hamburguesa
         const burger = document.getElementById('burger');
-        const menu = document.getElementById('menu-container');
+        const sideMenu = document.getElementById('side-menu');
         burger.onclick = () => {
-            menu.classList.toggle('active');
             burger.classList.toggle('active');
+            sideMenu.classList.toggle('active');
         };
 
         function logout() {
@@ -100,7 +95,7 @@
             window.location.href = "../login.html";
         }
 
-        loadMenu();
+        renderMenu();
     </script>
 </body>
 </html>
