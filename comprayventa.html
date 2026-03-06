@@ -12,67 +12,68 @@
 
         /* NAV */
         nav { height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; }
-        .logo { font-weight: 800; color: #fff; text-decoration: none; }
+        .logo { font-weight: 800; color: #fff; text-decoration: none; font-size: 1.2rem; }
         .logo span { color: var(--pink); }
-        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; margin-left: 15px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; margin-left: 15px; font-weight: 600; }
 
         /* CONTENT */
         .container { max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: center; }
-        h1 { font-size: clamp(1.5rem, 7vw, 3rem); background: linear-gradient(to right, #fff, var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+        h1 { font-size: clamp(1.6rem, 7vw, 3rem); background: linear-gradient(to right, #fff, var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; line-height: 1.2; letter-spacing: -1px; }
         
-        .vsl { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 20px; border: 1px solid rgba(255,0,122,0.2); overflow: hidden; box-shadow: 0 0 30px rgba(255,0,122,0.1); margin: 30px 0; }
+        .vsl-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 20px; border: 1px solid rgba(255,0,122,0.2); overflow: hidden; box-shadow: 0 0 40px rgba(255,0,122,0.1); margin: 30px 0; }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* BUTTON WHATSAPP */
-        .btn-ws { background: #25d366; color: #fff; text-decoration: none; padding: 20px 40px; border-radius: 15px; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; margin: 30px 0; box-shadow: 0 10px 30px rgba(37,211,102,0.3); animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        /* WHATSAPP BUTTON */
+        .btn-ws { background: #25d366; color: #fff; text-decoration: none; padding: 20px 40px; border-radius: 18px; font-weight: 800; display: inline-flex; align-items: center; gap: 12px; font-size: 1.1rem; margin: 20px 0; box-shadow: 0 10px 30px rgba(37,211,102,0.3); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37,211,102,0.7); } 70% { transform: scale(1.03); box-shadow: 0 0 0 15px rgba(37,211,102,0); } 100% { transform: scale(1); } }
 
-        /* FOMO NOTIF */
-        .notif { position: fixed; bottom: 20px; left: 20px; background: #111; border: 1px solid var(--pink); padding: 12px 20px; border-radius: 12px; font-size: 0.8rem; transform: translateY(200%); transition: 0.5s; z-index: 1000; }
-        .notif.show { transform: translateY(0); }
+        /* NOTIFICACIONES FOMO */
+        .fomo-pop { position: fixed; bottom: 20px; left: 20px; background: #111; border: 1px solid var(--pink); padding: 12px 20px; border-radius: 12px; font-size: 0.8rem; transform: translateY(200%); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 0 20px rgba(255,0,122,0.2); }
+        .fomo-pop.active { transform: translateY(0); }
 
-        .cupos { color: var(--pink); font-weight: 800; border: 1px dashed var(--pink); padding: 10px; display: inline-block; border-radius: 8px; font-size: 0.9rem; }
+        .cupos-tag { color: var(--pink); font-weight: 800; border: 1px dashed var(--pink); padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
     <nav>
-        <a href="#" class="logo">CLUB <span>MGA</span></a>
-        <div class="nav-links"><a href="testimonios.html">Testimonios</a><a href="login.html">Miembros</a></div>
+        <a href="index.html" class="logo">CLUB <span>MGA</span></a>
+        <div class="nav-links">
+            <a href="testimonios.html">Testimonios</a>
+            <a href="login.html">Acceso Miembros</a>
+        </div>
     </nav>
 
     <div class="container">
         <h1>Como hacer entre 2k a 6k usd por mes con tu propio negocio y desde 0.</h1>
-        <div class="cupos">🔥 CUPOS DISPONIBLES: <span id="n">14</span>/20</div>
+        <div class="cupos-tag">🔥 Cupos de Marzo: <span id="num">14</span>/20</div>
         
-        <div class="vsl">
-            <iframe src="https://drive.google.com/file/d/1-I2cTdsGBJT63VL9Nn70oOJNOW9cqz3V/preview"></iframe>
+        <div class="vsl-box">
+            <iframe src="https://drive.google.com/file/d/1-I2cTdsGBJT63VL9Nn70oOJNOW9cqz3V/preview" allow="autoplay"></iframe>
         </div>
 
-        <a href="https://wa.me/5492645079256?text=Quiero%20empezar" class="btn-ws">ESCRIBIME POR WHATSAPP</a>
+        <a href="https://wa.me/5492645079256?text=Hola!%20Vi%20el%20video%20y%20quiero%20arrancar" target="_blank" class="btn-ws">
+            QUIERO ARRANCAR MI NEGOCIO AHORA
+        </a>
     </div>
 
-    <div id="notif" class="notif"></div>
+    <div id="fomo" class="fomo-pop"></div>
 
     <script>
-        // Bloqueo Búnker
-        if (!localStorage.getItem('mga_auth')) {
-            document.body.innerHTML = "<div style='background:#000;color:red;height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;'><h1>⚠️ ACCESO DENEGADO<br>SISTEMA MGA</h1></div>";
-            setTimeout(() => window.location.href="login.html", 2000);
+        // Sistema FOMO (Notificaciones automáticas)
+        const names = ["Nico", "Agus", "Santi", "Valen", "Mateo", "Sofi"];
+        const texts = ["acaba de entrar al Club", "cerró venta de $300 USD", "facturó sus primeros $1k", "está viendo el VSL"];
+        
+        function showFomo() {
+            const el = document.getElementById('fomo');
+            el.innerHTML = `🚀 <strong>${names[Math.floor(Math.random()*names.length)]}</strong> ${texts[Math.floor(Math.random()*texts.length)]}`;
+            el.classList.add('active');
+            setTimeout(() => el.classList.remove('active'), 4000);
         }
+        setInterval(showFomo, 15000);
 
-        // Sistema FOMO
-        const n = ["Agus", "Santi", "Marcos", "Nico", "Valen"];
-        const a = ["cerró un trato de $500", "se unió al Club", "facturó sus primeros $2k"];
-        setInterval(() => {
-            const el = document.getElementById('notif');
-            el.innerHTML = `✅ <strong>${n[Math.floor(Math.random()*n.length)]}</strong> ${a[Math.floor(Math.random()*a.length)]}`;
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 4000);
-        }, 15000);
-
-        // Cupos
+        // Contador de cupos que baja lento
         let c = 14;
-        setInterval(() => { if(c > 4) { c--; document.getElementById('n').innerText = c; } }, 60000);
+        setInterval(() => { if(c > 3) { c--; document.getElementById('num').innerText = c; } }, 45000);
     </script>
 </body>
 </html>
