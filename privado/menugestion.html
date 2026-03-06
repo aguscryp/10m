@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Menú | Admin MGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #050505; color: white; padding: 50px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .admin-box { max-width: 600px; margin: 0 auto; background: #111; padding: 30px; border-radius: 20px; border: 1px solid #333; }
+        input, select { width: 100%; padding: 15px; margin: 10px 0; background: #222; border: 1px solid #444; color: white; border-radius: 10px; }
+        button { background: #ff007a; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .item-list { margin-top: 30px; }
+        .item { display: flex; justify-content: space-between; padding: 15px; background: #222; margin-bottom: 5px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-box">
+        <h2>Gestión del Menú VIP</h2>
+        <p style="color: #666; font-size: 0.8rem; margin-bottom: 20px;">Los cambios se verán reflejados en el Panel del Alumno.</p>
+        
+        <input type="text" id="m-title" placeholder="Título (Ej: Calculadora)">
+        <input type="text" id="m-url" placeholder="URL Destino (Ej: calculadora.html)">
+        <select id="m-icon">
+            <option value="fas fa-link">Enlace Estándar</option>
+            <option value="fas fa-calculator">Calculadora</option>
+            <option value="fas fa-video">Videos/Cursos</option>
+            <option value="fas fa-money-bill-wave">Ganancias</option>
+            <option value="fas fa-users">Comunidad</option>
+        </select>
+        
+        <button onclick="addItem()">AGREGAR AL MENÚ</button>
+
+        <div class="item-list" id="list"></div>
+    </div>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('mga_menu_db')) || [];
+
+        function render() {
+            const list = document.getElementById('list');
+            list.innerHTML = db.map((item, index) => `
+                <div class="item">
+                    <span><i class="${item.icon}"></i> ${item.title}</span>
+                    <button onclick="deleteItem(${index})" style="width: auto; padding: 5px 10px; background: #444;">Eliminar</button>
+                </div>
+            `).join('');
+            localStorage.setItem('mga_menu_db', JSON.stringify(db));
+        }
+
+        function addItem() {
+            const title = document.getElementById('m-title').value;
+            const url = document.getElementById('m-url').value;
+            const icon = document.getElementById('m-icon').value;
+            
+            if(title && url) {
+                db.push({ title, url, icon });
+                render();
+                document.getElementById('m-title').value = '';
+                document.getElementById('m-url').value = '';
+            }
+        }
+
+        function deleteItem(i) {
+            db.splice(i, 1);
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>
