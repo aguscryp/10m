@@ -3,241 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masterclass Elite | CLUB MGA</title>
+    <title>Masterclass 6K | CLUB MGA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --pink: #ff007a;
+            --neon-pink: #ff007a;
             --pink-glow: rgba(255, 0, 122, 0.4);
-            --bg: #010101;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.08);
+            --bg-dark: #000000;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.07);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         
         body { 
-            background-color: var(--bg); 
+            background-color: var(--bg-dark); 
             color: #fff; 
             overflow-x: hidden;
-            line-height: 1.6;
+            background: radial-gradient(circle at top right, #1a010c, #000);
         }
 
-        /* FONDO DINERO OSCURO PROFESIONAL */
-        #money-bg {
+        /* FONDO DINERO ANIMADO */
+        #money-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.12; pointer-events: none;
+            z-index: -1; opacity: 0.2; pointer-events: none;
         }
 
-        /* NAVBAR */
+        /* HEADER ELITE */
         nav {
             height: 80px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 8%; background: rgba(1, 1, 1, 0.85); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
+            padding: 0 6%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 1000;
         }
-        .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; }
-        .logo span { color: var(--pink); text-shadow: 0 0 15px var(--pink); }
+        .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; letter-spacing: -1px; }
+        .logo span { color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
 
-        /* MENU LATERAL SMART */
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
-        .nav-links a:hover { color: var(--pink); }
+        /* BURGER MENU SMART */
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { color: #aaa; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--neon-pink); }
 
-        .burger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1100; }
-        .burger span { width: 26px; height: 2px; background: #fff; transition: 0.4s; }
+        .burger { display: none; cursor: pointer; flex-direction: column; gap: 7px; z-index: 1100; transition: 0.3s; }
+        .burger span { width: 28px; height: 2px; background: #fff; transition: 0.4s; border-radius: 5px; }
 
-        /* HERO SECTION */
-        .hero { max-width: 1000px; margin: 60px auto; padding: 0 20px; text-align: center; }
+        /* HERO & VSL */
+        .container { max-width: 1000px; margin: 50px auto; padding: 0 25px; text-align: center; }
         
-        .badge {
-            display: inline-block; padding: 8px 18px; border-radius: 50px;
-            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
-            color: #fff; font-size: 0.65rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px;
+        .exclusive-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border-radius: 50px; background: var(--glass);
+            border: 1px solid var(--glass-border); color: #fff; font-size: 0.7rem;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px;
         }
 
         h1 {
-            font-size: clamp(1.8rem, 8vw, 3.4rem); font-weight: 800; margin-bottom: 20px;
-            line-height: 1.1; letter-spacing: -2px;
-            background: linear-gradient(to bottom, #fff 40%, var(--pink));
+            font-size: clamp(2rem, 9vw, 3.8rem); font-weight: 800; margin-bottom: 25px;
+            line-height: 1.05; letter-spacing: -3px;
+            background: linear-gradient(to bottom, #fff 50%, var(--neon-pink));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* VSL CON PRECARGA */
-        .video-wrapper {
-            width: 100%; max-width: 860px; margin: 40px auto;
-            position: relative; aspect-ratio: 16/9;
-            border-radius: 30px; overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 20px 80px rgba(0,0,0,0.8), 0 0 40px rgba(255, 0, 122, 0.1);
-            background: #000;
+        /* VSL BOX */
+        .vsl-frame {
+            position: relative; width: 100%; aspect-ratio: 16/9; margin: 40px 0;
+            border-radius: 35px; overflow: hidden; border: 1px solid var(--glass-border);
+            box-shadow: 0 0 60px rgba(255, 0, 122, 0.15); background: #000;
         }
-        .video-thumb {
+        .vsl-thumb {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #050505 0%, #1a020d 100%);
+            background: linear-gradient(135deg, #000, #1a010c);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10; cursor: pointer;
+            z-index: 10; cursor: pointer; transition: 0.6s;
         }
-        .video-thumb.hide { opacity: 0; pointer-events: none; transition: 0.5s; }
-        
-        .play-ring {
-            width: 90px; height: 90px; border: 2px solid var(--pink); border-radius: 50%;
+        .vsl-thumb.hide { opacity: 0; pointer-events: none; }
+        .play-circle {
+            width: 100px; height: 100px; border: 2px solid var(--neon-pink); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: var(--pink); font-size: 2rem; margin-bottom: 15px;
-            box-shadow: 0 0 30px var(--pink-glow);
+            color: var(--neon-pink); font-size: 2rem; margin-bottom: 20px;
+            box-shadow: 0 0 30px var(--pink-glow); animation: pulse 2s infinite;
         }
         iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* RELLENO DE ESTATUS Y CARDS CRISTAL */
-        .status-section { margin-top: 100px; text-align: center; }
-        .status-header { color: var(--pink); font-weight: 800; letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 40px; }
-
-        .info-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; margin-bottom: 80px;
+        /* CARDS CRISTALIZADAS */
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; margin: 80px 0;
         }
-        .info-card {
-            background: var(--glass); padding: 45px; border-radius: 35px;
-            border: 1px solid var(--border); backdrop-filter: blur(15px);
-            text-align: left; transition: 0.4s;
+        .card {
+            background: var(--glass); padding: 45px; border-radius: 40px;
+            border: 1px solid var(--glass-border); backdrop-filter: blur(20px);
+            text-align: left; transition: 0.5s; position: relative;
         }
-        .info-card:hover { border-color: var(--pink); transform: translateY(-10px); background: rgba(255,255,255,0.04); }
-        .info-card i { color: var(--pink); font-size: 1.8rem; margin-bottom: 20px; display: block; }
-        .info-card h3 { font-size: 1.3rem; margin-bottom: 15px; font-weight: 800; color: #fff; }
-        .info-card p { color: #888; font-size: 0.9rem; line-height: 1.7; }
+        .card:hover { transform: translateY(-15px); border-color: var(--neon-pink); background: rgba(255, 255, 255, 0.05); }
+        .card i { color: var(--neon-pink); font-size: 2.2rem; margin-bottom: 25px; display: block; }
+        .card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; }
+        .card p { color: #888; font-size: 0.95rem; line-height: 1.8; }
 
-        /* CTA SECCIÓN */
-        .cta-box { padding: 60px 0; background: linear-gradient(to bottom, transparent, rgba(255,0,122,0.05)); }
-        .btn-ws {
+        /* CTA */
+        .cta-btn {
             display: inline-flex; align-items: center; gap: 15px;
             background: #fff; color: #000; text-decoration: none;
-            padding: 22px 50px; border-radius: 22px; font-weight: 800;
-            font-size: 1.1rem; transition: 0.4s; box-shadow: 0 10px 40px rgba(255,255,255,0.1);
+            padding: 24px 60px; border-radius: 25px; font-weight: 800;
+            font-size: 1.25rem; transition: 0.4s; box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
         }
-        .btn-ws:hover { background: var(--pink); color: #fff; transform: scale(1.05); }
+        .cta-btn:hover { background: var(--neon-pink); color: #fff; transform: scale(1.05); }
 
-        /* RESPONSIVE */
+        /* RESPONSIVE HAMBURGER */
         @media (max-width: 768px) {
-            nav { padding: 0 5%; }
             .burger { display: flex; }
             .nav-links {
-                position: fixed; top: 80px; right: -100%; width: 280px; height: auto;
-                background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(20px);
-                flex-direction: column; padding: 40px; border-radius: 0 0 0 30px;
-                border-left: 1px solid var(--border); border-bottom: 1px solid var(--border);
-                transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+                position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+                background: rgba(5, 5, 5, 0.98); backdrop-filter: blur(25px);
+                flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1050; border-left: 1px solid var(--glass-border);
             }
             .nav-links.active { right: 0; }
-            .nav-links a { font-size: 1.1rem; color: #fff; }
+            .nav-links a { font-size: 1.3rem; font-weight: 800; color: #fff; }
+            
+            .burger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .burger.active span:nth-child(2) { opacity: 0; }
+            .burger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 122, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 0, 122, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 122, 0); }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="money-bg"></canvas>
+    <canvas id="money-canvas"></canvas>
 
     <nav>
         <a href="index.html" class="logo">CLUB <span>MGA</span></a>
         <div class="nav-links" id="menu">
-            <a href="index.html">Inicio</a>
-            <a href="testimonios.html">Testimonios</a>
-            <a href="login.html">Acceso Miembros</a>
+            <a href="index.html">INICIO</a>
+            <a href="testimonios.html">RESULTADOS</a>
+            <a href="login.html">MIEMBROS</a>
         </div>
         <div class="burger" id="burger">
             <span></span><span></span><span></span>
         </div>
     </nav>
 
-    <div class="hero">
-        <div class="badge">Estrategia Validada • 2026</div>
-        <h1>Como hacer entre 2k a 6k usd por mes con tu propio negocio y desde 0.</h1>
+    <div class="container">
+        <div class="exclusive-badge">
+            <i class="fas fa-lock" style="color: var(--neon-pink);"></i> ACCESO PRIVADO • 2026
+        </div>
         
-        <div class="video-wrapper">
-            <div class="video-thumb" id="thumb" onclick="playVideo()">
-                <div class="play-ring"><i class="fas fa-play"></i></div>
-                <p style="font-weight: 800; letter-spacing: 2px; font-size: 0.75rem;">CLICK PARA INICIAR MASTERCLASS</p>
+        <h1>Como hacer entre 2k a 6k usd por mes con tu propio negocio y desde 0.</h1>
+
+        <div class="vsl-frame">
+            <div class="vsl-thumb" id="thumb" onclick="startVideo()">
+                <div class="play-circle"><i class="fas fa-play"></i></div>
+                <p style="letter-spacing: 3px; font-weight: 800; font-size: 0.7rem;">DESBLOQUEAR MASTERCLASS ELITE</p>
             </div>
-            <iframe id="vsl" src="https://drive.google.com/file/d/1-I2cTdsGBJT63VL9Nn70oOJNOW9cqz3V/preview" allow="autoplay"></iframe>
+            <iframe id="video" src="https://drive.google.com/file/d/1-I2cTdsGBJT63VL9Nn70oOJNOW9cqz3V/preview" allow="autoplay"></iframe>
         </div>
 
-        <div class="status-section">
-            <div class="status-header">// LOS PILARES DEL ÉXITO</div>
-            <div class="info-grid">
-                <div class="info-card">
-                    <i class="fas fa-vault"></i>
-                    <h3>Capital Blindado</h3>
-                    <p>Aprende a operar sin poner en riesgo tus ahorros. El sistema MGA prioriza el retorno de inversión acelerado.</p>
-                </div>
-                <div class="info-card">
-                    <i class="fas fa-crown"></i>
-                    <h3>Estatus Superior</h3>
-                    <p>No es solo dinero, es libertad. Accede a un círculo de contactos y negocios que el 99% desconoce.</p>
-                </div>
-                <div class="info-card">
-                    <i class="fas fa-globe"></i>
-                    <h3>Operativa Global</h3>
-                    <p>Desde cualquier lugar. Tu laptop y tu celular son las únicas herramientas que necesitas para facturar USD.</p>
-                </div>
+        <div class="features-grid">
+            <div class="card">
+                <i class="fas fa-gem"></i>
+                <h3>Sistema de Alto Ticket</h3>
+                <p>No busques volumen, busca márgenes. Te enseñamos a cerrar tratos que dejan beneficios de $500 USD netos.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-shield-halved"></i>
+                <h3>Negocio Blindado</h3>
+                <p>Un modelo diseñado para ser inmune a las crisis, basado en la oferta y demanda real del mercado digital.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Escalabilidad Real</h3>
+                <p>Pasa de 0 a 6k mensuales siguiendo un proceso paso a paso, testeado por más de 100 alumnos.</p>
             </div>
         </div>
 
-        <div class="cta-box">
-            <a href="https://wa.me/5492645079256" class="btn-ws">
-                COMENZAR MI ASCENSO AHORA
+        <div style="padding-bottom: 100px;">
+            <a href="https://wa.me/5492645079256" class="cta-btn">
+                <i class="fab fa-whatsapp"></i> HABLAR CON EL EQUIPO
             </a>
-            <p style="margin-top: 30px; color: #333; font-size: 0.7rem; font-weight: 800; letter-spacing: 3px;">ACCESO EXCLUSIVO VIA WHATSAPP</p>
+            <p style="margin-top: 25px; color: #444; font-size: 0.75rem; font-weight: 800; letter-spacing: 3px;">CONSULTORÍA INICIAL GRATUITA</p>
         </div>
     </div>
 
     <script>
-        // --- VIDEO: Play instantáneo ---
-        function playVideo() {
-            document.getElementById('thumb').classList.add('hide');
-        }
-
-        // --- MENU: Lateral elegante ---
-        const burger = document.getElementById('burger');
-        const menu = document.getElementById('menu');
-        burger.onclick = () => {
-            menu.classList.toggle('active');
-            // Animación burger
-            burger.querySelectorAll('span').forEach((s, i) => {
-                if(i===0) s.style.transform = menu.classList.contains('active') ? 'translateY(8px) rotate(45deg)' : '';
-                if(i===1) s.style.opacity = menu.classList.contains('active') ? '0' : '1';
-                if(i===2) s.style.transform = menu.classList.contains('active') ? 'translateY(-8px) rotate(-45deg)' : '';
-            });
-        };
-
-        // --- FONDO DINERO: El "Money Flow" ---
-        const canvas = document.getElementById('money-bg');
+        // --- DINERO CAYENDO (SISTEMA DE PARTÍCULAS) ---
+        const canvas = document.getElementById('money-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+
         function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             particles = [];
-            for(let i=0; i<45; i++) {
+            for (let i = 0; i < 60; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    speed: Math.random() * 2 + 0.5,
-                    size: Math.random() * 15 + 10
+                    s: Math.random() * 2 + 1,
+                    o: Math.random() * 0.5 + 0.1
                 });
             }
         }
-        function animate() {
+
+        function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
             ctx.font = "20px serif";
             particles.forEach(p => {
+                ctx.globalAlpha = p.o;
                 ctx.fillText('$', p.x, p.y);
-                p.y += p.speed;
-                if(p.y > canvas.height) p.y = -20;
+                p.y += p.s;
+                if (p.y > canvas.height) p.y = -20;
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(draw);
         }
-        init(); animate();
-        window.addEventListener('resize', init);
+
+        window.onresize = init;
+        init(); draw();
+
+        // --- VIDEO & MENU ---
+        const burger = document.getElementById('burger');
+        const menu = document.getElementById('menu');
+
+        burger.onclick = () => {
+            menu.classList.toggle('active');
+            burger.classList.toggle('active');
+        };
+
+        function startVideo() {
+            document.getElementById('thumb').classList.add('hide');
+        }
     </script>
 </body>
 </html>
