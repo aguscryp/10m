@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Masterclass 6K | CLUB MGA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -11,78 +11,136 @@
             --dark-bg: #020203;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --whatsapp: #25d366;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        body { background-color: var(--dark-bg); color: #fff; line-height: 1.6; }
+        body { 
+            background-color: var(--dark-bg); 
+            color: #fff; 
+            line-height: 1.6; 
+            overflow-x: hidden; /* Evita scroll horizontal en móviles */
+        }
 
-        /* NAVBAR ORIGINAL REESTILIZADA */
+        /* NAVBAR RESPONSIVE */
         nav {
-            height: 80px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 8%; background: rgba(2, 2, 3, 0.8); backdrop-filter: blur(20px);
+            height: 70px; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; background: rgba(2, 2, 3, 0.9); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 1000;
         }
-        .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; }
+        .logo { font-weight: 800; font-size: 1.2rem; color: #fff; text-decoration: none; letter-spacing: -1px; }
         .logo span { color: var(--neon-pink); }
-        .nav-links a { color: #888; text-decoration: none; margin-left: 25px; font-size: 0.9rem; font-weight: 600; transition: 0.3s; }
+        
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
         .nav-links a:hover { color: var(--neon-pink); }
 
-        .container { max-width: 1000px; margin: 60px auto; padding: 0 20px; text-align: center; }
+        /* CONTENEDOR PRINCIPAL */
+        .main-content { 
+            width: 100%; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            text-align: center; 
+        }
 
-        /* TÍTULO Y VSL */
+        /* TÍTULO ADAPTABLE */
         h1 {
-            font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800; margin-bottom: 30px;
+            font-size: clamp(1.6rem, 8vw, 3.2rem); 
+            font-weight: 800; 
+            margin-bottom: 25px;
             background: linear-gradient(to right, #fff, var(--neon-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            line-height: 1.1; letter-spacing: -1px;
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2; 
+            letter-spacing: -1.5px;
         }
 
-        .video-wrapper {
-            width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 30px;
-            border: 1px solid var(--glass-border); overflow: hidden;
-            box-shadow: 0 0 50px rgba(255, 0, 122, 0.15); margin: 40px 0;
+        /* VSL RESPONSIVE (16:9) */
+        .vsl-container {
+            width: 100%; 
+            max-width: 850px; 
+            margin: 30px auto 50px;
+            position: relative;
+            padding-bottom: 56.25%; /* Ratio 16:9 */
+            height: 0;
+            background: #000;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 0, 122, 0.15);
         }
-        iframe { width: 100%; height: 100%; border: none; }
+        .vsl-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
 
-        /* SECCIÓN DE RELLENO / BENEFICIOS */
-        .features-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; margin: 60px 0;
+        /* GRID DE BENEFICIOS (RESPONSIVE) */
+        .grid-relleno {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
         }
-        .feature-card {
-            background: var(--glass); padding: 30px; border-radius: 25px;
-            border: 1px solid var(--glass-border); text-align: left;
+        .card {
+            background: var(--glass);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            text-align: left;
             transition: 0.3s;
         }
-        .feature-card:hover { border-color: var(--neon-pink); transform: translateY(-5px); }
-        .feature-card h3 { color: var(--neon-pink); margin-bottom: 15px; font-size: 1.3rem; }
-        .feature-card p { color: #aaa; font-size: 0.95rem; }
+        .card:hover { border-color: var(--neon-pink); transform: translateY(-5px); }
+        .card h3 { color: var(--neon-pink); margin-bottom: 12px; font-size: 1.2rem; }
+        .card p { color: #aaa; font-size: 0.9rem; line-height: 1.5; }
 
-        /* BOTÓN WHATSAPP NEÓN */
-        .cta-section { padding: 60px 0; display: flex; flex-direction: column; align-items: center; }
-        
+        /* BOTÓN WHATSAPP MOBILE-FIRST */
+        .cta-box { padding: 40px 0; }
         .btn-ws {
-            background: #25d366; color: #fff; text-decoration: none;
-            padding: 22px 50px; border-radius: 20px; font-size: 1.3rem;
-            font-weight: 800; display: flex; align-items: center; gap: 15px;
-            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
-            transition: 0.4s; animation: pulse 2s infinite;
+            background: var(--whatsapp);
+            color: #fff;
+            text-decoration: none;
+            padding: 18px 30px;
+            border-radius: 18px;
+            font-size: clamp(1rem, 4vw, 1.25rem);
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            animation: pulse-ws 2s infinite;
+            transition: 0.3s ease;
         }
-        .btn-ws:hover { transform: scale(1.05); box-shadow: 0 20px 50px rgba(37, 211, 102, 0.6); }
+        .btn-ws:hover { transform: scale(1.03); filter: brightness(1.1); }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+        @keyframes pulse-ws {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
             100% { transform: scale(1); }
         }
 
-        footer { padding: 60px 0; opacity: 0.3; font-size: 0.8rem; text-align: center; border-top: 1px solid var(--glass-border); }
+        footer { 
+            padding: 40px 20px; 
+            text-align: center; 
+            color: #444; 
+            font-size: 0.75rem; 
+            border-top: 1px solid var(--glass-border); 
+        }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            nav { padding: 0 5%; }
-            .nav-links { display: none; } /* Simplificado para móvil */
+        /* MEDIA QUERIES PARA CELULARES PEQUEÑOS */
+        @media (max-width: 480px) {
+            nav { padding: 0 15px; }
+            .nav-links { gap: 10px; }
+            .nav-links a { font-size: 0.75rem; }
+            .main-content { padding-top: 30px; }
+            h1 { letter-spacing: -0.5px; }
+            .card { padding: 20px; }
         }
     </style>
 </head>
@@ -93,50 +151,53 @@
         <div class="nav-links">
             <a href="index.html">Inicio</a>
             <a href="testimonios.html">Testimonios</a>
-            <a href="login.html">Miembros</a>
+            <a href="login.html">Entrar</a>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="main-content">
         <h1>Como hacer entre 2k a 6k usd por mes con tu propio negocio y desde 0.</h1>
         
-        <p style="color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">Mira el video completo a continuación:</p>
+        <p style="color: var(--neon-pink); font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase;">
+            ¡Atención! Mira el video hasta el final
+        </p>
 
-        <div class="video-wrapper">
+        <div class="vsl-container">
             <iframe 
                 src="https://drive.google.com/file/d/1-I2cTdsGBJT63VL9Nn70oOJNOW9cqz3V/preview" 
-                allow="autoplay">
+                allow="autoplay; encrypted-media" 
+                allowfullscreen>
             </iframe>
         </div>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <h3>01. Sin Inventario</h3>
-                <p>Aprende el sistema de triangulación y compra inteligente para no arriesgar tu capital en stock que no se mueve.</p>
+        <div class="grid-relleno">
+            <div class="card">
+                <h3>💰 Escalabilidad</h3>
+                <p>Aprende cómo pasar de 0 a tus primeros 2,000 USD mensuales sin necesidad de experiencia previa en ventas.</p>
             </div>
-            <div class="feature-card">
-                <h3>02. Escala Global</h3>
-                <p>No te limites a tu ciudad. Te enseñamos cómo facturar dólares desde cualquier parte del mundo con una conexión a internet.</p>
+            <div class="card">
+                <h3>🌍 Libertad Total</h3>
+                <p>Un modelo de negocio diseñado para ser operado 100% desde tu celular o laptop, desde cualquier parte del mundo.</p>
             </div>
-            <div class="feature-card">
-                <h3>03. Mentoría Directa</h3>
-                <p>Al entrar al Club MGA, dejas de estar solo. Acceso a las estrategias exactas que me permitieron facturar mis primeros 7k.</p>
+            <div class="card">
+                <h3>🔥 El Método MGA</h3>
+                <p>Acceso a las estrategias reales de compra y venta que están dominando el mercado actual en 2026.</p>
             </div>
         </div>
 
-        <div class="cta-section">
-            <h2 style="margin-bottom: 30px; font-size: 1.8rem;">¿Estás listo para dar el salto?</h2>
+        <div class="cta-box">
+            <h2 style="margin-bottom: 25px; font-size: 1.4rem; color: #fff;">¿Listo para tu primer trato de éxito?</h2>
             <a href="https://wa.me/5492645079256?text=Hola!%20Vi%20el%20video%20y%20quiero%20arrancar%20con%20mi%20propio%20negocio" target="_blank" class="btn-ws">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="30" alt="ws">
-                HABLAR CON MGA POR WHATSAPP
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.181-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.164.823-.325.051-.749.093-1.22-.054-.306-.096-.693-.244-1.18-.456-1.933-.842-3.155-2.831-3.252-2.96-.097-.129-.785-1.04-.785-1.999 0-.959.501-1.431.678-1.625.177-.194.387-.243.516-.243l.371.004c.129.002.302-.047.473.364.173.417.589 1.44.64 1.542.052.102.086.221.017.359-.069.14-.155.239-.259.359-.103.12-.224.26-.32.351-.108.102-.221.212-.094.431.127.22.565.935 1.212 1.512.833.745 1.536.976 1.756 1.085.22.109.35.092.481-.059.13-.15.559-.654.707-.875.149-.222.298-.187.503-.113.205.074 1.3.614 1.527.728.227.113.378.169.434.266.055.098.055.564-.089.969zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10-10-4.477-10-10 4.477-10 10-10z"/></svg>
+                CHATEAR CON MGA AHORA
             </a>
-            <p style="margin-top: 20px; color: #555;">Acceso directo al soporte y consultoría inicial.</p>
+            <p style="margin-top: 25px; color: #333; font-size: 0.8rem; font-weight: 600;">CONSULTORÍA INICIAL VÍA WHATSAPP</p>
         </div>
     </div>
 
     <footer>
-        © 2026 CLUB MGA - Todos los derechos reservados. <br>
-        Esta página no es parte de Facebook ni Google Inc.
+        © 2026 CLUB MGA - Todos los resultados son responsabilidad del alumno. <br>
+        Esta web no garantiza ingresos fijos, el éxito depende del trabajo aplicado.
     </footer>
 
 </body>
