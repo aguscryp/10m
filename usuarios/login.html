@@ -105,11 +105,11 @@
     <canvas id="money-canvas"></canvas>
 
     <nav>
-        <a href="index.html" class="logo">CLUB <span>MGA</span></a>
+        <a href="../index.html" class="logo">CLUB <span>MGA</span></a>
         <div class="nav-links" id="menu">
-            <a href="index.html">INICIO</a>
-            <a href="testimonios.html">RESULTADOS</a>
-            <a href="comprayventa.html">MASTERCLASS</a>
+            <a href="../index.html">INICIO</a>
+            <a href="../testimonios.html">RESULTADOS</a>
+            <a href="../comprayventa.html">MASTERCLASS</a>
         </div>
         <div class="burger" id="burger">
             <span></span><span></span><span></span>
@@ -118,17 +118,17 @@
 
     <div class="login-container">
         <div class="login-card">
-            <i class="fas fa-id-card-alt"></i>
-            <h2>Panel de Control</h2>
+            <i class="fas fa-fingerprint"></i>
+            <h2>Acceso Miembros</h2>
             <div class="input-group">
                 <input type="text" id="user" placeholder="Usuario">
             </div>
             <div class="input-group">
                 <input type="password" id="pass" placeholder="Contraseña">
             </div>
-            <button class="login-btn" onclick="handleLogin()">Acceder al Sistema</button>
+            <button class="login-btn" onclick="handleLogin()">Ingresar al Panel</button>
             <p style="margin-top: 25px; font-size: 0.65rem; color: #444; letter-spacing: 2px; font-weight: 800; text-transform: uppercase;">
-                Acceso restringido a miembros VIP
+                Encriptación de Grado Militar Activada
             </p>
         </div>
     </div>
@@ -167,13 +167,13 @@
             burger.classList.toggle('active');
         };
 
-        // --- VALIDACIÓN DE ACCESO (admin / mgapanel) ---
+        // --- VALIDACIÓN DE ACCESO ---
         function handleLogin() {
             const userField = document.getElementById('user').value;
             const passField = document.getElementById('pass').value;
             const btn = document.querySelector('.login-btn');
 
-            // Credenciales solicitadas
+            // Credenciales Admin MGA
             const VALID_USER = "admin";
             const VALID_PASS = "mgapanel";
 
@@ -181,7 +181,7 @@
             
             setTimeout(() => {
                 if (userField === VALID_USER && passField === VALID_PASS) {
-                    // Crear sesión para privado/vip.html
+                    // Guardar Sesión
                     const sessionData = {
                         name: "Admin MGA",
                         role: "VIP",
@@ -190,16 +190,16 @@
                     };
                     localStorage.setItem('mga_session', JSON.stringify(sessionData));
                     
-                    // Redirigir
-                    window.location.href = 'privado/vip.html';
+                    // RUTA CORREGIDA: Sale de /usuarios y entra en /privado
+                    window.location.href = '../privado/vip.html';
                 } else {
-                    alert("❌ Credenciales inválidas. Acceso denegado.");
-                    btn.innerText = "Acceder al Sistema";
+                    alert("⚠️ Acceso Denegado: Usuario o contraseña incorrectos.");
+                    btn.innerText = "Ingresar al Panel";
                 }
-            }, 800);
+            }, 1000);
         }
 
-        // Permitir login con la tecla Enter
+        // Acceso rápido con Enter
         document.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') handleLogin();
         });
