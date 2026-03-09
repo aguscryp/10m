@@ -3,261 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP Dashboard | CLUB MGA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>VIP Panel | MGA CLUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --pink: #ff007a;
-            --pink-glow: rgba(255, 0, 122, 0.4);
-            --bg: #010101;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.07);
-        }
-
+        :root { --pink: #ff007a; --bg: #010101; --glass: rgba(255, 255, 255, 0.03); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        
-        body { 
-            background-color: var(--bg); 
-            color: #fff; 
-            overflow-x: hidden;
-            background: radial-gradient(circle at top right, #1a010c, #000);
-            min-height: 100vh;
-        }
-
-        /* FONDO DINERO ANIMADO */
-        #money-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.12; pointer-events: none;
-        }
-
-        /* HEADER */
-        nav {
-            height: 80px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 6%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 1000;
-        }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; background: radial-gradient(circle at top right, #1a010c, #000); min-height: 100vh; }
+        nav { height: 80px; display: flex; justify-content: space-between; align-items: center; padding: 0 6%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 1000; }
         .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; }
-        .logo span { color: var(--pink); text-shadow: 0 0 15px var(--pink); }
-
-        /* MENU LATERAL HAMBURGUESA */
-        .burger { cursor: pointer; display: flex; flex-direction: column; gap: 6px; z-index: 1100; }
-        .burger span { width: 28px; height: 2px; background: #fff; transition: 0.4s; border-radius: 5px; }
+        .logo span { color: var(--pink); }
         
-        .side-menu {
-            position: fixed; top: 0; right: -320px; width: 320px; height: 100vh;
-            background: rgba(5, 5, 5, 0.98); backdrop-filter: blur(30px);
-            display: flex; flex-direction: column; padding: 100px 30px;
-            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid var(--glass-border);
-            z-index: 1050;
-        }
+        /* MENU LATERAL */
+        .burger { cursor: pointer; z-index: 1100; }
+        .burger span { display: block; width: 25px; height: 2px; background: #fff; margin: 6px 0; transition: 0.4s; }
+        .side-menu { position: fixed; top: 0; right: -320px; width: 320px; height: 100vh; background: #080808; border-left: 1px solid rgba(255,255,255,0.1); padding: 100px 30px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1050; }
         .side-menu.active { right: 0; }
-        .burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .burger.active span:nth-child(2) { opacity: 0; }
-        .burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        .nav-link { display: flex; align-items: center; gap: 15px; color: #fff; text-decoration: none; padding: 15px 0; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .nav-link:hover { color: var(--pink); padding-left: 10px; }
 
-        .nav-link-item { 
-            display: flex; align-items: center; gap: 15px;
-            color: #fff; text-decoration: none; font-size: 0.95rem; 
-            padding: 15px 0; font-weight: 600; transition: 0.3s;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .nav-link-item:hover { color: var(--pink); padding-left: 10px; }
-        .nav-link-item i { color: var(--pink); width: 20px; text-align: center; }
-
-        /* CONTENIDO PRINCIPAL */
+        /* CONTENT */
         .container { max-width: 800px; margin: 60px auto; padding: 0 25px; text-align: center; }
-        
-        .welcome-card {
-            background: var(--glass); padding: 50px; border-radius: 40px;
-            border: 1px solid var(--glass-border); backdrop-filter: blur(20px);
-            margin-bottom: 30px;
-        }
-        .welcome-card h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1.5px; }
-        .user-name { color: var(--pink); text-shadow: 0 0 20px var(--pink-glow); }
+        .welcome-box { background: var(--glass); padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.07); backdrop-filter: blur(20px); }
+        .user-name { color: var(--pink); font-weight: 800; }
 
-        /* BOTÓN WHATSAPP VIP */
-        .whatsapp-card {
-            background: linear-gradient(135deg, #25d366 0%, #075e54 100%);
-            padding: 25px 35px; border-radius: 30px; margin-top: 20px;
-            display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1);
-        }
-        .whatsapp-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.2); }
-        .wa-info { display: flex; align-items: center; gap: 20px; }
-        .wa-info i { font-size: 2.2rem; }
+        /* WHATSAPP */
+        .wa-card { background: linear-gradient(135deg, #25d366 0%, #075e54 100%); padding: 25px; border-radius: 25px; margin-top: 30px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+        .wa-card:hover { transform: translateY(-5px); }
 
-        /* MODAL DE AVISO */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(15px);
-            display: none; align-items: center; justify-content: center; z-index: 2000;
-        }
-        .modal-overlay.active { display: flex; }
-
-        .modal-content {
-            background: #0a0a0a; border: 1px solid var(--pink); padding: 45px;
-            border-radius: 35px; max-width: 450px; text-align: center;
-            box-shadow: 0 0 60px rgba(255, 0, 122, 0.2);
-            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .modal-content i { font-size: 3.5rem; color: var(--pink); margin-bottom: 25px; }
-        .modal-content h3 { font-size: 1.6rem; margin-bottom: 15px; font-weight: 800; }
-        .modal-content p { color: #888; line-height: 1.6; margin-bottom: 30px; font-size: 0.95rem; }
-
-        .btn-confirm {
-            background: #fff; color: #000; border: none; padding: 18px 45px;
-            border-radius: 18px; font-weight: 800; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .btn-confirm:hover { background: var(--pink); color: #fff; transform: scale(1.05); }
-
+        /* MODAL */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); display:none; align-items:center; justify-content:center; z-index:2000; }
+        .modal.active { display:flex; }
+        .modal-inner { background:#111; border:1px solid var(--pink); padding:40px; border-radius:30px; max-width:400px; text-align:center; }
+        .btn-modal { background:#fff; color:#000; border:none; padding:15px 30px; border-radius:15px; font-weight:800; cursor:pointer; margin-top:20px; }
     </style>
 </head>
 <body>
 
-    <canvas id="money-canvas"></canvas>
-
     <nav>
         <a href="#" class="logo">MGA <span>VIP</span></a>
-        <div class="burger" id="burger">
-            <span></span><span></span><span></span>
-        </div>
+        <div class="burger" id="burger"><span></span><span></span><span></span></div>
     </nav>
 
     <div class="side-menu" id="side-menu">
-        <div id="menu-container">
-            </div>
-        <a href="#" onclick="logout()" class="nav-link-item" style="color: #ff4444; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px;">
-            <i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN
-        </a>
+        <div id="links-container"></div>
+        <a href="#" onclick="logout()" class="nav-link" style="color:#ff4444; margin-top:auto;"><i class="fas fa-power-off"></i> CERRAR SESIÓN</a>
     </div>
 
     <div class="container">
-        <div class="welcome-card">
-            <h1>Bienvenido, <span class="user-name" id="user-display">Alumno</span></h1>
-            <p style="color: #666; font-size: 1.1rem;">Es hora de escalar tu negocio al siguiente nivel. Todo el contenido está desbloqueado para ti.</p>
+        <div class="welcome-box">
+            <h1>Hola, <span class="user-name" id="user-txt">Alumno</span></h1>
+            <p style="color:#666; margin-top:10px;">Bienvenido a tu panel de control empresarial.</p>
         </div>
 
-        <div class="whatsapp-card" onclick="openWAModal()">
-            <div class="wa-info">
-                <i class="fab fa-whatsapp"></i>
-                <div style="text-align: left;">
-                    <h3 style="margin:0; font-size: 1.1rem; letter-spacing: 1px;">COMUNIDAD PRIVADA MGA</h3>
-                    <p style="margin:0; font-size: 0.75rem; opacity: 0.7; font-weight: 600;">SOPORTE Y NETWORKING 24/7</p>
+        <div class="wa-card" onclick="openModal()">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <i class="fab fa-whatsapp" style="font-size:2rem;"></i>
+                <div style="text-align:left;">
+                    <p style="font-weight:800; margin:0;">GRUPO DE WHATSAPP</p>
+                    <p style="font-size:0.7rem; opacity:0.8; margin:0;">SOLICITAR ACCESO AL GESTOR</p>
                 </div>
             </div>
-            <i class="fas fa-arrow-right"></i>
+            <i class="fas fa-chevron-right"></i>
         </div>
     </div>
 
-    <div class="modal-overlay" id="wa-modal">
-        <div class="modal-content">
-            <i class="fas fa-shield-check"></i>
-            <h3>Acceso Restringido</h3>
-            <p>Al unirte, entrarás en una <b>sala de espera</b> por seguridad. Un gestor verificará tu identidad y aceptará tu solicitud en breve.</p>
-            <button class="btn-confirm" onclick="redirectToWA()">ENTENDIDO, UNIRME</button>
+    <div class="modal" id="modal-wa">
+        <div class="modal-inner">
+            <i class="fas fa-clock" style="font-size:3rem; color:var(--pink); margin-bottom:15px;"></i>
+            <h3>Sala de Espera</h3>
+            <p style="color:#888; font-size:0.9rem; margin-top:10px;">Al unirte, un administrador revisará tu perfil. Por favor, espera a ser aceptado.</p>
+            <button class="btn-modal" onclick="goToWA()">ENTRAR AL GRUPO</button>
         </div>
     </div>
 
     <script>
-        // 1. VERIFICACIÓN DE SESIÓN
+        // SEGURIDAD Y SESIÓN
         const session = JSON.parse(localStorage.getItem('mga_session'));
-        if(!session) {
-            window.location.href = '../usuarios/login.html';
-        } else {
-            document.getElementById('user-display').innerText = session.name;
+        if(!session) window.location.href = '../usuarios/login.html';
+        document.getElementById('user-txt').innerText = session.name;
+
+        // CARGAR MENÚ DESDE GESTIÓN
+        function renderMenu() {
+            const data = JSON.parse(localStorage.getItem('mga_menu_db')) || [];
+            const cont = document.getElementById('links-container');
+            cont.innerHTML = data.map(i => `<a href="${i.url}" class="nav-link"><i class="${i.icon}"></i> ${i.title.toUpperCase()}</a>`).join('');
         }
 
-        // 2. CARGAR MENÚ DINÁMICO
-        function loadMenu() {
-            const menuData = JSON.parse(localStorage.getItem('mga_menu_db')) || [];
-            const container = document.getElementById('menu-container');
-            
-            let html = '';
-            menuData.forEach(item => {
-                html += `
-                    <div style="margin-bottom: 5px;">
-                        <a href="${item.url}" class="nav-link-item">
-                            <i class="${item.icon}"></i> ${item.title.toUpperCase()}
-                        </a>
-                `;
-                if(item.subs && item.subs.length > 0) {
-                    item.subs.forEach(sub => {
-                        html += `
-                            <a href="${sub.url}" class="nav-link-item" style="margin-left: 25px; font-size: 0.8rem; opacity: 0.7; border:none; padding: 10px 0;">
-                                <i class="${sub.icon}" style="font-size: 0.7rem;"></i> ${sub.title}
-                            </a>
-                        `;
-                    });
-                }
-                html += `</div>`;
-            });
-            container.innerHTML = html;
+        // WHATSAPP DINÁMICO
+        function openModal() { document.getElementById('modal-wa').classList.add('active'); }
+        function goToWA() {
+            const config = JSON.parse(localStorage.getItem('mga_config')) || { wa_link: '#' };
+            if(config.wa_link !== '#') window.open(config.wa_link, '_blank');
+            else alert("Link no configurado por el admin.");
+            document.getElementById('modal-wa').classList.remove('active');
         }
 
-        // 3. LÓGICA WHATSAPP
-        function openWAModal() {
-            document.getElementById('wa-modal').classList.add('active');
-        }
-
-        function redirectToWA() {
-            const groupLink = "https://chat.whatsapp.com/TU_CODIGO_AQUI"; // REEMPLAZAR CON TU LINK REAL
-            document.getElementById('wa-modal').classList.remove('active');
-            window.open(groupLink, '_blank');
-        }
-
-        // 4. DINERO CAYENDO
-        const canvas = document.getElementById('money-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function initCanvas() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            particles = [];
-            for (let i = 0; i < 50; i++) {
-                particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, s: Math.random() * 2 + 1, o: Math.random() * 0.4 + 0.1 });
-            }
-        }
-        function drawCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
-            ctx.font = "20px serif";
-            particles.forEach(p => {
-                ctx.globalAlpha = p.o;
-                ctx.fillText('$', p.x, p.y);
-                p.y += p.s;
-                if (p.y > canvas.height) p.y = -20;
-            });
-            requestAnimationFrame(drawCanvas);
-        }
-
-        // 5. INTERACCIONES
+        // INTERACCIONES
         const burger = document.getElementById('burger');
-        const sideMenu = document.getElementById('side-menu');
-        burger.onclick = () => {
-            burger.classList.toggle('active');
-            sideMenu.classList.toggle('active');
-        };
+        const side = document.getElementById('side-menu');
+        burger.onclick = () => { side.classList.toggle('active'); burger.classList.toggle('active'); };
+        function logout() { localStorage.removeItem('mga_session'); window.location.href = '../usuarios/login.html'; }
 
-        function logout() {
-            localStorage.removeItem('mga_session');
-            window.location.href = '../usuarios/login.html';
-        }
-
-        // Inicialización
-        window.onresize = initCanvas;
-        initCanvas();
-        drawCanvas();
-        loadMenu();
-
-        // Cerrar modal si clickean fuera
-        window.onclick = function(e) {
-            if (e.target.classList.contains('modal-overlay')) {
-                e.target.classList.remove('active');
-            }
-        }
+        renderMenu();
     </script>
 </body>
 </html>
