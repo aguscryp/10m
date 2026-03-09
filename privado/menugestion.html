@@ -2,155 +2,283 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>MGA OS | Panel Maestro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGA OS | Panel Maestro Elite</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --pink: #ff007a; --bg: #050505; --card: #111; --border: rgba(255,255,255,0.08); }
-        body { background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; display: flex; height: 100vh; }
-        
-        /* SIDEBAR ADMIN */
-        .sidebar { width: 260px; background: #000; border-right: 1px solid var(--border); padding: 30px; display: flex; flex-direction: column; gap: 10px; }
-        .nav-btn { background: none; border: none; color: #666; padding: 15px; text-align: left; font-weight: 700; cursor: pointer; border-radius: 12px; transition: 0.3s; }
-        .nav-btn.active { background: var(--pink); color: white; box-shadow: 0 0 20px rgba(255,0,122,0.3); }
-        .nav-btn i { margin-right: 10px; }
+        :root { 
+            --pink: #ff007a; 
+            --bg: #050505; 
+            --card: #111; 
+            --border: rgba(255,255,255,0.08); 
+            --sidebar-w: 260px;
+        }
 
-        /* MAIN AREA */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { background: var(--bg); color: white; display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* SIDEBAR RESPONSIVE */
+        .sidebar { 
+            width: var(--sidebar-w); background: #000; border-right: 1px solid var(--border); 
+            padding: 30px 20px; display: flex; flex-direction: column; gap: 10px;
+            position: fixed; height: 100vh; transition: 0.3s; z-index: 1000;
+        }
+
+        .nav-btn { 
+            background: none; border: none; color: #666; padding: 14px 18px; 
+            text-align: left; font-weight: 700; cursor: pointer; border-radius: 12px; 
+            transition: 0.3s; display: flex; align-items: center; gap: 12px; font-size: 0.9rem;
+        }
+        .nav-btn.active { background: var(--pink); color: white; box-shadow: 0 10px 20px rgba(255,0,122,0.2); }
+        .nav-btn:hover:not(.active) { background: rgba(255,255,255,0.05); color: #fff; }
+
+        /* MAIN CONTENT */
+        .main-content { flex: 1; margin-left: var(--sidebar-w); padding: 40px; transition: 0.3s; width: 100%; }
+        
+        .header-mobile { display: none; padding: 20px; background: #000; border-bottom: 1px solid var(--border); align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 999; }
+
+        .tab-content { display: none; animation: fadeIn 0.4s ease; max-width: 1000px; margin: 0 auto; }
         .tab-content.active { display: block; }
 
-        .glass-card { background: var(--card); border: 1px solid var(--border); padding: 25px; border-radius: 20px; margin-bottom: 30px; }
-        input, select { background: #000; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; width: 100%; margin-top: 5px; }
+        /* CARDS & FORMS */
+        .glass-card { background: var(--card); border: 1px solid var(--border); padding: 25px; border-radius: 24px; margin-bottom: 25px; }
+        .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { text-align: left; padding: 15px; color: #555; font-size: 0.8rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        label { display: block; font-size: 0.75rem; color: #555; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; margin-left: 5px; }
+        input, select { background: #000; border: 1px solid var(--border); color: white; padding: 14px; border-radius: 14px; width: 100%; transition: 0.3s; }
+        input:focus { border-color: var(--pink); outline: none; background: #080808; }
 
-        .btn-save { background: var(--pink); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 800; cursor: pointer; }
-        .btn-del { color: #ff4444; cursor: pointer; background: none; border: none; }
+        .btn-action { background: var(--pink); color: white; border: none; padding: 14px 25px; border-radius: 14px; font-weight: 800; cursor: pointer; transition: 0.3s; width: 100%; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,0,122,0.3); }
+
+        /* TABLES & LISTS */
+        .table-container { overflow-x: auto; background: var(--card); border-radius: 20px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { text-align: left; padding: 18px; color: #444; font-size: 0.7rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+        td { padding: 18px; border-bottom: 1px solid var(--border); font-size: 0.9rem; vertical-align: middle; }
+        
+        .badge-user { background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 8px; font-family: monospace; color: var(--pink); }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 992px) {
+            .sidebar { left: -100%; }
+            .sidebar.active { left: 0; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .header-mobile { display: flex; }
+        }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <h2 style="margin-bottom: 30px;">MGA <span style="color:var(--pink)">PRO</span></h2>
-        <button class="nav-btn active" onclick="showTab('menu-tab')"><i class="fas fa-bars"></i> Menú VIP</button>
-        <button class="nav-btn" onclick="showTab('users-tab')"><i class="fas fa-users"></i> Usuarios</button>
-        <button class="nav-btn" onclick="showTab('config-tab')"><i class="fas fa-cog"></i> Configuración</button>
+    <div class="header-mobile">
+        <h2 style="font-size: 1.1rem;">MGA <span style="color:var(--pink)">OS</span></h2>
+        <button onclick="toggleSidebar()" style="background:none; border:none; color:white; font-size:1.5rem;"><i class="fas fa-bars"></i></button>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <h2 style="margin-bottom: 30px; font-size: 1.5rem; padding-left: 10px;">MGA <span style="color:var(--pink)">OS</span></h2>
+        <button class="nav-btn active" onclick="showTab('menu-tab', this)"><i class="fas fa-layer-group"></i> Menú Alumnos</button>
+        <button class="nav-btn" onclick="showTab('users-tab', this)"><i class="fas fa-user-graduate"></i> Base de Alumnos</button>
+        <button class="nav-btn" onclick="showTab('config-tab', this)"><i class="fas fa-external-link-alt"></i> Links & Redes</button>
+        <div style="margin-top: auto; padding: 10px;">
+            <p style="font-size: 0.6rem; color: #333; letter-spacing: 1px;">SISTEMA DE GESTIÓN v3.0</p>
+        </div>
     </div>
 
     <div class="main-content">
         
         <div id="menu-tab" class="tab-content active">
-            <h1>Gestión de Navegación</h1>
-            <div class="glass-card" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                <div><label>Título</label><input type="text" id="m-title"></div>
-                <div><label>Ruta (URL)</label><input type="text" id="m-url"></div>
-                <div><label>Icono</label><select id="m-icon">
-                    <option value="fas fa-rocket">Rocket</option><option value="fas fa-video">Video</option><option value="fas fa-wallet">Wallet</option>
-                </select></div>
-                <button class="btn-save" onclick="addMenuItem()" style="grid-column: span 3; margin-top: 10px;">Agregar al Menú</button>
+            <h1 style="margin-bottom: 30px;">Estructura del Menú</h1>
+            <div class="glass-card">
+                <div class="grid-form">
+                    <div>
+                        <label>Nombre de la página</label>
+                        <input type="text" id="m-title" placeholder="Ej: Estrategia Pro">
+                    </div>
+                    <div>
+                        <label>URL del archivo</label>
+                        <input type="text" id="m-url" placeholder="ej: modulos/clase1.html">
+                    </div>
+                    <div>
+                        <label>Icono Visual</label>
+                        <select id="m-icon">
+                            <option value="fas fa-rocket">🚀 Lanzamiento</option>
+                            <option value="fas fa-play-circle">🎬 Video Curso</option>
+                            <option value="fas fa-wallet">💰 Finanzas</option>
+                            <option value="fas fa-gem">💎 VIP Gold</option>
+                            <option value="fas fa-chart-line">📈 Métricas</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="addMenuItem()">Añadir al Menú VIP</button>
             </div>
-            <div id="menu-list"></div>
+            
+            <div id="menu-display-list" style="display: flex; flex-direction: column; gap: 12px;">
+                </div>
         </div>
 
         <div id="users-tab" class="tab-content">
-            <h1>Base de Datos de Alumnos</h1>
-            <div class="glass-card" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                <div><label>Nombre Alumno</label><input type="text" id="u-name"></div>
-                <div><label>Usuario</label><input type="text" id="u-user"></div>
-                <div><label>Contraseña</label><input type="text" id="u-pass"></div>
-                <button class="btn-save" onclick="addUser()" style="grid-column: span 3; margin-top: 10px;">Registrar Alumno</button>
+            <h1 style="margin-bottom: 30px;">Gestión de Accesos</h1>
+            <div class="glass-card">
+                <div class="grid-form">
+                    <div><label>Nombre Real</label><input type="text" id="u-name" placeholder="Juan Pérez"></div>
+                    <div><label>ID Usuario</label><input type="text" id="u-user" placeholder="juan2026"></div>
+                    <div><label>Password</label><input type="text" id="u-pass" placeholder="mga8899"></div>
+                </div>
+                <button class="btn-action" onclick="addUser()">Crear Cuenta Alumno</button>
             </div>
-            <table>
-                <thead><tr><th>Nombre</th><th>User</th><th>Pass</th><th>Acción</th></tr></thead>
-                <tbody id="users-list"></tbody>
-            </table>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alumno</th>
+                            <th>Acceso</th>
+                            <th>Password</th>
+                            <th style="text-align: right;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-list-body"></tbody>
+                </table>
+            </div>
         </div>
 
         <div id="config-tab" class="tab-content">
-            <h1>Ajustes de la Plataforma</h1>
+            <h1 style="margin-bottom: 30px;">Links del Sistema</h1>
             <div class="glass-card">
-                <h3>Enlace de Comunidad WhatsApp</h3>
-                <p style="color:#666; font-size: 0.8rem; margin-bottom: 15px;">Este link se abrirá cuando el alumno acepte el aviso en el panel VIP.</p>
-                <input type="text" id="conf-wa" placeholder="https://chat.whatsapp.com/...">
-                <button class="btn-save" onclick="saveConfig()" style="margin-top: 15px;">Actualizar Link</button>
+                <label>Link Directo WhatsApp Grupo</label>
+                <input type="text" id="conf-wa" placeholder="https://chat.whatsapp.com/..." style="margin-bottom: 20px;">
+                <p style="font-size: 0.8rem; color: #555; margin-bottom: 20px;">
+                    <i class="fas fa-info-circle"></i> No importa si olvidas el "https://", el sistema lo corregirá automáticamente para los alumnos.
+                </p>
+                <button class="btn-action" onclick="saveGlobalConfig()">Guardar Cambios Globales</button>
             </div>
         </div>
+
     </div>
 
     <script>
-        // DB INICIALIZACIÓN
+        // --- BASE DE DATOS LOCAL ---
         let menuDB = JSON.parse(localStorage.getItem('mga_menu_db')) || [];
-        let usersDB = JSON.parse(localStorage.getItem('mga_users_db')) || [{name: 'Admin', user: 'admin', pass: 'mgapanel'}];
-        let configDB = JSON.parse(localStorage.getItem('mga_config')) || {wa_link: '#'};
+        let usersDB = JSON.parse(localStorage.getItem('mga_users_db')) || [{name: 'Admin Master', user: 'admin', pass: 'mgapanel'}];
+        let configDB = JSON.parse(localStorage.getItem('mga_config')) || { wa_link: '' };
 
-        function showTab(tabId) {
+        // --- NAVEGACIÓN ---
+        function showTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            btn.classList.add('active');
+            if(window.innerWidth < 992) toggleSidebar();
         }
 
-        // GESTIÓN DE USUARIOS
-        function addUser() {
-            const name = document.getElementById('u-name').value;
-            const user = document.getElementById('u-user').value;
-            const pass = document.getElementById('u-pass').value;
-            if(name && user && pass) {
-                usersDB.push({name, user, pass});
-                saveAll();
-                document.getElementById('u-name').value = ''; document.getElementById('u-user').value = ''; document.getElementById('u-pass').value = '';
-            }
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
         }
 
-        function deleteUser(i) { usersDB.splice(i, 1); saveAll(); }
-
-        // GESTIÓN DE CONFIG
-        function saveConfig() {
-            configDB.wa_link = document.getElementById('conf-wa').value;
-            saveAll();
-            alert("Configuración guardada correctamente");
-        }
-
-        // GESTIÓN DE MENÚ (Simplificado para el ejemplo)
+        // --- LÓGICA DE MENÚ ---
         function addMenuItem() {
             const title = document.getElementById('m-title').value;
             const url = document.getElementById('m-url').value;
             const icon = document.getElementById('m-icon').value;
-            if(title) {
-                menuDB.push({title, url, icon, subs: []});
-                saveAll();
+            if(!title || !url) return alert("Completa los campos");
+            
+            menuDB.push({ title, url, icon });
+            saveAndRender();
+            document.getElementById('m-title').value = '';
+            document.getElementById('m-url').value = '';
+        }
+
+        function deleteMenuItem(index) {
+            if(confirm("¿Eliminar esta página del menú?")) {
+                menuDB.splice(index, 1);
+                saveAndRender();
             }
         }
 
-        function saveAll() {
+        // --- LÓGICA DE USUARIOS ---
+        function addUser() {
+            const name = document.getElementById('u-name').value;
+            const user = document.getElementById('u-user').value;
+            const pass = document.getElementById('u-pass').value;
+            if(!name || !user || !pass) return alert("Faltan datos");
+
+            usersDB.push({ name, user, pass });
+            saveAndRender();
+            document.getElementById('u-name').value = '';
+            document.getElementById('u-user').value = '';
+            document.getElementById('u-pass').value = '';
+        }
+
+        function deleteUser(index) {
+            if(index === 0) return alert("No puedes borrar al admin principal");
+            if(confirm("¿Revocar acceso a este alumno?")) {
+                usersDB.splice(index, 1);
+                saveAndRender();
+            }
+        }
+
+        // --- CONFIG GLOBAL ---
+        function saveGlobalConfig() {
+            let link = document.getElementById('conf-wa').value.trim();
+            // Limpieza de link para evitar errores de repositorio
+            if(link && !link.startsWith('http')) {
+                link = 'https://' + link;
+            }
+            configDB.wa_link = link;
+            saveAndRender();
+            alert("Enlace de WhatsApp actualizado correctamente");
+        }
+
+        // --- MOTOR DE RENDER ---
+        function saveAndRender() {
             localStorage.setItem('mga_menu_db', JSON.stringify(menuDB));
             localStorage.setItem('mga_users_db', JSON.stringify(usersDB));
             localStorage.setItem('mga_config', JSON.stringify(configDB));
-            render();
+            renderAll();
         }
 
-        function render() {
+        function renderAll() {
+            // Render Menú
+            const menuList = document.getElementById('menu-display-list');
+            menuList.innerHTML = menuDB.map((item, i) => `
+                <div class="glass-card" style="margin-bottom:0; padding:15px; display:flex; align-items:center; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <i class="${item.icon}" style="color:var(--pink)"></i>
+                        <div>
+                            <p style="font-weight:800; font-size:0.9rem;">${item.title.toUpperCase()}</p>
+                            <p style="font-size:0.7rem; color:#444;">${item.url}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteMenuItem(${i})" style="background:none; border:none; color:#333; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
+
             // Render Usuarios
-            const uList = document.getElementById('users-list');
-            uList.innerHTML = usersDB.map((u, i) => `
+            const userList = document.getElementById('users-list-body');
+            userList.innerHTML = usersDB.map((u, i) => `
                 <tr>
-                    <td>${u.name}</td>
-                    <td><b>${u.user}</b></td>
+                    <td><b>${u.name}</b></td>
+                    <td><span class="badge-user">${u.user}</span></td>
                     <td><code>${u.pass}</code></td>
-                    <td><button class="btn-del" onclick="deleteUser(${i})"><i class="fas fa-trash"></i></button></td>
+                    <td style="text-align:right;">
+                        <button onclick="deleteUser(${i})" class="btn-del" style="background:none; border:none; color:#ff4444; cursor:pointer; padding:10px;">
+                            <i class="fas fa-user-minus"></i>
+                        </button>
+                    </td>
                 </tr>
             `).join('');
 
-            // Cargar link actual en el input de config
+            // Cargar link actual en el input
             document.getElementById('conf-wa').value = configDB.wa_link;
         }
 
-        render();
+        // Ejecutar al cargar
+        renderAll();
     </script>
 </body>
 </html>
