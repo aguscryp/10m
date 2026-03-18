@@ -28,40 +28,58 @@
 
         .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; text-align: center; }
         
-        .vip-badge {
-            display: inline-block; padding: 8px 20px; background: linear-gradient(90deg, #ff007a, #8000ff);
-            border-radius: 50px; color: #fff; font-size: 0.75rem; font-weight: 800; 
-            letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase;
-        }
-
         /* --- SECCIÓN DE CLASES --- */
-        .clases-grid { display: flex; flex-direction: column; gap: 50px; margin-top: 40px; }
+        .clases-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 40px; }
 
         .clase-card {
             background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 30px; padding: 25px; text-align: left; transition: 0.3s;
+            border-radius: 35px; padding: 30px; text-align: left; transition: 0.3s;
         }
-        .clase-card:hover { border-color: var(--pink); box-shadow: 0 10px 30px rgba(255, 0, 122, 0.1); }
 
-        .clase-titulo { font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; color: #fff; }
-        .clase-titulo span { color: var(--pink); margin-right: 10px; }
+        .clase-titulo { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; color: #fff; display: flex; align-items: center; }
+        .clase-titulo span { color: var(--pink); margin-right: 12px; font-size: 1.2rem; opacity: 0.8; }
 
-        .video-container {
-            position: relative; width: 100%; padding-bottom: 56.25%; height: 0;
-            border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 20px;
+        /* CONTENEDOR MAESTRO DEL VIDEO (EL RECORTE) */
+        .video-clipper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* Relación 16:9 */
+            height: 0;
+            border-radius: 20px;
+            overflow: hidden; /* ESTO ES LO QUE CORTA EL BOTÓN DE DRIVE */
+            background: #000;
+            margin-bottom: 25px;
             border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        .clase-descripcion { color: #aaa; font-size: 0.95rem; line-height: 1.6; }
+        /* EL IFRAME CON ZOOM PARA SACAR EL BOTÓN DE LA VISTA */
+        .video-clipper iframe {
+            position: absolute;
+            top: -5%;     /* Empujamos el video hacia arriba */
+            left: -2%;    /* Empujamos el video a la izquierda */
+            width: 105%;  /* Lo hacemos un poco más ancho */
+            height: 110%; /* Lo hacemos un poco más alto */
+            border: none;
+        }
 
-        /* BOTÓN WSP (Para VIP) */
+        .clase-descripcion { 
+            background: rgba(255,255,255,0.02); 
+            padding: 20px; 
+            border-radius: 15px; 
+            color: #bbb; 
+            font-size: 1rem; 
+            line-height: 1.6; 
+            border-left: 3px solid var(--pink);
+        }
+
         .btn-wsp-vip {
-            display: inline-block; width: 100%; padding: 18px; background: #25d366; 
-            color: #fff; text-decoration: none; border-radius: 15px; font-weight: 800;
-            margin-bottom: 40px; transition: 0.3s; text-align: center;
+            display: inline-block; width: 100%; padding: 20px; background: #25d366; 
+            color: #fff; text-decoration: none; border-radius: 20px; font-weight: 800;
+            margin-bottom: 50px; transition: 0.3s; text-align: center; font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
         }
-        .btn-wsp-vip:hover { transform: scale(1.02); background: #20ba5a; }
+        .btn-wsp-vip:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4); }
 
     </style>
 </head>
@@ -69,40 +87,40 @@
 
     <nav>
         <a href="index.html" class="logo">MGA <span>CLUB</span></a>
-        <div style="font-weight: 800; color: var(--pink); letter-spacing: 1px;">ÁREA VIP</div>
+        <div style="font-weight: 800; color: var(--pink); letter-spacing: 1px; font-size: 0.9rem;">PANEL VIP</div>
     </nav>
 
     <div class="container">
-        <span class="vip-badge"><i class="fas fa-crown"></i> Acceso Exclusivo</span>
-        <h1 style="margin-bottom: 30px; font-size: 2.2rem;">Panel de Clases Mentoria</h1>
+        <h1 style="margin-bottom: 10px; font-size: 2.5rem; letter-spacing: -1.5px;">Mentoria <span>Exclusiva</span></h1>
+        <p style="color: #666; margin-bottom: 40px; font-weight: 600;">Bienvenido al área de alto rendimiento, Agustín.</p>
 
-        <a href="https://wa.me/5492645079256?text=Hola%20Agus%20tengo%20una%20duda%20sobre%20las%20clases%20VIP" class="btn-wsp-vip">
-            <i class="fab fa-whatsapp"></i> HABLAR CON AGUS (SOPORTE)
+        <a href="https://wa.me/5492645079256?text=Hola%20Agus%20tengo%20una%20duda%20sobre%20las%20clases%20VIP" class="btn-wsp-vip" target="_blank">
+            <i class="fab fa-whatsapp"></i> CONTACTAR SOPORTE VIP
         </a>
 
         <div class="clases-grid">
 
             <div class="clase-card">
-                <h3 class="clase-titulo"><span>01.</span> Creacion de cuentas en TikTok</h3>
-                <div class="video-container">
-                    <iframe src="https://drive.google.com/file/d/1UQJonQksDVnc6rmr10xHZqDBxzZ49GYJ/preview" allow="autoplay"></iframe>
+                <h3 class="clase-titulo"><span>01</span> Creación de cuentas en TikTok</h3>
+                <div class="video-clipper">
+                    <iframe src="https://drive.google.com/file/d/1UQJonQksDVnc6rmr10xHZqDBxzZ49GYJ/preview"></iframe>
                 </div>
-                <p class="clase-descripcion">
-                    <b>Descripción:</b> Te cuento la formula que el CLUB te brinda para que hagas tus primeros $3,500,000 de manera eficiente.
-                </p>
+                <div class="clase-descripcion">
+                    Te cuento la fórmula que el CLUB te brinda para que hagas tus primeros <b>$3,500,000</b> de manera eficiente.
+                </div>
             </div>
 
             <div class="clase-card">
-                <h3 class="clase-titulo"><span>02.</span> Como monetizar un TikTok</h3>
-                <div class="video-container">
-                    <iframe src="https://drive.google.com/file/d/1hZ_6WVbr6XBev0h6BG_EV2mU6qYHnqxJ/preview" allow="autoplay"></iframe>
+                <h3 class="clase-titulo"><span>02</span> Como monetizar un TikTok</h3>
+                <div class="video-clipper">
+                    <iframe src="https://drive.google.com/file/d/1hZ_6WVbr6XBev0h6BG_EV2mU6qYHnqxJ/preview"></iframe>
                 </div>
-                <p class="clase-descripcion">
-                    <b>Descripción:</b> Con la constancia de 30 dias siguiendo la formula pones en juego casi 16 millones de pesos.
-                </p>
+                <div class="clase-descripcion">
+                    Con la constancia de 30 días siguiendo la fórmula pones en juego casi <b>16 millones de pesos</b>.
+                </div>
             </div>
 
-            </div>
+        </div>
     </div>
 
 </body>
