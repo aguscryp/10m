@@ -28,110 +28,112 @@
 
         .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; text-align: center; }
         
-        /* --- SECCIÓN DE CLASES --- */
-        .clases-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 40px; }
+        /* BOTONES */
+        .buttons-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
+        .btn-wsp-vip {
+            display: inline-block; width: 100%; padding: 18px; background: #25d366; 
+            color: #fff; text-decoration: none; border-radius: 15px; font-weight: 800;
+            transition: 0.3s; text-align: center; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.1);
+        }
+        .btn-group-vip {
+            display: inline-block; width: 100%; padding: 18px; background: transparent; 
+            color: #fff; cursor: pointer; border: 2px solid var(--pink); border-radius: 15px; font-weight: 800;
+            transition: 0.3s; text-align: center;
+        }
+        .btn-wsp-vip:hover, .btn-group-vip:hover { transform: translateY(-3px); filter: brightness(1.2); }
 
+        /* MODAL PERSONALIZADO */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 9999;
+        }
+        .modal-card {
+            background: #0d0d0d; border: 2px solid var(--pink); border-radius: 30px;
+            padding: 40px; max-width: 450px; width: 90%; text-align: center;
+            box-shadow: 0 0 50px var(--pink-glow);
+        }
+        .modal-card i { font-size: 3rem; color: var(--pink); margin-bottom: 20px; }
+        .modal-card h2 { font-size: 1.5rem; margin-bottom: 15px; }
+        .modal-card p { color: #aaa; margin-bottom: 30px; }
+        .btn-modal-confirm { 
+            display: block; width: 100%; padding: 15px; background: var(--pink); 
+            color: #fff; text-decoration: none; border-radius: 12px; font-weight: 800; margin-bottom: 10px;
+        }
+        .btn-modal-cancel { color: #555; cursor: pointer; font-size: 0.8rem; text-decoration: underline; }
+
+        /* CLASES */
         .clase-card {
             background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 35px; padding: 30px; text-align: left; transition: 0.3s;
+            border-radius: 35px; padding: 30px; text-align: left; margin-bottom: 50px;
         }
-
-        .clase-titulo { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; color: #fff; display: flex; align-items: center; }
-        .clase-titulo span { color: var(--pink); margin-right: 12px; font-size: 1.2rem; opacity: 0.8; }
-
-        /* CONTENEDOR MAESTRO DEL VIDEO (EL RECORTE) */
-        .video-clipper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* Relación 16:9 */
-            height: 0;
-            border-radius: 20px;
-            overflow: hidden; /* ESTO ES LO QUE CORTA EL BOTÓN DE DRIVE */
-            background: #000;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        .video-wrapper {
+            position: relative; width: 100%; padding-bottom: 56.25%; height: 0;
+            border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 25px;
         }
-
-        /* EL IFRAME CON ZOOM PARA SACAR EL BOTÓN DE LA VISTA */
-        .video-clipper iframe {
-            position: absolute;
-            top: -5%;     /* Empujamos el video hacia arriba */
-            left: -2%;    /* Empujamos el video a la izquierda */
-            width: 105%;  /* Lo hacemos un poco más ancho */
-            height: 110%; /* Lo hacemos un poco más alto */
-            border: none;
-        }
-
-        .clase-descripcion { 
-            background: rgba(255,255,255,0.02); 
-            padding: 20px; 
-            border-radius: 15px; 
-            color: #bbb; 
-            font-size: 1rem; 
-            line-height: 1.6; 
-            border-left: 3px solid var(--pink);
-        }
-
-        .btn-wsp-vip {
-            display: inline-block; width: 100%; padding: 20px; background: #25d366; 
-            color: #fff; text-decoration: none; border-radius: 20px; font-weight: 800;
-            margin-bottom: 50px; transition: 0.3s; text-align: center; font-size: 1.1rem;
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
-        }
-        .btn-wsp-vip:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4); }
-
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
+    <div class="modal-overlay" id="modal-espera">
+        <div class="modal-card">
+            <i class="fas fa-clock"></i>
+            <h2>Lista de Espera</h2>
+            <p>Al unirte vas a estar en <b>lista de espera</b> hasta que el administrador te autorice el ingreso al grupo oficial del CLUB.</p>
+            <a href="https://chat.whatsapp.com/BhHHeYmANVxHhUyS23ut4H" class="btn-modal-confirm" onclick="cerrarModal()">ENTENDIDO, UNIRSE</a>
+            <span class="btn-modal-cancel" onclick="cerrarModal()">Cancelar</span>
+        </div>
+    </div>
+
     <nav>
         <a href="index.html" class="logo">MGA <span>CLUB</span></a>
-        <div style="font-weight: 800; color: var(--pink); letter-spacing: 1px; font-size: 0.9rem;">PANEL VIP</div>
+        <div style="font-weight: 800; color: var(--pink); font-size: 0.9rem;">VIP</div>
     </nav>
 
     <div class="container">
-        <h1 style="margin-bottom: 10px; font-size: 2.5rem; letter-spacing: -1.5px;">Mentoria <span>Exclusiva</span></h1>
-        <p style="color: #666; margin-bottom: 40px; font-weight: 600;">Bienvenido al área de alto rendimiento, Agustín.</p>
+        <h1 style="margin-bottom: 10px; font-size: 2.5rem;">Mentoria <span>Exclusiva</span></h1>
+        <p style="color: #bbb; margin-bottom: 40px;">
+            Bienvenido <b>"Usuario"</b>, arranca tu camino hacia el éxito emprendedor junto al <b>CLUB</b>.
+        </p>
 
-        <a href="https://wa.me/5492645079256?text=Hola%20Agus%20tengo%20una%20duda%20sobre%20las%20clases%20VIP" class="btn-wsp-vip" target="_blank">
-            <i class="fab fa-whatsapp"></i> CONTACTAR SOPORTE VIP
-        </a>
-
-        <div class="clases-grid">
-
-            <div class="clase-card">
-                <h3 class="clase-titulo"><span>01</span> Creación de cuentas en TikTok</h3>
-                <div class="video-clipper">
-                    <iframe src="https://drive.google.com/file/d/1UQJonQksDVnc6rmr10xHZqDBxzZ49GYJ/preview"></iframe>
-                </div>
-                <div class="clase-descripcion">
-                    Te cuento la fórmula que el CLUB te brinda para que hagas tus primeros <b>$3,500,000</b> de manera eficiente.
-                </div>
+        <div class="buttons-group">
+            <a href="https://wa.me/5492645079256?text=Hola%20Agus%20tengo%20una%20duda%20sobre%20las%20clases%20VIP" class="btn-wsp-vip" target="_blank">
+                <i class="fab fa-whatsapp"></i> CONTACTAR SOPORTE VIP
+            </a>
+            <div class="btn-group-vip" onclick="abrirModal()">
+                <i class="fas fa-users"></i> UNIRSE AL GRUPO DE WHATSAPP
             </div>
+        </div>
 
-            <div class="clase-card">
-                <h3 class="clase-titulo"><span>02</span> Como monetizar un TikTok</h3>
-                <div class="video-clipper">
-                    <iframe src="https://drive.google.com/file/d/1hZ_6WVbr6XBev0h6BG_EV2mU6qYHnqxJ/preview"></iframe>
-                </div>
-                <div class="clase-descripcion">
-                    Con la constancia de 30 días siguiendo la fórmula pones en juego casi <b>16 millones de pesos</b>.
-                </div>
+        <div class="clase-card">
+            <h3 style="margin-bottom: 15px;"><span style="color: var(--pink);">01</span> Creación de cuentas en TikTok</h3>
+            <div class="video-wrapper">
+                <iframe src="https://drive.google.com/file/d/1UQJonQksDVnc6rmr10xHZqDBxzZ49GYJ/preview"></iframe>
             </div>
+            <p style="color: #888;">Te cuento la fórmula que el CLUB te brinda para que hagas tus primeros <b>$3,500,000</b> de manera eficiente.</p>
+        </div>
 
-            <div class="clase-card">
-                <h3 class="clase-titulo"><span>03</span> Como monetizar un TikTok</h3>
-                <div class="video-clipper">
-                    <iframe src="https://drive.google.com/file/d/1hZ_6WVbr6XBev0h6BG_EV2mU6qYHnqxJ/preview"></iframe>
-                </div>
-                <div class="clase-descripcion">
-                    Probando aca la clase 3</b>.
-                </div>
+        <div class="clase-card">
+            <h3 style="margin-bottom: 15px;"><span style="color: var(--pink);">02</span> Como monetizar un TikTok</h3>
+            <div class="video-wrapper">
+                <iframe src="https://drive.google.com/file/d/1hZ_6WVbr6XBev0h6BG_EV2mU6qYHnqxJ/preview"></iframe>
             </div>
-
+            <p style="color: #888;">Con la constancia de 30 días siguiendo la fórmula pones en juego casi <b>16 millones de pesos</b>.</p>
         </div>
     </div>
+
+    <script>
+        const modal = document.getElementById('modal-espera');
+        
+        function abrirModal() { modal.style.display = 'flex'; }
+        function cerrarModal() { modal.style.display = 'none'; }
+        
+        // Cerrar si hace clic fuera del cuadradito
+        window.onclick = function(event) {
+            if (event.target == modal) { cerrarModal(); }
+        }
+    </script>
 
 </body>
 </html>
