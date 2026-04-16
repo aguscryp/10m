@@ -9,10 +9,11 @@
     <style>
         :root {
             --bg: #030508;
-            --card-bg: rgba(15, 20, 27, 0.8);
+            --card-bg: rgba(15, 20, 27, 0.85);
             --accent: #64b4ff;
             --success: #00ffaa;
             --text: #f0f4f8;
+            --text-dim: #b9c3d3;
             --border: 1px solid rgba(255,255,255,0.1);
         }
 
@@ -20,45 +21,56 @@
         body { 
             background: var(--bg); color: var(--text); 
             font-family: 'Inter', sans-serif; overflow-x: hidden;
-            perspective: 1000px; /* Para efectos 3D */
+            perspective: 1000px;
         }
 
         canvas#stars { position: fixed; inset: 0; z-index: -1; }
 
-        /* --- MENÚ HAMBURGUESA --- */
+        /* --- NAVEGACIÓN --- */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(20px); border-bottom: var(--border);
+            backdrop-filter: blur(25px); border-bottom: var(--border);
         }
+
+        /* --- MENÚ HAMBURGUESA --- */
         .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 7px; z-index: 1001; }
         .menu-btn div { width: 32px; height: 3px; background: white; border-radius: 5px; transition: 0.3s; }
         
+        .menu-btn.open div:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
+        .menu-btn.open div:nth-child(2) { opacity: 0; }
+        .menu-btn.open div:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
+
         .nav-menu {
             position: fixed; top: 0; right: -100%; width: 320px; height: 100vh;
             background: rgba(5, 7, 10, 0.98); display: flex; flex-direction: column;
-            padding: 120px 40px; gap: 35px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            border-left: var(--border);
+            padding: 100px 30px; gap: 15px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: var(--border); overflow-y: auto;
         }
         .nav-menu.active { right: 0; }
-        .nav-menu a { color: #fff; text-decoration: none; font-weight: 800; font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+        
+        .nav-menu a { 
+            color: #fff; text-decoration: none; font-weight: 700; font-size: 18px; 
+            padding: 15px 10px; border-radius: 12px; transition: 0.3s;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-menu a:hover { background: rgba(255,255,255,0.05); color: var(--accent); }
+        
+        .nav-label { font-size: 11px; font-weight: 800; color: var(--text-dim); letter-spacing: 2px; margin: 25px 10px 10px; text-transform: uppercase; }
+        .nav-price { font-size: 10px; background: var(--accent); color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 900; }
 
         /* --- HERO --- */
         .hero { padding: 180px 5% 60px; text-align: center; }
-        .hero h1 { font-size: clamp(45px, 9vw, 90px); font-weight: 900; letter-spacing: -2px; }
+        .hero h1 { font-size: clamp(45px, 9vw, 90px); font-weight: 900; letter-spacing: -2px; line-height: 1; }
         .hero span { background: linear-gradient(180deg, #fff, var(--accent)); -webkit-background-clip: text; color: transparent; }
 
-        /* --- CARDS 3D MÉTRICAS --- */
-        .metrics-3d { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 30px; padding: 80px 5%;
-        }
+        /* --- METRICAS 3D --- */
+        .metrics-3d { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 60px 5%; }
         .card-3d {
             background: var(--card-bg); border: var(--border); border-radius: 35px;
             padding: 50px 30px; text-align: center;
-            transform-style: preserve-3d; transition: transform 0.5s ease, box-shadow 0.5s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform-style: preserve-3d; transition: 0.5s ease;
+            backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
         .card-3d:hover {
             transform: rotateX(10deg) rotateY(-5deg) translateZ(20px);
@@ -69,7 +81,7 @@
         .card-3d p { font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; transform: translateZ(30px); }
 
         /* --- CARRUSEL FLYERS --- */
-        .carousel { overflow: hidden; padding: 60px 0; position: relative; }
+        .carousel { overflow: hidden; padding: 60px 0; }
         .track { display: flex; width: calc(350px * 10); animation: slide 25s linear infinite; gap: 40px; }
         .flyer-mga {
             min-width: 350px; height: 480px; border-radius: 30px; border: var(--border);
@@ -77,30 +89,25 @@
             display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;
             position: relative; overflow: hidden;
         }
-        .flyer-mga::before { content: 'MGA'; position: absolute; top: -20px; right: -10px; font-size: 150px; font-weight: 900; opacity: 0.05; }
-        
         @keyframes slide { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-350px * 5)); } }
 
-        /* --- PRICING & ROLES (UPGRADED) --- */
+        /* --- ROLES --- */
         .roles-section { padding: 100px 5%; text-align: center; }
-        .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 60px; }
-        
+        .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 60px; }
         .role-card {
-            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
-            border: var(--border); padding: 50px 30px; border-radius: 40px; position: relative;
-            transition: 0.4s ease;
+            background: rgba(255,255,255,0.02); border: var(--border); padding: 50px 30px; border-radius: 40px; 
+            transition: 0.4s ease; position: relative;
         }
-        .role-card:hover { transform: translateY(-15px); background: rgba(100, 180, 255, 0.05); }
+        .role-card:hover { transform: translateY(-15px); border-color: var(--accent); background: rgba(100, 180, 255, 0.05); }
         .role-card.highlight { border-color: var(--accent); box-shadow: 0 0 40px rgba(100,180,255,0.1); }
-
         .role-price { font-size: 42px; font-weight: 900; margin: 25px 0; color: #fff; }
-        .role-title { font-size: 22px; font-weight: 800; color: var(--accent); margin-bottom: 15px; text-transform: uppercase; }
-        .role-card ul { list-style: none; text-align: left; color: var(--text-dim); font-size: 15px; }
-        .role-card ul li { margin-bottom: 12px; display: flex; gap: 10px; }
+        .role-title { font-size: 22px; font-weight: 800; color: var(--accent); margin-bottom: 15px; }
+        .role-card ul { list-style: none; text-align: left; color: var(--text-dim); font-size: 15px; margin-top: 20px; }
+        .role-card li { margin-bottom: 12px; display: flex; gap: 10px; }
+        
+        .badge-elite { background: var(--accent); color: #000; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: 900; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); }
 
-        .badge-elite { background: var(--accent); color: #000; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 900; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); }
-
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        footer { padding: 80px 5%; text-align: center; border-top: var(--border); background: #000; }
     </style>
 </head>
 <body>
@@ -113,18 +120,23 @@
             <div></div><div></div><div></div>
         </div>
         <div class="nav-menu" id="navMenu">
+            <div class="nav-label">General</div>
             <a href="usuarios/login.html">🍎 Acceso Cliente</a>
             <a href="administración.html">📂 Dirección Grand</a>
-            <a href="#">💼 Vacantes Activas</a>
-            <a href="#">🚀 Ecosistema</a>
+            
+            <div class="nav-label">Sectores Laborales</div>
+            <a href="5k.html">🍎 Atención al Cliente <span class="nav-price">5K</span></a>
+            <a href="10k.html">📢 Publicista <span class="nav-price">10K</span></a>
+            <a href="25k.html">⚡ Advanced Gestor <span class="nav-price">25K</span></a>
+            <a href="980usd.html">👑 Emblema Empresarial <span class="nav-price">980$</span></a>
         </div>
     </nav>
 
     <header class="hero">
         <p style="text-transform: uppercase; letter-spacing: 5px; color: var(--accent); font-weight: 800; margin-bottom: 20px;">Master Grand Agency</p>
-        <h1>Liderando la <br><span>Era Remota 🪄</span></h1>
+        <h1>Impacto Global <br><span>Digital 🪄</span></h1>
         <p style="max-width: 800px; margin: 30px auto; font-size: 19px; color: var(--text-dim);">
-            Somos el campus de infoproducción #1. Donde otros ven un celular, nosotros vemos una herramienta de <strong>éxito masivo</strong>.
+            Transformamos la infoproducción con una estructura de éxito 100% remota.
         </p>
     </header>
 
@@ -135,14 +147,14 @@
             <span style="opacity: 0.6;">Personas conectadas 🌎</span>
         </div>
         <div class="card-3d">
-            <p>Live Traffic</p>
+            <p>Live Setters</p>
             <h3>10,200</h3>
-            <span style="opacity: 0.6;">Setters activos 24/7 📲</span>
+            <span style="opacity: 0.6;">Operativa 24/7 📲</span>
         </div>
         <div class="card-3d">
-            <p>Verificados</p>
-            <h3>Líderes</h3>
-            <span style="opacity: 0.6;">Sub-equipos certificados 🛡️</span>
+            <p>Liderazgo</p>
+            <h3>Elite</h3>
+            <span style="opacity: 0.6;">Estrategias Verificadas 🛡️</span>
         </div>
     </section>
 
@@ -154,30 +166,29 @@
             </div>
             <div class="flyer-mga" style="background: linear-gradient(to bottom right, #581c87, #000);">
                 <h2 style="font-size: 40px; margin-bottom: 10px;">MAGIA 🪄</h2>
-                <p>Facturación masiva con WhatsApp.</p>
+                <p>Facturación masiva vía WhatsApp.</p>
             </div>
             <div class="flyer-mga" style="background: linear-gradient(to bottom right, #064e3b, #000);">
                 <h2 style="font-size: 40px; margin-bottom: 10px;">PODER 💎</h2>
-                <p>Únete a la estructura MGA.</p>
+                <p>Estructura de líderes globales.</p>
             </div>
             <div class="flyer-mga" style="background: linear-gradient(to bottom right, #1e3a8a, #000);"><h2>MGA 🍎</h2></div>
-            <div class="flyer-mga" style="background: linear-gradient(to bottom right, #581c87, #000);"><h2>ELITE 👑</h2></div>
+            <div class="flyer-mga" style="background: linear-gradient(to bottom right, #581c87, #000);"><h2>GRAND 👑</h2></div>
         </div>
     </section>
 
     <section class="roles-section">
-        <h2 style="font-size: 45px; font-weight: 900;">Nuestra Oferta 💼</h2>
+        <h2 style="font-size: 45px; font-weight: 900;">Nuestros Sectores 💼</h2>
         <p style="color: var(--text-dim); margin-top: 15px;">Brindamos puestos laborales hasta incluso consultoría para empresas.</p>
         
         <div class="roles-grid">
             <div class="role-card">
                 <div class="role-title">Atención al Cliente 🍎</div>
                 <div class="role-price">$5,000 <small style="font-size: 14px;">ARS</small></div>
-                <p style="margin-bottom: 20px;"><strong>Puesto Laboral Garantizado</strong></p>
                 <ul>
-                    <li>✅ Entrega de herramientas completa.</li>
-                    <li>✅ Sueldo fijo mensual.</li>
-                    <li>✅ Soporte administrativo.</li>
+                    <li>✅ Puesto laboral en atención inmediata.</li>
+                    <li>✅ Te entregamos todo el material.</li>
+                    <li>✅ Sueldo fijo establecido.</li>
                 </ul>
             </div>
 
@@ -185,35 +196,36 @@
                 <div class="badge-elite">MÁS SOLICITADO 🔥</div>
                 <div class="role-title">Advanced Gestor ⚡</div>
                 <div class="role-price">$25,000 <small style="font-size: 14px;">ARS</small></div>
-                <p style="margin-bottom: 20px;"><strong>Gestión de Sub-equipos</strong></p>
                 <ul>
-                    <li>✅ Escala tus ganancias exponencialmente.</li>
-                    <li>✅ Rol de liderazgo en la empresa.</li>
-                    <li>✅ Acceso a estrategias de cierre alto.</li>
+                    <li>✅ Te unes como gestor de equipos.</li>
+                    <li>✅ Ganancias superiores al promedio.</li>
+                    <li>✅ Rol estratégico empresarial.</li>
                 </ul>
             </div>
 
             <div class="role-card">
                 <div class="role-title">Emblema Empresarial 👑</div>
                 <div class="role-price">$980 <small style="font-size: 14px;">USD</small></div>
-                <p style="margin-bottom: 20px;"><strong>Consultoría de Alto Nivel</strong></p>
                 <ul>
-                    <li>✅ Gestión de problemas estructurales.</li>
-                    <li>✅ Mentoría directa para entidades.</li>
-                    <li>✅ Rol máximo dentro de MGA.</li>
+                    <li>✅ Consultoría para problemas grandes.</li>
+                    <li>✅ Gestión de entidades o roles MGA.</li>
+                    <li>✅ Máximo rango de conocimiento.</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <footer style="padding: 80px 5%; text-align: center; border-top: var(--border); background: #000;">
+    <footer>
         <p style="font-weight: 900; font-size: 24px; margin-bottom: 10px;">MGA 💎</p>
-        <p style="opacity: 0.4; font-size: 12px; letter-spacing: 2px;">MASTER GRAND AGENCY © 2026 | THE REMOTE REVOLUTION</p>
+        <p style="opacity: 0.4; font-size: 11px; letter-spacing: 2px;">MASTER GRAND AGENCY © 2026</p>
     </footer>
 
     <script>
         function toggleMenu() {
-            document.getElementById('navMenu').classList.toggle('active');
+            const menu = document.getElementById('navMenu');
+            const btn = document.querySelector('.menu-btn');
+            menu.classList.toggle('active');
+            btn.classList.toggle('open');
         }
 
         const canvas = document.getElementById('stars');
@@ -225,12 +237,7 @@
             canvas.height = window.innerHeight;
             stars = [];
             for(let i=0; i<150; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5,
-                    speed: Math.random() * 0.3
-                });
+                stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*1.5, speed: Math.random()*0.3 });
             }
         }
 
@@ -238,11 +245,8 @@
             ctx.clearRect(0,0,canvas.width, canvas.height);
             ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
             stars.forEach(s => {
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
-                ctx.fill();
-                s.y -= s.speed;
-                if(s.y < 0) s.y = canvas.height;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
+                s.y -= s.speed; if(s.y < 0) s.y = canvas.height;
             });
             requestAnimationFrame(animate);
         }
