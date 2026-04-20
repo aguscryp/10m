@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información Corporativa | MGA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --pink: #ff007a;
+            --blue: #00d4ff;
+            --purple: #9d00ff;
+            --bg: #030303;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg); color: #fff; line-height: 1.7; overflow-x: hidden; }
+
+        /* HEADER ELEGANTE */
+        nav {
+            padding: 20px 8%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-weight: 800; font-size: 1.4rem; text-decoration: none; color: #fff; }
+        .logo span { color: var(--pink); }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 60px 25px; }
+
+        /* HERO SECTION */
+        .hero-info { text-align: center; margin-bottom: 80px; }
+        .badge { 
+            display: inline-block; padding: 6px 15px; background: rgba(255, 0, 122, 0.1); 
+            border: 1px solid var(--pink); border-radius: 50px; color: var(--pink);
+            font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; line-height: 1.1; }
+        .highlight { color: var(--pink); }
+
+        .intro-text { font-size: 1.1rem; color: #aaa; max-width: 800px; margin: 0 auto; }
+
+        /* STATS BAR */
+        .stats-bar { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; margin: 50px 0; padding: 30px; background: var(--glass); 
+            border-radius: 30px; border: 1px solid var(--border);
+        }
+        .stat-item h3 { font-size: 1.8rem; color: #fff; margin-bottom: 5px; }
+        .stat-item p { font-size: 0.8rem; color: var(--pink); font-weight: 700; text-transform: uppercase; }
+
+        /* CARDS DE PUESTOS */
+        .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
+        
+        .role-card { 
+            background: #0a0a0a; border: 1px solid var(--border); padding: 40px; 
+            border-radius: 40px; position: relative; transition: 0.4s; overflow: hidden;
+        }
+        .role-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); }
+        
+        .role-icon { width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 25px; }
+        
+        .c-embajador { border-top: 4px solid #22c55e; }
+        .c-admin { border-top: 4px solid var(--blue); }
+        .c-gestor { border-top: 4px solid var(--purple); }
+
+        .role-card h2 { font-size: 1.4rem; margin-bottom: 15px; }
+        .income-tag { display: inline-block; padding: 5px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 800; margin-bottom: 20px; }
+        
+        .role-list { list-style: none; margin-bottom: 20px; }
+        .role-list li { margin-bottom: 10px; font-size: 0.95rem; color: #888; display: flex; align-items: center; gap: 10px; }
+        .role-list li i { font-size: 0.8rem; color: #444; }
+
+        /* SECCION ASCENSO */
+        .promotion-box { 
+            background: linear-gradient(145deg, #0a0a0a 0%, #111 100%); 
+            padding: 50px; border-radius: 40px; border: 1px solid var(--border);
+            margin-top: 80px; text-align: center; position: relative;
+        }
+        .promotion-box h2 { font-size: 2rem; margin-bottom: 20px; }
+        .vacante-alerta { 
+            background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 20px;
+            border-left: 4px solid var(--pink); text-align: left; margin: 30px 0;
+        }
+
+        .cta-button {
+            display: inline-block; padding: 20px 50px; background: #fff; color: #000;
+            text-decoration: none; border-radius: 100px; font-weight: 800; font-size: 1.1rem;
+            transition: 0.3s; margin-top: 20px;
+        }
+        .cta-button:hover { transform: scale(1.05); background: var(--pink); color: #fff; box-shadow: 0 10px 30px var(--pink-glow); }
+
+        @media (max-width: 768px) {
+            .container { padding: 40px 20px; }
+            .roles-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">MASTER GRAND <span>AGENCY</span></a>
+        <a href="index.html" style="color:#888; text-decoration:none; font-size:0.9rem; font-weight:600;">Volver</a>
+    </nav>
+
+    <div class="container">
+        
+        <header class="hero-info animate__animated animate__fadeIn">
+            <span class="badge">Trayectoria de 5 años</span>
+            <h1>Crecé con la empresa líder: <br><span class="highlight">Master Grand Agency</span></h1>
+            <p class="intro-text">
+                Bienvenido a una organización con una infraestructura sólida de <b>67 servicios digitales</b>. 
+                Hemos diseñado un sistema para que cualquier persona construya una carrera profesional desde internet.
+            </p>
+        </header>
+
+        <div class="stats-bar animate__animated animate__fadeInUp">
+            <div class="stat-item">
+                <h3>+117,000</h3>
+                <p>Miembros Activos</p>
+            </div>
+            <div class="stat-item">
+                <h3>67</h3>
+                <p>Servicios Digitales</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Soporte Técnico</p>
+            </div>
+            <div class="stat-item">
+                <h3>0%</h3>
+                <p>Experiencia Previa</p>
+            </div>
+        </div>
+
+        <div class="roles-grid">
+            
+            <div class="role-card c-embajador">
+                <div class="role-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h2>🟢 1. Embajador</h2>
+                <div class="income-tag" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;">$500k - $1.2M ARS</div>
+                <ul class="role-list">
+                    <li><i class="fas fa-check"></i> Ingreso Inmediato y Simple</li>
+                    <li><i class="fas fa-check"></i> Trabajo 100% Remoto</li>
+                    <li><i class="fas fa-check"></i> Solo necesitás WhatsApp</li>
+                </ul>
+                <p style="font-size: 0.85rem; color: #666;">Tu tarea: Recomendar la empresa y atraer leads calificados enviando mensajes.</p>
+            </div>
+
+            <div class="role-card c-admin">
+                <div class="role-icon" style="background: rgba(0, 212, 255, 0.1); color: var(--blue);">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2>🔵 2. Administrador</h2>
+                <div class="income-tag" style="background: rgba(0, 212, 255, 0.1); color: var(--blue);">$2,000 - $7,000 USD</div>
+                <ul class="role-list">
+                    <li><i class="fas fa-check"></i> Sueldo Fijo Mensual</li>
+                    <li><i class="fas fa-check"></i> Supervisión de Equipos</li>
+                    <li><i class="fas fa-check"></i> Sistemas Automáticos</li>
+                </ul>
+                <p style="font-size: 0.85rem; color: #666;">Acceso a eventos digitales exclusivos y liderazgo de equipos de embajadores.</p>
+            </div>
+
+            <div class="role-card c-gestor">
+                <div class="role-icon" style="background: rgba(157, 0, 255, 0.1); color: var(--purple);">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h2>🟣 3. Gestor Administrativo</h2>
+                <div class="income-tag" style="background: rgba(157, 0, 255, 0.1); color: var(--purple);">$4,000 - $8,700 USD</div>
+                <ul class="role-list">
+                    <li><i class="fas fa-check"></i> Máxima Jerarquía</li>
+                    <li><i class="fas fa-check"></i> Gestión de Capital (+100M)</li>
+                    <li><i class="fas fa-check"></i> CRM Avanzado</li>
+                </ul>
+                <p style="font-size: 0.85rem; color: #666;">Coordinación de más de 1,100 administradores y personal a cargo.</p>
+            </div>
+
+        </div>
+
+        <div class="promotion-box">
+            <h2>📈 ¿Cómo lográs tu ascenso?</h2>
+            <p style="color: #888;">El crecimiento es rápido. El equipo directivo realiza un <b>seguimiento absoluto</b> de tu desempeño como embajador.</p>
+            
+            <div class="vacante-alerta">
+                <h4 style="color: var(--pink); margin-bottom: 5px;">🔥 VACANTE PRIVADA</h4>
+                <p style="font-size: 0.95rem;">Si mostrás compromiso, en un periodo de <b>5 a 15 días</b>, la empresa te otorgará la oportunidad de convertirte en Administrador o Gestor. Pasar de comisiones a sueldo fijo es el objetivo.</p>
+            </div>
+
+            <p style="font-weight: 600; margin-bottom: 20px;">Ser embajador es el primer paso: es fácil y solo necesitás WhatsApp.</p>
+            <a href="https://wa.me/5492645079256" class="cta-button">EMPEZAR COMO EMBAJADOR</a>
+        </div>
+
+        <footer style="margin-top: 80px; text-align: center; color: #444; font-size: 0.8rem;">
+            © 2026 Master Grand Agency. Todos los derechos reservados.
+        </footer>
+
+    </div>
+
+</body>
+</html>
