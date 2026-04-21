@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGA — Panel de Administración</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030508;
+            --card-bg: rgba(20, 25, 35, 0.8);
+            --accent: #64b4ff;
+            --gold: #f59e0b;
+            --text: #f0f4f8;
+            --border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background: var(--bg); color: var(--text); 
+            font-family: 'Inter', sans-serif; line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- BACKGROUND TECH --- */
+        .tech-bg {
+            position: fixed; inset: 0; z-index: -1;
+            background-image: radial-gradient(circle at 50% 50%, rgba(100, 180, 255, 0.05) 0%, transparent 80%),
+                              linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 100px 20px; }
+
+        /* --- HEADER --- */
+        .admin-header { text-align: center; margin-bottom: 80px; }
+        .admin-header h1 { font-size: clamp(35px, 6vw, 65px); font-weight: 900; letter-spacing: -2px; line-height: 1; }
+        .admin-header span { color: var(--accent); }
+        .admin-header p { margin-top: 20px; color: #b9c3d3; font-size: 18px; max-width: 700px; margin-inline: auto; }
+
+        /* --- GLOSARIO TÁCTICO --- */
+        .glossary-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 20px; margin-bottom: 80px;
+        }
+        .term-card {
+            background: var(--card-bg); border: var(--border); padding: 25px; 
+            border-radius: 24px; position: relative; transition: 0.3s;
+        }
+        .term-card:hover { border-color: var(--accent); background: rgba(100, 180, 255, 0.05); }
+        .term-card h4 { color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .term-card p { font-size: 14px; font-weight: 500; }
+
+        /* --- SECCIÓN ROLES --- */
+        .roles-info {
+            display: flex; gap: 30px; margin-bottom: 80px;
+        }
+        .role-box {
+            flex: 1; background: linear-gradient(145deg, rgba(255,255,255,0.03), transparent);
+            border: var(--border); border-radius: 30px; padding: 40px;
+        }
+        .role-box h2 { font-size: 24px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+
+        /* --- ESTRATEGIA MATEMÁTICA (EL EFECTO MULTIPLICADOR) --- */
+        .math-section {
+            background: #fff; color: #000; border-radius: 40px; padding: 60px 40px;
+            margin-bottom: 80px; position: relative;
+        }
+        .math-section h2 { font-size: 32px; font-weight: 900; margin-bottom: 30px; text-align: center; }
+        .multi-grid { display: flex; justify-content: space-between; align-items: center; gap: 20px; text-align: center; }
+        .step { flex: 1; }
+        .step .num { font-size: 40px; font-weight: 900; display: block; color: var(--accent); }
+        .step span { font-size: 12px; font-weight: 800; text-transform: uppercase; color: #666; }
+
+        /* --- ROADMAP DÍA 1 --- */
+        .day-one {
+            border: 2px solid var(--accent); border-radius: 40px; padding: 50px;
+            position: relative; margin-bottom: 80px;
+        }
+        .day-tag {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: #000; padding: 8px 25px; border-radius: 50px;
+            font-weight: 900; font-size: 14px;
+        }
+
+        /* --- LISTAS PROFESIONALES --- */
+        .check-list { list-style: none; margin-top: 30px; }
+        .check-list li { 
+            margin-bottom: 15px; padding-left: 30px; position: relative; 
+            font-size: 16px; color: #cbd5e1;
+        }
+        .check-list li::before {
+            content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 900;
+        }
+
+        /* --- SALARIO BOX --- */
+        .salary-card {
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            padding: 40px; border-radius: 30px; text-align: center; margin-top: 50px;
+        }
+        .salary-card h2 { font-size: 45px; font-weight: 900; margin: 10px 0; }
+        .salary-card p { font-weight: 700; opacity: 0.9; }
+
+        @media (max-width: 768px) {
+            .roles-info { flex-direction: column; }
+            .multi-grid { flex-direction: column; }
+            .day-one { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tech-bg"></div>
+
+    <main class="container">
+        
+        <header class="admin-header">
+            <p style="color: var(--gold); font-weight: 800; letter-spacing: 3px; margin-bottom: 10px;">ACCESO AUTORIZADO</p>
+            <h1>Bienvenido, <span>Administrador</span> 🏛️</h1>
+            <p>Aquí aprenderás a dominar el mega imperio que Master Grand Agency ha construido. Prepárate para manejar estructuras de alta conversión.</p>
+        </header>
+
+        <div class="glossary-grid">
+            <div class="term-card">
+                <h4>Lead</h4>
+                <p>Persona interesada en un servicio que entrega sus datos para ser contactada. 👤</p>
+            </div>
+            <div class="term-card">
+                <h4>CRM</h4>
+                <p>Base de datos estratégica donde se aloja el activo más valioso: los clientes. 📂</p>
+            </div>
+            <div class="term-card">
+                <h4>Form</h4>
+                <p>Formulario de captura que tus embajadores usarán para alimentar tu sistema. 📝</p>
+            </div>
+            <div class="term-card">
+                <h4>Prospección</h4>
+                <p>Acción táctica de enviar mensajes ofreciendo una oportunidad de valor. 📢</p>
+            </div>
+        </div>
+
+        <div class="roles-info">
+            <div class="role-box">
+                <h2>👑 El Administrador</h2>
+                <p style="color: #cbd5e1;">Es el cerebro de la operación. Encargado de llevar un CRM de 0 a <strong>+6,000 clientes</strong>, manteniendo el control total de la estructura y el seguimiento online.</p>
+            </div>
+            <div class="role-box" style="background: rgba(100, 180, 255, 0.05);">
+                <h2>🤝 El Embajador</h2>
+                <p style="color: #cbd5e1;">Es tu fuerza de choque. Personas que trabajan bajo tu mando buscando leads interesados para alimentar tu CRM. Un embajador es tu futuro cliente/administrador.</p>
+            </div>
+        </div>
+
+        <section class="day-one">
+            <div class="day-tag">ESTRATEGIA: DÍA UNO</div>
+            <h2 style="font-size: 32px; text-align: center; margin-bottom: 20px;">Tu Despegue Inmediato 🚀</h2>
+            <p style="text-align: center; color: #b9c3d3;">Arrancas con un CRM vacío y una misión: optimizar para la abundancia.</p>
+            
+            <ul class="check-list">
+                <li><strong>Optimización 100%:</strong> Foto de perfil profesional en WhatsApp. La imagen vende seriedad y confianza.</li>
+                <li><strong>Comunicación Elite:</strong> Escribir de manera profesional y resolutiva.</li>
+                <li><strong>Captura Inicial:</strong> Conseguir tus primeros 3 a 6 embajadores (amigos, conocidos o referidos).</li>
+                <li><strong>Activación del Formulario:</strong> Tus primeros embajadores empiezan a cargar leads a tu Notion hoy mismo.</li>
+            </ul>
+        </section>
+
+        <section class="math-section">
+            <h2>El Efecto Multiplicador MGA 🪄</h2>
+            <p style="text-align: center; margin-bottom: 40px; color: #444;">Aprende la magia de escalar 3 personas a miles en tiempo récord.</p>
+            <div class="multi-grid">
+                <div class="step">
+                    <span class="num">3</span>
+                    <span>Embajadores</span>
+                </div>
+                <div style="font-size: 30px; color: #ccc;">➔</div>
+                <div class="step">
+                    <span class="num">9</span>
+                    <span>Leads/Día 1</span>
+                </div>
+                <div style="font-size: 30px; color: #ccc;">➔</div>
+                <div class="step">
+                    <span class="num">27</span>
+                    <span>Día 2</span>
+                </div>
+                <div style="font-size: 30px; color: #ccc;">➔</div>
+                <div class="step" style="color: var(--accent);">
+                    <span class="num" style="color: #000;">81... 6K</span>
+                    <span>Escalabilidad Total</span>
+                </div>
+            </div>
+            <p style="margin-top: 40px; font-style: italic; text-align: center; font-size: 14px; color: #555;">
+                "Si tienes 100 leads, envías 100 mensajes. El seguimiento diario es lo que genera la facturación de 30 millones."
+            </p>
+        </section>
+
+        <div class="salary-card">
+            <p>POTENCIAL DE INGRESOS MENSUALES</p>
+            <h2>$2,500,000 — $5,700,000 <small style="font-size: 20px;">ARS</small></h2>
+            <p>Métrica basada en CRM de 6,000 personas en 13 días de constancia.</p>
+        </div>
+
+        <footer style="margin-top: 80px; text-align: center; opacity: 0.4; font-size: 12px; letter-spacing: 2px;">
+            MGA ADMINISTRACIÓN SYSTEM © 2026 | DIRECTIVO DE VENTAS 24/7
+        </footer>
+
+    </main>
+
+    <script>
+        // Efecto sutil al mover el mouse en las cards
+        document.querySelectorAll('.term-card, .role-box').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+</html>
