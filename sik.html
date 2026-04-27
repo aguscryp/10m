@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SIK | Business Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #f8fafc; 
+            color: #0f172a; 
+            min-height: 100vh;
+        }
+
+        /* Ajuste para evitar que el contenido quede debajo de la barra móvil */
+        main { padding-bottom: 80px; } 
+
+        .card-neo { background: white; border-radius: 1.5rem; border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .sidebar-active { background: #000 !important; color: #fff !important; }
+        
+        /* CALENDARIO REFORZADO */
+        .day-cell { position: relative; cursor: pointer; border-radius: 12px; border: 2px solid transparent; transition: 0.2s; min-height: 45px; }
+        .day-today { background: #000 !important; color: #fff !important; }
+        .day-selected { border-color: #3b82f6 !important; background: rgba(59, 130, 246, 0.05); }
+
+        /* TOOLTIPS (Desactivados en móvil para evitar bugs visuales, se prioriza el clic) */
+        @media (min-width: 1024px) {
+            .hover-box {
+                position: absolute; background: #0f172a; color: white; border-radius: 1rem; 
+                padding: 14px; z-index: 1000; opacity: 0; pointer-events: none; 
+                transition: 0.2s; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 220px;
+            }
+            .day-cell:hover .day-tooltip { opacity: 1; transform: translate(-50%, -10px); }
+            .day-tooltip { bottom: 110%; left: 50%; transform: translate(-50%, 0); }
+        }
+
+        .alert-dot { position: absolute; top: 4px; right: 4px; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; }
+        .dot-task { width: 4px; height: 4px; background: #3b82f6; border-radius: 50%; }
+        .dot-pay { width: 4px; height: 4px; background: #10b981; border-radius: 50%; }
+
+        .text-natural { text-transform: none !important; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        dialog { width: 90%; max-width: 500px; border-radius: 2rem; border: none; padding: 2rem; }
+        dialog::backdrop { background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); }
+
+        /* Mobile Bottom Nav */
+        .mobile-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 12px; z-index: 50; }
+    </style>
+</head>
+<body class="flex flex-col lg:flex-row text-[13px]">
+
+    <aside class="hidden lg:flex w-64 h-screen bg-white border-r border-slate-200 p-8 flex-col justify-between sticky top-0">
+        <div class="space-y-10">
+            <h1 class="text-4xl font-black italic tracking-tighter uppercase">SIK</h1>
+            <nav class="space-y-2">
+                <button onclick="nav('dash')" id="btn-dash" class="sidebar-active w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard</button>
+                <button onclick="nav('clients')" id="btn-clients" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50"><i data-lucide="users" class="w-4 h-4"></i> Clientes</button>
+                <button onclick="nav('leads')" id="btn-leads" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50"><i data-lucide="contact" class="w-4 h-4"></i> Contactos</button>
+                <button onclick="nav('deudas')" id="btn-deudas" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50"><i data-lucide="wallet" class="w-4 h-4"></i> Deudas</button>
+                <button onclick="nav('tasks')" id="btn-tasks" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50"><i data-lucide="zap" class="w-4 h-4"></i> Operaciones</button>
+            </nav>
+        </div>
+        <div class="p-4 bg-black rounded-3xl text-white flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-black italic">A</div>
+            <div><p class="text-[8px] font-black uppercase opacity-40">Admin</p><p class="text-[10px] font-black uppercase">Agustín</p></div>
+        </div>
+    </aside>
+
+    <div class="mobile-nav lg:hidden">
+        <button onclick="nav('dash')" class="flex flex-col items-center gap-1 text-slate-400" id="m-dash"><i data-lucide="layout-dashboard" class="w-6 h-6"></i></button>
+        <button onclick="nav('clients')" class="flex flex-col items-center gap-1 text-slate-400" id="m-clients"><i data-lucide="users" class="w-6 h-6"></i></button>
+        <button onclick="nav('leads')" class="flex flex-col items-center gap-1 text-slate-400" id="m-leads"><i data-lucide="contact" class="w-6 h-6"></i></button>
+        <button onclick="nav('deudas')" class="flex flex-col items-center gap-1 text-slate-400" id="m-deudas"><i data-lucide="wallet" class="w-6 h-6"></i></button>
+        <button onclick="nav('tasks')" class="flex flex-col items-center gap-1 text-slate-400" id="m-tasks"><i data-lucide="zap" class="w-6 h-6"></i></button>
+    </div>
+
+    <main class="flex-1 p-6 lg:p-10 no-scrollbar">
+        
+        <div id="view-dash" class="view space-y-8 lg:space-y-10">
+            <header class="flex flex-col lg:flex-row justify-between items-start gap-6">
+                <div>
+                    <h2 class="text-4xl lg:text-5xl font-black tracking-tighter italic uppercase">Control Central</h2>
+                    <p id="real-date" class="text-slate-400 text-[10px] font-black uppercase mt-2 tracking-widest"></p>
+                </div>
+                <div class="flex w-full lg:w-auto gap-4 lg:gap-8 justify-between lg:text-right bg-white lg:bg-transparent p-4 lg:p-0 rounded-3xl border lg:border-0 border-slate-100">
+                    <div><p class="text-[9px] font-black uppercase text-red-400 mb-1">Deudas</p><p id="dash-debt" class="text-2xl lg:text-3xl font-black text-red-600 tracking-tighter">$0</p></div>
+                    <div class="border-l border-slate-200 pl-4 lg:pl-8"><p class="text-[9px] font-black uppercase text-slate-400 mb-1">Cobros</p><p id="dash-cash" class="text-2xl lg:text-3xl font-black text-blue-600 tracking-tighter">$0</p></div>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                <div class="space-y-6 order-2 lg:order-1">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest">Enfoque: <span id="selected-label" class="text-blue-500">...</span></h3>
+                    <div id="tasks-today" class="space-y-3"></div>
+                    <input type="text" id="quickTaskInput" placeholder="+ Tarea rápida y Enter" 
+                           class="w-full bg-white border border-slate-200 p-5 rounded-3xl outline-none font-semibold text-[13px] shadow-sm text-natural"
+                           onkeydown="if(event.key==='Enter') app.addQuickTask(this.value)">
+                </div>
+                <div class="card-neo p-6 lg:p-8 order-1 lg:order-2">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 id="calendar-month-label" class="text-[10px] font-black uppercase tracking-widest text-slate-400">MES</h4>
+                        <div class="flex gap-2">
+                            <button onclick="app.changeMonth(-1)" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                            <button onclick="app.changeMonth(1)" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-1 lg:gap-2 text-center font-black"></div>
+                </div>
+            </div>
+        </div>
+
+        <section id="view-deudas" class="view hidden space-y-8">
+            <div class="flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-center">
+                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter italic uppercase text-red-600">Deudas</h2>
+                <button onclick="app.openModal('modalD')" class="w-full lg:w-auto bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase">Registrar Deuda</button>
+            </div>
+            <div id="deudas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"></div>
+        </section>
+
+        <section id="view-clients" class="view hidden space-y-8">
+            <div class="flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-center">
+                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter italic uppercase">Clientes</h2>
+                <button onclick="app.openModal('modalC')" class="w-full lg:w-auto bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase">Nueva Venta</button>
+            </div>
+            <div id="clients-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"></div>
+        </section>
+
+        <section id="view-leads" class="view hidden space-y-8">
+            <div class="flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-center">
+                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter italic uppercase">Contactos</h2>
+                <button onclick="app.openModal('modalL')" class="w-full lg:w-auto bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase">Nuevo Lead</button>
+            </div>
+            <div id="leads-list" class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6"></div>
+        </section>
+
+        <section id="view-tasks" class="view hidden space-y-8">
+            <div class="flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-center">
+                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter italic uppercase">Operaciones</h2>
+                <button onclick="app.openModal('modalTask')" class="w-full lg:w-auto bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase">Nueva Tarea</button>
+            </div>
+            <div id="full-tasks-list" class="grid grid-cols-1 lg:grid-cols-3 gap-4"></div>
+        </section>
+
+    </main>
+
+    <dialog id="modalC">
+        <h3 class="text-2xl font-black uppercase italic mb-8">Registrar Cliente</h3>
+        <div class="space-y-4">
+            <input type="text" id="cName" placeholder="Nombre completo" class="w-full bg-slate-100 p-4 rounded-2xl font-bold border-2 border-transparent outline-none text-natural">
+            <input type="text" id="cProduct" placeholder="Servicio" class="w-full bg-slate-100 p-4 rounded-2xl font-bold border-2 border-transparent outline-none text-natural">
+            <input type="text" id="cWhatsapp" placeholder="WhatsApp (ej: 549...)" class="w-full bg-slate-100 p-4 rounded-2xl font-bold border-2 border-transparent outline-none">
+            <div class="grid grid-cols-3 gap-2">
+                <input type="number" id="cAmount" placeholder="$ Cuota" class="bg-slate-100 p-4 rounded-2xl font-bold outline-none">
+                <input type="number" id="cCuotas" placeholder="Meses" class="bg-slate-100 p-4 rounded-2xl font-bold outline-none">
+                <input type="number" id="cDay" placeholder="Día" class="bg-slate-100 p-4 rounded-2xl font-bold outline-none">
+            </div>
+            <div class="flex gap-2 pt-6">
+                <button onclick="app.closeModal('modalC')" class="flex-1 bg-slate-100 py-4 rounded-2xl text-[10px] font-black uppercase">Cerrar</button>
+                <button onclick="app.addClient()" class="flex-1 bg-black text-white py-4 rounded-2xl text-[10px] font-black uppercase">Guardar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalD">
+        <h3 class="text-2xl font-black uppercase italic mb-8 text-red-600">Nueva Deuda</h3>
+        <div class="space-y-4">
+            <input type="text" id="dName" placeholder="Concepto" class="w-full bg-slate-100 p-4 rounded-2xl font-bold outline-none text-natural border-2 border-transparent">
+            <input type="number" id="dAmount" placeholder="Monto total $" class="w-full bg-slate-100 p-4 rounded-2xl font-bold outline-none border-2 border-transparent">
+            <div class="flex gap-2 pt-6">
+                <button onclick="app.closeModal('modalD')" class="flex-1 bg-slate-100 py-4 rounded-2xl text-[10px] font-black uppercase">Cerrar</button>
+                <button onclick="app.addDeuda()" class="flex-1 bg-black text-white py-4 rounded-2xl text-[10px] font-black uppercase">Aceptar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalL">
+        <h3 class="text-2xl font-black uppercase italic mb-8">Nuevo Lead</h3>
+        <div class="space-y-4">
+            <input type="text" id="lName" placeholder="Nombre" class="w-full bg-slate-100 p-4 rounded-2xl font-bold text-natural">
+            <input type="text" id="lPhone" placeholder="Número Celular" class="w-full bg-slate-100 p-4 rounded-2xl font-bold">
+            <div class="flex gap-2 pt-6">
+                <button onclick="app.closeModal('modalL')" class="flex-1 bg-slate-100 py-4 rounded-2xl text-[10px] font-black uppercase">Cerrar</button>
+                <button onclick="app.addLead()" class="flex-1 bg-black text-white py-4 rounded-2xl text-[10px] font-black uppercase">Guardar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalTask">
+        <h3 class="text-2xl font-black uppercase italic mb-8">Agendar Tarea</h3>
+        <div class="space-y-4">
+            <input type="text" id="tText" placeholder="¿Qué hay que hacer?" class="w-full bg-slate-100 p-4 rounded-2xl font-bold text-natural">
+            <input type="date" id="tDate" class="w-full bg-slate-100 p-4 rounded-2xl font-bold">
+            <div class="flex gap-2 pt-6">
+                <button onclick="app.closeModal('modalTask')" class="flex-1 bg-slate-100 py-4 rounded-2xl text-[10px] font-black uppercase">Cerrar</button>
+                <button onclick="app.addFullTask()" class="flex-1 bg-black text-white py-4 rounded-2xl text-[10px] font-black uppercase">Agendar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalAbonar">
+        <div class="text-center space-y-4">
+            <h3 class="text-xl font-black uppercase italic" id="abonar-titulo">Abonar</h3>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pendiente: <span id="abonar-pendiente" class="text-red-500"></span></p>
+            <input type="number" id="inputMontoAbono" placeholder="$ 0.00" class="w-full bg-slate-100 p-5 rounded-2xl font-black text-2xl text-center outline-none">
+            <div class="flex gap-2 pt-6">
+                <button onclick="app.closeModal('modalAbonar')" class="flex-1 bg-slate-100 py-4 rounded-2xl text-[10px] font-black uppercase">Cerrar</button>
+                <button onclick="app.confirmarAbono()" class="flex-1 bg-black text-white py-4 rounded-2xl text-[10px] font-black uppercase">Pagar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        const app = {
+            currentMonth: new Date().getMonth(),
+            currentYear: new Date().getFullYear(),
+            selectedDate: new Date().toISOString().split('T')[0],
+            deudaTemp: null,
+            db: {
+                tareas: JSON.parse(localStorage.getItem('sik_t')) || [],
+                clientes: JSON.parse(localStorage.getItem('sik_c')) || [],
+                deudas: JSON.parse(localStorage.getItem('sik_d')) || [],
+                leads: JSON.parse(localStorage.getItem('sik_l')) || []
+            },
+
+            init: function() {
+                document.getElementById('real-date').innerText = new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
+                this.render();
+            },
+
+            save: function() {
+                localStorage.setItem('sik_t', JSON.stringify(this.db.tareas));
+                localStorage.setItem('sik_c', JSON.stringify(this.db.clientes));
+                localStorage.setItem('sik_d', JSON.stringify(this.db.deudas));
+                localStorage.setItem('sik_l', JSON.stringify(this.db.leads));
+                this.render();
+            },
+
+            openModal: function(id) { 
+                const m = document.getElementById(id);
+                m.querySelectorAll('input').forEach(i => i.value = "");
+                if(id === 'modalTask') document.getElementById('tDate').value = this.selectedDate;
+                m.showModal(); 
+            },
+            closeModal: function(id) { document.getElementById(id).close(); },
+
+            render: function() {
+                const totalDeuda = this.db.deudas.reduce((a, b) => a + b.monto, 0);
+                const proyectado = this.db.clientes.reduce((a, b) => a + ((b.cuotasTotales - b.cuotaActual) * b.monto), 0);
+                document.getElementById('dash-debt').innerText = '$' + totalDeuda.toLocaleString();
+                document.getElementById('dash-cash').innerText = '$' + proyectado.toLocaleString();
+                
+                this.renderCalendar();
+                this.renderFocus();
+                this.renderDeudas();
+                this.renderClientes();
+                this.renderLeads();
+                this.renderTasks();
+                lucide.createIcons();
+            },
+
+            renderCalendar: function() {
+                const grid = document.getElementById('calendar-grid');
+                const dMes = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+                const pDia = new Date(this.currentYear, this.currentMonth, 1).getDay();
+                const hoyStr = new Date().toISOString().split('T')[0];
+                document.getElementById('calendar-month-label').innerText = new Intl.DateTimeFormat('es-AR', { month: 'long', year: 'numeric' }).format(new Date(this.currentYear, this.currentMonth)).toUpperCase();
+
+                let html = ['D','L','M','M','J','V','S'].map(d => `<div class="text-[9px] font-black text-slate-300 pb-4">${d}</div>`).join('');
+                for(let i=0; i<pDia; i++) html += `<div></div>`;
+
+                for(let d=1; d<=dMes; d++) {
+                    const dStr = `${this.currentYear}-${String(this.currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                    const tP = this.db.tareas.filter(t => t.fecha === dStr && !t.completa);
+                    const cP = this.db.clientes.filter(c => c.diaCobro === d && c.cuotaActual < c.cuotasTotales);
+                    const atraso = new Date(dStr) < new Date(hoyStr) && (tP.length > 0 || cP.length > 0);
+                    
+                    html += `
+                    <div onclick="app.selectDay('${dStr}')" class="day-cell flex flex-col items-center justify-center text-[11px] ${dStr === hoyStr ? 'day-today' : 'text-slate-400'} ${dStr === this.selectedDate ? 'day-selected' : ''}">
+                        ${d}
+                        ${atraso ? '<div class="alert-dot"></div>' : ''}
+                        <div class="flex gap-0.5 mt-1">${tP.length ? '<div class="dot-task"></div>' : ''}${cP.length ? '<div class="dot-pay"></div>' : ''}</div>
+                    </div>`;
+                }
+                grid.innerHTML = html;
+            },
+
+            renderFocus: function() {
+                const day = new Date(this.selectedDate + "T12:00:00").getDate();
+                const cobros = this.db.clientes.filter(c => c.diaCobro === day && c.cuotaActual < c.cuotasTotales);
+                const tareas = this.db.tareas.filter(t => t.fecha === this.selectedDate && !t.completa);
+                document.getElementById('selected-label').innerText = new Date(this.selectedDate + "T12:00:00").toLocaleDateString('es-AR', {day:'numeric', month:'short'}).toUpperCase();
+                
+                document.getElementById('tasks-today').innerHTML = [...cobros.map(c => `<div class="bg-emerald-50 p-5 rounded-3xl flex justify-between items-center border border-emerald-100"><div><p class="text-[8px] font-black text-emerald-600 uppercase">Cobro</p><p class="text-[13px] font-bold text-natural">${c.nombre}</p></div><button onclick="app.registerPayment('${c.id}')" class="text-emerald-500"><i data-lucide="check-circle" class="w-8 h-8"></i></button></div>`), ...tareas.map(t => `<div class="bg-white p-5 rounded-3xl border flex justify-between items-center shadow-sm"><div><p class="text-[8px] font-black text-blue-500 uppercase">Pendiente</p><p class="text-[13px] font-semibold text-natural">${t.texto}</p></div><button onclick="app.completeTask('${t.id}')" class="w-8 h-8 border-2 rounded-xl border-slate-200 hover:border-black transition-all"></button></div>`)].join('') || '<p class="text-[10px] text-slate-300 italic uppercase py-4">Sin pendientes</p>';
+                lucide.createIcons();
+            },
+
+            addClient: function() {
+                const c = { id: Date.now().toString(), nombre: document.getElementById('cName').value, producto: document.getElementById('cProduct').value, whatsapp: document.getElementById('cWhatsapp').value.replace(/\D/g,''), monto: Number(document.getElementById('cAmount').value), cuotasTotales: Number(document.getElementById('cCuotas').value), cuotaActual: 0, diaCobro: Number(document.getElementById('cDay').value) };
+                if(c.nombre && c.monto) { this.db.clientes.push(c); this.closeModal('modalC'); this.save(); }
+            },
+            addDeuda: function() {
+                const n = document.getElementById('dName').value;
+                const m = Number(document.getElementById('dAmount').value);
+                if(n && m) { this.db.deudas.push({ id: Date.now().toString(), nombre: n, monto: m }); this.closeModal('modalD'); this.save(); }
+            },
+            addLead: function() {
+                const n = document.getElementById('lName').value;
+                const p = document.getElementById('lPhone').value.replace(/\D/g,'');
+                if(n) { this.db.leads.push({ id: Date.now().toString(), nombre: n, fono: p }); this.closeModal('modalL'); this.save(); }
+            },
+            addQuickTask: function(t) { if(t.trim()) { this.db.tareas.push({ id: Date.now().toString(), texto: t, fecha: this.selectedDate, completa: false }); document.getElementById('quickTaskInput').value=""; this.save(); } },
+            addFullTask: function() {
+                const t = document.getElementById('tText').value;
+                const d = document.getElementById('tDate').value;
+                if(t && d) { this.db.tareas.push({ id: Date.now().toString(), texto: t, fecha: d, completa: false }); this.closeModal('modalTask'); this.save(); }
+            },
+            confirmarAbono: function() {
+                const m = Number(document.getElementById('inputMontoAbono').value);
+                if(m > 0 && this.deudaTemp) {
+                    this.deudaTemp.monto -= m;
+                    if(this.deudaTemp.monto <= 0) this.db.deudas = this.db.deudas.filter(x => x.id !== this.deudaTemp.id);
+                    this.closeModal('modalAbonar');
+                    this.save();
+                }
+            },
+            registerPayment: function(id) { 
+                const c = this.db.clientes.find(x=>x.id===id); 
+                if(c && c.cuotaActual < c.cuotasTotales){ 
+                    c.cuotaActual++; 
+                    // Lógica para adelantar 30 días la fecha si fuera necesario se aplicaría aquí
+                    this.save(); 
+                }
+            },
+            completeTask: function(id) { const t = this.db.tareas.find(x=>x.id===id); if(t) t.completa=true; this.save(); },
+            selectDay: function(d) { this.selectedDate = d; this.render(); },
+            changeMonth: function(dir) { this.currentMonth += dir; if(this.currentMonth > 11){this.currentMonth=0;this.currentYear++} else if(this.currentMonth<0){this.currentMonth=11;this.currentYear--} this.render(); },
+
+            renderDeudas: function() {
+                document.getElementById('deudas-list').innerHTML = this.db.deudas.map(d => `<div class="card-neo p-6 lg:p-8 border-l-8 border-red-500 flex flex-col justify-between min-h-[200px]"><div><h4 class="font-black text-natural text-lg mb-1">${d.nombre}</h4><p class="text-3xl lg:text-4xl font-black text-red-600 tracking-tighter mb-8">$${d.monto.toLocaleString()}</p></div><button onclick="app.deudaTemp=app.db.deudas.find(x=>x.id==='${d.id}'); document.getElementById('abonar-titulo').innerText=app.deudaTemp.nombre; document.getElementById('abonar-pendiente').innerText='$'+app.deudaTemp.monto.toLocaleString(); document.getElementById('modalAbonar').showModal();" class="w-full bg-black text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest">Abonar</button></div>`).join('');
+            },
+            renderClientes: function() {
+                document.getElementById('clients-list').innerHTML = this.db.clientes.map(c => `<div class="card-neo p-6 lg:p-8 flex flex-col gap-6"><div><div class="flex justify-between items-start"><h4 class="font-black uppercase text-natural leading-tight">${c.nombre}</h4><button onclick="if(confirm('¿Eliminar cliente?')){app.db.clientes=app.db.clientes.filter(x=>x.id!=='${c.id}');app.save();}" class="text-slate-200 hover:text-red-500"><i data-lucide="x" class="w-4 h-4"></i></button></div><p class="text-[10px] font-bold text-slate-300 uppercase">${c.producto}</p></div><div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden"><div class="bg-black h-full transition-all" style="width:${(c.cuotaActual/c.cuotasTotales)*100}%"></div></div><div class="flex justify-between items-center"><div><p class="text-[8px] font-black text-slate-300 uppercase">Cuota</p><p class="text-xl lg:text-2xl font-black italic">$${c.monto.toLocaleString()}</p></div><div class="flex gap-2"><a href="https://wa.me/${c.whatsapp}" target="_blank" class="bg-emerald-50 text-emerald-600 p-3 rounded-xl"><i data-lucide="message-circle" class="w-5 h-5"></i></a><button onclick="app.registerPayment('${c.id}')" class="bg-black text-white px-5 py-3 rounded-xl text-[9px] font-black uppercase">Cobrar</button></div></div></div>`).join('');
+            },
+            renderLeads: function() {
+                document.getElementById('leads-list').innerHTML = this.db.leads.map(l => `<div class="card-neo p-4 lg:p-6 text-center group relative"><button onclick="if(confirm('¿Eliminar contacto?')){app.db.leads=app.db.leads.filter(x=>x.id!=='${l.id}');app.save();}" class="absolute top-2 right-2 text-slate-200 hover:text-red-500"><i data-lucide="trash-2" class="w-3 h-3"></i></button><div class="w-10 h-10 lg:w-12 lg:h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 font-black text-slate-300 text-xl">${l.nombre.charAt(0).toUpperCase()}</div><h4 class="font-black uppercase text-[11px] lg:text-[12px] text-natural truncate mb-1">${l.nombre}</h4><p class="text-[9px] font-bold text-emerald-500 mb-4">${l.fono}</p><a href="https://wa.me/${l.fono}" target="_blank" class="block w-full bg-emerald-50 text-emerald-600 py-3 rounded-xl font-black text-[8px] lg:text-[9px] uppercase">WhatsApp</a></div>`).join('');
+            },
+            renderTasks: function() {
+                document.getElementById('full-tasks-list').innerHTML = this.db.tareas.map(t => `<div class="card-neo p-5 flex justify-between items-center ${t.completa ? 'opacity-40' : ''}"><div class="flex items-center gap-4"><button onclick="app.completeTask('${t.id}')" class="w-7 h-7 border-2 rounded-xl ${t.completa ? 'bg-black border-black' : 'border-slate-200'} flex items-center justify-center">${t.completa ? '<i data-lucide="check" class="text-white w-4 h-4"></i>' : ''}</button><div><p class="text-[8px] font-black text-slate-300 uppercase">${t.fecha}</p><h5 class="font-bold text-[13px] text-natural">${t.texto}</h5></div></div><button onclick="app.db.tareas=app.db.tareas.filter(x=>x.id!=='${t.id}');app.save();" class="text-slate-200 hover:text-red-500"><i data-lucide="trash-2" class="w-5 h-5"></i></button></div>`).join('');
+            }
+        };
+
+        function nav(v) {
+            // Ocultar todas las vistas
+            document.querySelectorAll('.view').forEach(e => e.classList.add('hidden'));
+            document.getElementById('view-'+v).classList.remove('hidden');
+            
+            // Resetear estilos navegación escritorio
+            document.querySelectorAll('aside nav button').forEach(b => b.classList.remove('sidebar-active', 'text-slate-400'));
+            const desktopBtn = document.getElementById('btn-'+v);
+            if(desktopBtn) desktopBtn.classList.add('sidebar-active');
+
+            // Resetear estilos navegación móvil
+            document.querySelectorAll('.mobile-nav button').forEach(b => b.classList.add('text-slate-400'));
+            document.querySelectorAll('.mobile-nav button').forEach(b => b.classList.remove('text-black'));
+            const mobileBtn = document.getElementById('m-'+v);
+            if(mobileBtn) {
+                mobileBtn.classList.remove('text-slate-400');
+                mobileBtn.classList.add('text-black');
+            }
+
+            // Scroll al inicio al cambiar de vista
+            window.scrollTo(0, 0);
+            lucide.createIcons();
+        }
+
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
