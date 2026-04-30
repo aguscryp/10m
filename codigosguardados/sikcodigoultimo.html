@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIK | Business OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #0f172a; overflow: hidden; }
+        .card-neo { background: white; border-radius: 2rem; border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .sidebar-active { background: #000 !important; color: #fff !important; }
+        
+        .dot-task { width: 4px; height: 4px; background: #3b82f6; border-radius: 50%; }
+        .dot-pay { width: 4px; height: 4px; background: #10b981; border-radius: 50%; }
+        .dot-pros { width: 4px; height: 4px; background: #a855f7; border-radius: 50%; }
+
+        .text-natural { text-transform: none !important; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        dialog::backdrop { background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); }
+        
+        .pipeline-col { min-height: 600px; background: rgba(241, 245, 249, 0.5); border-radius: 2.5rem; padding: 1.2rem; }
+        .day-cell { cursor: pointer; border-radius: 14px; transition: 0.2s; border: 2px solid transparent; }
+        .day-today { background: #000 !important; color: #fff !important; }
+        .day-selected { border-color: #3b82f6 !important; background: rgba(59, 130, 246, 0.05); }
+
+        select { appearance: none; -webkit-appearance: none; }
+        .btn-entregado { background: #10b981 !important; color: white !important; border-color: #10b981 !important; }
+    </style>
+</head>
+<body class="h-screen flex text-[13px]">
+
+    <aside class="w-64 h-full bg-white border-r border-slate-200 p-8 flex flex-col justify-between shrink-0">
+        <div class="space-y-10">
+            <h1 class="text-4xl font-black italic tracking-tighter uppercase">SIK</h1>
+            <nav class="space-y-2">
+                <button onclick="nav('dash')" id="btn-dash" class="sidebar-active w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Control Central</button>
+                <button onclick="nav('pros')" id="btn-pros" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"><i data-lucide="target" class="w-4 h-4"></i> Prospectos</button>
+                <button onclick="nav('clients')" id="btn-clients" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"><i data-lucide="briefcase" class="w-4 h-4"></i> Gestión Clientes</button>
+                <button onclick="nav('leads')" id="btn-leads" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"><i data-lucide="contact" class="w-4 h-4"></i> Contactos</button>
+                <button onclick="nav('deudas')" id="btn-deudas" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"><i data-lucide="landmark" class="w-4 h-4"></i> Deudas</button>
+                <button onclick="nav('tasks')" id="btn-tasks" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all"><i data-lucide="activity" class="w-4 h-4"></i> Operaciones</button>
+            </nav>
+        </div>
+        <div class="p-6 bg-black rounded-[2.5rem] text-white flex items-center gap-3 shadow-lg">
+            <div class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-black italic">A</div>
+            <div><p class="text-[8px] font-black uppercase opacity-40">Director</p><p class="text-[10px] font-black uppercase">Agustín</p></div>
+        </div>
+    </aside>
+
+    <main class="flex-1 h-full overflow-y-auto p-10 no-scrollbar">
+        
+        <div id="view-dash" class="view space-y-10">
+            <header class="flex justify-between items-start">
+                <div><h2 class="text-5xl font-black tracking-tighter italic uppercase">Control Central</h2><p id="real-date" class="text-slate-400 text-[10px] font-black uppercase mt-2 tracking-widest"></p></div>
+                <div class="flex gap-8 text-right">
+                    <div><p class="text-[9px] font-black uppercase text-red-400 mb-1">Deudas Activas</p><p id="dash-debt" class="text-3xl font-black text-red-600 tracking-tighter">$0</p></div>
+                    <div class="border-l border-slate-200 pl-8"><p class="text-[9px] font-black uppercase text-blue-400 mb-1">Cobros Proyectados</p><p id="dash-cash" class="text-3xl font-black text-blue-600 tracking-tighter">$0</p></div>
+                </div>
+            </header>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest">Enfoque: <span id="selected-label" class="text-blue-500">...</span></h3>
+                    <div id="tasks-today" class="space-y-3"></div>
+                    <input type="text" id="quickTaskInput" placeholder="+ Tarea operativa y Enter" class="w-full bg-white border border-slate-200 p-5 rounded-2xl outline-none font-semibold text-natural shadow-sm" onkeydown="if(event.key==='Enter') app.addQuickTask(this.value)">
+                </div>
+                <div class="card-neo p-8 shadow-sm">
+                    <div class="flex justify-between items-center mb-8 px-2">
+                        <h4 id="calendar-month-label" class="text-[10px] font-black uppercase tracking-widest text-slate-400">MES</h4>
+                        <div class="flex gap-2">
+                            <button onclick="app.changeMonth(-1)" class="p-2 hover:bg-slate-100 rounded-full transition-colors"><i data-lucide="chevron-left" class="w-4 h-4 text-slate-400"></i></button>
+                            <button onclick="app.changeMonth(1)" class="p-2 hover:bg-slate-100 rounded-full transition-colors"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i></button>
+                        </div>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-2 text-center font-black"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-pros" class="view hidden space-y-8">
+            <div class="flex justify-between items-end">
+                <div>
+                    <h2 class="text-5xl font-black tracking-tighter italic uppercase">Prospectos</h2>
+                    <div class="flex gap-6 mt-4">
+                        <div class="bg-white px-6 py-4 rounded-3xl border border-slate-100 shadow-sm">
+                            <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">En Pipeline</p>
+                            <p id="count-pros" class="text-2xl font-black">0</p>
+                        </div>
+                        <div class="bg-white px-6 py-4 rounded-3xl border border-slate-100 shadow-sm">
+                            <p class="text-[9px] font-black uppercase text-purple-400 tracking-widest">Capital Potencial</p>
+                            <p id="sum-tickets" class="text-2xl font-black text-purple-600">$0</p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="app.prepareModalP()" class="bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform">Nuevo Prospecto</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="pipeline-col space-y-4">
+                    <p class="text-[9px] font-black uppercase text-slate-400 px-2 tracking-widest">Consulta</p>
+                    <div id="pros-nuevo" class="space-y-3"></div>
+                </div>
+                <div class="pipeline-col space-y-4">
+                    <p class="text-[9px] font-black uppercase text-blue-400 px-2 tracking-widest">Seguimiento</p>
+                    <div id="pros-contacto" class="space-y-3"></div>
+                </div>
+                <div class="pipeline-col space-y-4">
+                    <p class="text-[9px] font-black uppercase text-purple-400 px-2 tracking-widest">Cierre</p>
+                    <div id="pros-negociacion" class="space-y-3"></div>
+                </div>
+                <div class="pipeline-col space-y-4">
+                    <p class="text-[9px] font-black uppercase text-emerald-400 px-2 tracking-widest">Venta</p>
+                    <div id="pros-ganado" class="space-y-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-clients" class="view hidden space-y-8">
+            <div class="flex justify-between items-center">
+                <h2 class="text-5xl font-black tracking-tighter italic uppercase">Gestión Clientes</h2>
+                <button onclick="app.openModal('modalC')" class="bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-widest">Cargar Venta</button>
+            </div>
+            <div id="clients-list" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+        </div>
+
+        <div id="view-leads" class="view hidden space-y-8"><div class="flex justify-between items-center"><h2 class="text-5xl font-black tracking-tighter italic uppercase">Contactos</h2><button onclick="app.openModal('modalL')" class="bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-widest">Nuevo Lead</button></div><div id="leads-list" class="grid grid-cols-1 md:grid-cols-4 gap-6"></div></div>
+        <div id="view-deudas" class="view hidden space-y-8"><div class="flex justify-between items-center"><h2 class="text-5xl font-black tracking-tighter italic uppercase text-red-600">Deudas</h2><button onclick="app.openModal('modalD')" class="bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-widest">Añadir Deuda</button></div><div id="deudas-list" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div></div>
+        <div id="view-tasks" class="view hidden space-y-8"><div class="flex justify-between items-center"><h2 class="text-5xl font-black tracking-tighter italic uppercase">Operaciones</h2><button onclick="app.openModal('modalTask')" class="bg-black text-white px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-widest">Agendar Operación</button></div><div id="full-tasks-list" class="grid grid-cols-1 md:grid-cols-3 gap-4 pb-20"></div></div>
+    </main>
+
+    <dialog id="modalP" class="card-neo p-10 w-[600px] border-none shadow-2xl">
+        <div class="flex justify-between items-center mb-8">
+            <h3 id="modalPTitle" class="text-2xl font-black uppercase italic">Ficha Prospecto</h3>
+            <button onclick="app.deleteCurrentPros()" id="btnDelPros" class="text-red-400 hidden flex items-center gap-2 font-black uppercase text-[9px] tracking-widest hover:text-red-600 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i> Eliminar</button>
+        </div>
+        <input type="hidden" id="pId">
+        <div class="grid grid-cols-2 gap-4">
+            <input type="text" id="pName" placeholder="Nombre completo" class="col-span-2 bg-slate-100 p-4 rounded-2xl font-bold border-2 border-transparent outline-none text-natural focus:border-black transition-all">
+            <input type="text" id="pTrabajo" placeholder="Oficio / Empresa" class="bg-slate-100 p-4 rounded-2xl font-bold outline-none text-natural">
+            <input type="text" id="pFono" placeholder="Celular / WhatsApp" class="bg-slate-100 p-4 rounded-2xl font-bold outline-none">
+            <input type="number" id="pTicket" placeholder="Monto Ticket $" class="bg-slate-100 p-4 rounded-2xl font-bold outline-none">
+            <div class="bg-slate-100 p-4 rounded-2xl flex items-center justify-between">
+                <span class="text-slate-400 font-bold uppercase text-[9px]">¿Servicio Entregado?</span>
+                <select id="pEntrega" class="bg-transparent font-black outline-none cursor-pointer"><option value="No">No</option><option value="Si">Si</option></select>
+            </div>
+            <div class="col-span-1">
+                <label class="text-[9px] font-black text-slate-400 ml-2 uppercase">Fecha Est. Cierre</label>
+                <input type="date" id="pFechaPago" class="w-full bg-slate-100 p-3 rounded-xl font-bold outline-none">
+            </div>
+            <textarea id="pNota" placeholder="Notas de la negociación..." class="col-span-2 bg-slate-100 p-4 rounded-2xl font-bold outline-none h-24 text-natural"></textarea>
+        </div>
+        <div class="flex gap-2 pt-6">
+            <button onclick="app.closeModal('modalP')" class="flex-1 bg-slate-100 py-4 rounded-2xl font-black uppercase text-[10px]">Cerrar</button>
+            <button onclick="app.saveProspect()" class="flex-1 bg-black text-white py-4 rounded-2xl font-black uppercase text-[10px]">Guardar Cambios</button>
+        </div>
+    </dialog>
+
+    <dialog id="modalC" class="card-neo p-10 w-[450px] border-none shadow-2xl">
+        <h3 class="text-2xl font-black uppercase italic mb-8">Confirmar Venta</h3>
+        <div class="space-y-4">
+            <input type="text" id="cName" placeholder="Nombre Cliente" class="w-full bg-slate-100 p-4 rounded-2xl font-bold outline-none text-natural">
+            <div class="grid grid-cols-2 gap-4">
+                <input type="number" id="cAmount" placeholder="Cuota Mensual $" class="bg-slate-100 p-4 rounded-2xl font-bold outline-none">
+                <input type="number" id="cDay" placeholder="Día de Cobro" class="bg-slate-100 p-4 rounded-2xl font-bold outline-none">
+            </div>
+            <div class="flex gap-2 pt-6">
+                <button onclick="app.closeModal('modalC')" class="flex-1 bg-slate-100 py-4 rounded-2xl font-black text-[10px] uppercase">Cerrar</button>
+                <button onclick="app.addClient()" class="flex-1 bg-black text-white py-4 rounded-2xl font-black text-[10px] uppercase">Registrar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalD" class="card-neo p-10 w-[400px] border-none shadow-2xl"><h3 class="text-2xl font-black uppercase italic mb-8 text-red-600 italic">Nueva Deuda</h3><input type="text" id="dName" class="w-full bg-slate-100 p-4 rounded-2xl mb-4 font-bold" placeholder="Concepto"><input type="number" id="dAmount" class="w-full bg-slate-100 p-4 rounded-2xl mb-6 font-bold" placeholder="Monto $"><button onclick="app.addDeuda()" class="w-full bg-black text-white py-4 rounded-2xl font-black uppercase text-[10px]">Guardar</button></dialog>
+    <dialog id="modalL" class="card-neo p-10 w-[400px] border-none shadow-2xl"><h3 class="text-2xl font-black uppercase italic mb-8 italic">Nuevo Lead</h3><input type="text" id="lName" class="w-full bg-slate-100 p-4 rounded-2xl mb-4 font-bold" placeholder="Nombre"><input type="text" id="lPhone" class="w-full bg-slate-100 p-4 rounded-2xl mb-6 font-bold" placeholder="WhatsApp"><button onclick="app.addLead()" class="w-full bg-black text-white py-4 rounded-2xl font-black uppercase text-[10px]">Añadir</button></dialog>
+    <dialog id="modalTask" class="card-neo p-10 w-[400px] border-none shadow-2xl"><h3 class="text-2xl font-black uppercase italic mb-8 italic">Operación</h3><input type="text" id="tText" class="w-full bg-slate-100 p-4 rounded-2xl mb-4 font-bold" placeholder="¿Qué tarea hacer?"><input type="date" id="tDate" class="w-full bg-slate-100 p-4 rounded-2xl mb-6 font-bold"><button onclick="app.addFullTask()" class="w-full bg-black text-white py-4 rounded-2xl font-black uppercase text-[10px]">Agendar</button></dialog>
+
+    <script>
+        const app = {
+            currentMonth: new Date().getMonth(),
+            currentYear: new Date().getFullYear(),
+            selectedDate: new Date().toISOString().split('T')[0],
+            db: {
+                tareas: JSON.parse(localStorage.getItem('sik_t')) || [],
+                clientes: JSON.parse(localStorage.getItem('sik_c')) || [],
+                deudas: JSON.parse(localStorage.getItem('sik_d')) || [],
+                leads: JSON.parse(localStorage.getItem('sik_l')) || [],
+                prospectos: JSON.parse(localStorage.getItem('sik_p')) || []
+            },
+
+            init: function() {
+                document.getElementById('real-date').innerText = new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
+                this.render();
+            },
+
+            save: function() {
+                Object.keys(this.db).forEach(k => localStorage.setItem(`sik_${k.charAt(0)}`, JSON.stringify(this.db[k])));
+                this.render();
+            },
+
+            render: function() {
+                const totalD = this.db.deudas.reduce((a, b) => a + b.monto, 0);
+                const cash = this.db.clientes.reduce((a, b) => a + (b.monto || 0), 0);
+                document.getElementById('dash-debt').innerText = '$' + totalD.toLocaleString();
+                document.getElementById('dash-cash').innerText = '$' + cash.toLocaleString();
+                
+                this.renderCalendar();
+                this.renderFocus();
+                this.renderProspectos();
+                this.renderClientes();
+                this.renderLeads();
+                this.renderDeudas();
+                this.renderTasks();
+                lucide.createIcons();
+            },
+
+            renderCalendar: function() {
+                const grid = document.getElementById('calendar-grid');
+                const dMes = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+                const pDia = new Date(this.currentYear, this.currentMonth, 1).getDay();
+                const hoyStr = new Date().toISOString().split('T')[0];
+                document.getElementById('calendar-month-label').innerText = new Intl.DateTimeFormat('es-AR', { month: 'long', year: 'numeric' }).format(new Date(this.currentYear, this.currentMonth)).toUpperCase();
+                let html = ['D','L','M','M','J','V','S'].map(d => `<div class="text-[9px] font-black text-slate-300 pb-4">${d}</div>`).join('');
+                for(let i=0; i<pDia; i++) html += `<div></div>`;
+                for(let d=1; d<=dMes; d++) {
+                    const dStr = `${this.currentYear}-${String(this.currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                    const hasT = this.db.tareas.some(t => t.fecha === dStr && !t.completa);
+                    const hasC = this.db.clientes.some(c => c.diaCobro === d);
+                    const hasP = this.db.prospectos.some(p => p.fechaPago === dStr);
+                    html += `<div onclick="app.selectDay('${dStr}')" class="day-cell h-12 flex flex-col items-center justify-center text-[11px] ${dStr === hoyStr ? 'day-today' : 'text-slate-400'} ${dStr === this.selectedDate ? 'day-selected' : ''}">${d}<div class="flex gap-0.5 mt-1">${hasT ? '<div class="dot-task"></div>' : ''}${hasC ? '<div class="dot-pay"></div>' : ''}${hasP ? '<div class="dot-pros"></div>' : ''}</div></div>`;
+                }
+                grid.innerHTML = html;
+            },
+
+            renderFocus: function() {
+                const day = new Date(this.selectedDate + "T12:00:00").getDate();
+                const tasks = this.db.tareas.filter(t => t.fecha === this.selectedDate && !t.completa);
+                const pros = this.db.prospectos.filter(p => p.fechaPago === this.selectedDate);
+                document.getElementById('selected-label').innerText = new Date(this.selectedDate + "T12:00:00").toLocaleDateString('es-AR', {day:'numeric', month:'short'}).toUpperCase();
+                let html = tasks.map(t => `<div class="bg-white p-5 rounded-2xl border flex justify-between items-center shadow-sm"><div><p class="text-[8px] font-black text-blue-500 uppercase tracking-tighter">Operación Pendiente</p><p class="text-[13px] font-semibold text-natural">${t.texto}</p></div><button onclick="app.completeTask('${t.id}')" class="w-6 h-6 border-2 rounded-xl border-slate-200 hover:border-black transition-all"></button></div>`);
+                html.push(...pros.map(p => `<div class="bg-purple-50 p-5 rounded-2xl flex justify-between items-center border border-purple-100"><div><p class="text-[8px] font-black text-purple-600 uppercase tracking-tighter">Cierre Programado</p><p class="text-[13px] font-bold text-natural">${p.nombre} ($${Number(p.ticket).toLocaleString()})</p></div><button onclick="nav('pros')" class="text-purple-400"><i data-lucide="external-link" class="w-4 h-4"></i></button></div>`));
+                document.getElementById('tasks-today').innerHTML = html.join('') || '<p class="text-[10px] text-slate-300 italic uppercase py-4">Sin actividades para hoy</p>';
+                lucide.createIcons();
+            },
+
+            renderProspectos: function() {
+                const stages = ['nuevo', 'contacto', 'negociacion', 'ganado'];
+                stages.forEach(s => document.getElementById('pros-' + s).innerHTML = '');
+                let total = 0;
+                this.db.prospectos.forEach(p => {
+                    total += Number(p.ticket || 0);
+                    const isDone = p.entrega === 'Si';
+                    const html = `
+                    <div class="card-neo p-5 shadow-sm border-l-4 ${p.status==='ganado'?'border-emerald-400':'border-slate-200'} relative">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 onclick="app.editProspect('${p.id}')" class="font-bold text-natural leading-tight cursor-pointer hover:text-blue-600 transition-colors">${p.nombre}</h4>
+                            <button onclick="app.toggleEntrega('${p.id}')" class="w-7 h-7 flex items-center justify-center rounded-lg border border-slate-100 transition-all ${isDone ? 'btn-entregado shadow-lg' : 'bg-slate-50 text-slate-300 hover:text-black'}">
+                                <i data-lucide="${isDone ? 'check' : 'package'}" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <p class="text-[9px] text-slate-400 font-bold uppercase truncate max-w-[100px]">${p.trabajo || 'Prospecto'}</p>
+                            ${isDone ? '<span class="text-[7px] font-black bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded tracking-tighter">ENTREGADO</span>' : ''}
+                        </div>
+                        <div class="flex justify-between items-center border-t border-slate-50 pt-3">
+                            <span class="text-lg font-black text-slate-800 tracking-tighter">$${Number(p.ticket).toLocaleString()}</span>
+                            <select onchange="app.quickMove('${p.id}', this.value)" class="bg-slate-50 text-[8px] font-black uppercase p-2 rounded-lg outline-none cursor-pointer hover:bg-slate-100">
+                                <option value="nuevo" ${p.status==='nuevo'?'selected':''}>Consulta</option>
+                                <option value="contacto" ${p.status==='contacto'?'selected':''}>Seguimiento</option>
+                                <option value="negociacion" ${p.status==='negociacion'?'selected':''}>Cierre</option>
+                                <option value="ganado" ${p.status==='ganado'?'selected':''}>Venta</option>
+                            </select>
+                        </div>
+                    </div>`;
+                    document.getElementById('pros-' + p.status).innerHTML += html;
+                });
+                document.getElementById('count-pros').innerText = this.db.prospectos.length;
+                document.getElementById('sum-tickets').innerText = '$' + total.toLocaleString();
+                lucide.createIcons();
+            },
+
+            // LÓGICA CORE
+            toggleEntrega: function(id) {
+                const p = this.db.prospectos.find(x => x.id === id);
+                if(p) { p.entrega = (p.entrega === 'Si' ? 'No' : 'Si'); this.save(); }
+            },
+            prepareModalP: function() { 
+                document.getElementById('modalPTitle').innerText = "Nuevo Prospecto"; 
+                document.getElementById('pId').value = ""; 
+                ['pName','pTrabajo','pFono','pTicket','pFechaPago','pNota'].forEach(i => document.getElementById(i).value = "");
+                document.getElementById('pEntrega').value = "No";
+                document.getElementById('btnDelPros').classList.add('hidden'); 
+                this.openModal('modalP'); 
+            },
+            editProspect: function(id) { 
+                const p = this.db.prospectos.find(x => x.id === id); 
+                if(!p) return; 
+                document.getElementById('modalPTitle').innerText = "Ficha Prospecto"; 
+                document.getElementById('pId').value = p.id; 
+                document.getElementById('pName').value = p.nombre; 
+                document.getElementById('pTrabajo').value = p.trabajo; 
+                document.getElementById('pFono').value = p.whatsapp; 
+                document.getElementById('pTicket').value = p.ticket; 
+                document.getElementById('pEntrega').value = p.entrega || "No"; 
+                document.getElementById('pFechaPago').value = p.fechaPago; 
+                document.getElementById('pNota').value = p.nota || ""; 
+                document.getElementById('btnDelPros').classList.remove('hidden'); 
+                this.openModal('modalP'); 
+            },
+            saveProspect: function() { 
+                const id = document.getElementById('pId').value; 
+                const pData = { 
+                    id: id || Date.now().toString(), 
+                    nombre: document.getElementById('pName').value, 
+                    trabajo: document.getElementById('pTrabajo').value, 
+                    whatsapp: document.getElementById('pFono').value, 
+                    ticket: document.getElementById('pTicket').value || 0, 
+                    entrega: document.getElementById('pEntrega').value, 
+                    fechaPago: document.getElementById('pFechaPago').value, 
+                    status: id ? this.db.prospectos.find(x=>x.id===id).status : 'nuevo', 
+                    nota: document.getElementById('pNota').value 
+                }; 
+                if(!pData.nombre) return; 
+                if(id) { const idx = this.db.prospectos.findIndex(x => x.id === id); this.db.prospectos[idx] = pData; } 
+                else { this.db.prospectos.push(pData); } 
+                this.closeModal('modalP'); this.save(); 
+            },
+            quickMove: function(id, st) { const p = this.db.prospectos.find(x=>x.id===id); if(p){ p.status = st; this.save(); }},
+            deleteCurrentPros: function() { if(confirm('¿Borrar prospecto?')){ this.db.prospectos = this.db.prospectos.filter(x=>x.id!==document.getElementById('pId').value); this.closeModal('modalP'); this.save(); }},
+
+            // SECCIONES SECUNDARIAS
+            renderClientes: function() { document.getElementById('clients-list').innerHTML = this.db.clientes.map(c => `<div class="card-neo p-8 flex flex-col gap-4"><div><h4 class="font-black text-lg text-natural">${c.nombre}</h4><p class="text-[9px] font-black uppercase text-slate-300">Cobro mensual el día ${c.diaCobro}</p></div><p class="text-3xl font-black italic tracking-tighter text-blue-600">$${Number(c.monto).toLocaleString()}</p><button onclick="app.db.clientes=app.db.clientes.filter(x=>x.id!=='${c.id}');app.save();" class="text-[9px] font-black uppercase text-slate-200 text-left hover:text-red-400">Eliminar</button></div>`).join(''); },
+            renderDeudas: function() { document.getElementById('deudas-list').innerHTML = this.db.deudas.map(d => `<div class="card-neo p-8 border-l-8 border-red-500 shadow-sm"><div><p class="text-[9px] font-black uppercase text-slate-300 mb-1">Pasivo</p><h4 class="font-black text-lg text-natural">${d.nombre}</h4><p class="text-3xl font-black text-red-600 tracking-tighter">$${d.monto.toLocaleString()}</p></div><button onclick="app.db.deudas=app.db.deudas.filter(x=>x.id!=='${d.id}');app.save();" class="mt-4 text-[9px] font-black uppercase text-slate-200 hover:text-black transition-colors"><i data-lucide="trash-2" class="w-3 h-3 inline mr-1"></i>Saldar</button></div>`).join(''); },
+            renderLeads: function() { document.getElementById('leads-list').innerHTML = this.db.leads.map(l => `<div class="card-neo p-6 text-center group relative"><button onclick="app.db.leads=app.db.leads.filter(x=>x.id!=='${l.id}');app.save();" class="absolute top-4 right-4 text-slate-100 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="x-circle" class="w-4 h-4"></i></button><div class="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3"><i data-lucide="user" class="w-4 h-4 text-slate-400"></i></div><h4 class="font-black uppercase text-[11px] text-natural truncate">${l.nombre}</h4><a href="https://wa.me/${l.fono}" target="_blank" class="block w-full bg-emerald-50 text-emerald-600 py-3 rounded-xl font-black text-[9px] uppercase mt-4 italic hover:bg-emerald-100 transition-all">WhatsApp</a></div>`).join(''); },
+            renderTasks: function() { document.getElementById('full-tasks-list').innerHTML = this.db.tareas.map(t => `<div class="card-neo p-5 flex justify-between items-center ${t.completa ? 'opacity-30' : 'shadow-sm'}"><div><p class="text-[8px] font-black text-slate-400 uppercase">${t.fecha}</p><h5 class="font-bold text-[13px] text-natural">${t.texto}</h5></div><button onclick="app.db.tareas=app.db.tareas.filter(x=>x.id!=='${t.id}');app.save();" class="text-slate-200 hover:text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join(''); },
+
+            // OPERATIVA BASE
+            addClient: function() { const n=document.getElementById('cName').value; const m=Number(document.getElementById('cAmount').value); const d=Number(document.getElementById('cDay').value); if(n && m){ this.db.clientes.push({id:Date.now().toString(), nombre:n, monto:m, diaCobro:d}); this.closeModal('modalC'); this.save(); }},
+            addDeuda: function() { const n=document.getElementById('dName').value; const m=Number(document.getElementById('dAmount').value); if(n && m){ this.db.deudas.push({id:Date.now().toString(), nombre:n, monto:m}); this.closeModal('modalD'); this.save(); }},
+            addLead: function() { const n=document.getElementById('lName').value; const f=document.getElementById('lPhone').value; if(n){ this.db.leads.push({id:Date.now().toString(), nombre:n, fono:f}); this.closeModal('modalL'); this.save(); }},
+            addQuickTask: function(t) { if(t.trim()){ this.db.tareas.push({id:Date.now().toString(), texto:t, fecha:this.selectedDate, completa:false}); document.getElementById('quickTaskInput').value=""; this.save(); }},
+            addFullTask: function() { const t=document.getElementById('tText').value; const d=document.getElementById('tDate').value; if(t && d){ this.db.tareas.push({id:Date.now().toString(), texto:t, fecha:d, completa:false}); this.closeModal('modalTask'); this.save(); }},
+            completeTask: function(id) { const t=this.db.tareas.find(x=>x.id===id); if(t) t.completa=true; this.save(); },
+            selectDay: function(d) { this.selectedDate = d; this.render(); },
+            changeMonth: function(dir) { this.currentMonth += dir; if(this.currentMonth > 11){this.currentMonth=0;this.currentYear++} else if(this.currentMonth<0){this.currentMonth=11;this.currentYear--} this.render(); },
+            openModal: function(id) { document.getElementById(id).showModal(); },
+            closeModal: function(id) { document.getElementById(id).close(); }
+        };
+
+        function nav(v) {
+            document.querySelectorAll('.view').forEach(e => e.classList.add('hidden'));
+            document.getElementById('view-'+v).classList.remove('hidden');
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('sidebar-active', 'text-slate-400'));
+            document.getElementById('btn-'+v).classList.add('sidebar-active');
+            lucide.createIcons();
+        }
+
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
